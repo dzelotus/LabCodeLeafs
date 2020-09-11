@@ -180,23 +180,23 @@ const TabNavigator = () => {
 const StackNavigator = (route) => {
 	const [load, setLoad] = useState(false);
 
+	//Проверка авторизации пользователя
 	const checkAuth = async () => {
+		// Проверяем наличия токена первого запуска
 		await AsyncStorage.getItem('alreadyLaunched').then((value) => {
-			console.log('VALUE', value);
 			if (!value) {
-				route.resolveAuth({ prop: 'signToken', value: false });
+				//Если токена нет, запускаем FirstLaunchScreen
+				route.resolveAuth({ prop: 'fistLaunchToken', value: false });
 				route.resolveAuth({ prop: 'loadStart', value: true });
 				setLoad(true);
-				console.log('?????');
 			} else {
-				route.resolveAuth({ prop: 'signToken', value: true });
-
+				//Если токен есть, проверяем аутентификацию пользователя
+				route.resolveAuth({ prop: 'fistLaunchToken', value: true });
 				nodeApi
 					.get(
 						'f54ji0eyEmOsOweSpErOsT1poph4nebo4EbubR5SplS2Ly1fim70lwLroCHu5oho/user_authentication',
 					)
 					.then((response) => {
-						console.log('FUCK RESP', response.data.data);
 						if (response.data.data) {
 							route.resolveAuth({ prop: 'loadStart', value: true });
 							setLoad(true);
@@ -208,13 +208,11 @@ const StackNavigator = (route) => {
 						}
 					})
 					.catch((error) => {
-						console.log('ERROR FUCK FUCK');
+						console.log(error);
 					});
 			}
 		});
 	};
-
-	console.log('STACK NAVIGATOR', route);
 
 	useEffect(() => {
 		checkAuth();
@@ -228,7 +226,7 @@ const StackNavigator = (route) => {
 					component={ResolveAuthScreen}
 					options={{ headerShown: false }}
 				/>
-			) : !route.signToken ? (
+			) : !route.fistLaunchToken ? (
 				<Stack.Screen
 					name="FirstLaunch"
 					component={FirstLaunchScreen}
@@ -253,9 +251,9 @@ const StackNavigator = (route) => {
 };
 
 const mapStateToProps = ({ auth }) => {
-	const { signToken, isSigned, loadStart } = auth;
+	const { fistLaunchToken, isSigned, loadStart } = auth;
 
-	return { signToken, isSigned, loadStart };
+	return { fistLaunchToken, isSigned, loadStart };
 };
 
 export default connect(mapStateToProps, { resolveAuth })(StackNavigator);

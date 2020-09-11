@@ -1,11 +1,12 @@
+import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, Alert } from 'react-native';
-import { Button } from 'react-native-elements';
-import nodeApi from '../api/nodeApi';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import AsyncStorage from '@react-native-community/async-storage';
+import { Button } from 'react-native-elements';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ripple from 'react-native-material-ripple';
 import { connect } from 'react-redux';
+import nodeApi from '../api/nodeApi';
 import { resolveAuth } from '../actions/AuthActions';
 
 const ProfileScreen = (route) => {
@@ -182,9 +183,9 @@ ProfileScreen.navigationOptions = () => {
 };
 
 const mapStateToProps = ({ auth }) => {
-	const { signToken, isSigned } = auth;
+	const { fistLaunchToken, isSigned } = auth;
 
-	return { signToken, isSigned };
+	return { fistLaunchToken, isSigned };
 };
 
 export default connect(mapStateToProps, { resolveAuth })(ProfileScreen);

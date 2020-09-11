@@ -1,13 +1,14 @@
 import {
+	CHANGE_SCREEN,
+	CLEAR_ERROR_MESSAGE,
+	GET_CSRF,
 	INPUT_CHANGE,
+	RESOLVE_AUTH,
 	SIGNIN,
 	SIGNIN_FAIL,
 	SIGNIN_SUCCESS,
-	CLEAR_ERROR_MESSAGE,
-	GET_CSRF,
-	RESOLVE_AUTH,
-	CHANGE_SCREEN,
 } from './types';
+
 import nodeApi from '../api/nodeApi';
 
 export const inputChange = ({ prop, value }) => {
@@ -33,7 +34,7 @@ export const signin = ({ username, password, _csrf }) => {
 				_csrf,
 			})
 			.then((response) => {
-				const success = response.data.success;
+				const success = response;
 				console.log('SUCCESS', success);
 				if (success) {
 					signinSuccess(dispatch, response.data);
@@ -106,7 +107,7 @@ const signinSuccess = (dispatch, response) => {
 	});
 	dispatch({
 		type: RESOLVE_AUTH,
-		payload: { prop: 'signToken', value: true },
+		payload: { prop: 'fistLaunchToken', value: true },
 	});
 };
 

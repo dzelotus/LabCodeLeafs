@@ -69,11 +69,7 @@ function SigninScreen(props) {
 
 	const getCsrf = () => {
 		nodeApi
-			.get('/login', {
-				params: {
-					isJSONResponse: 1,
-				},
-			})
+			.get('/login')
 			.then(
 				(response) => (
 					console.log(response),

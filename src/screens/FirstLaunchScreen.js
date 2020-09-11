@@ -69,7 +69,7 @@ const FirstLaunchScreen = (props) => {
 							onPress={() => {
 								console.log('TAP', console.log(props));
 								AsyncStorage.setItem('alreadyLaunched', 'true');
-								props.resolveAuth({ prop: 'signToken', value: true });
+								props.resolveAuth({ prop: 'fistLaunchToken', value: true });
 							}}
 							style={{
 								borderBottomWidth: 1,
@@ -135,9 +135,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ auth }) => {
-	const { signToken, isLoading } = auth;
+	const { fistLaunchToken, isLoading } = auth;
 
-	return { signToken, isLoading };
+	return { fistLaunchToken, isLoading };
 };
 
 export default connect(mapStateToProps, { resolveAuth })(FirstLaunchScreen);

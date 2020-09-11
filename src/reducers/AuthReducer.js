@@ -1,12 +1,12 @@
 import {
+	CHANGE_SCREEN,
+	CLEAR_ERROR_MESSAGE,
+	GET_CSRF,
 	INPUT_CHANGE,
+	RESOLVE_AUTH,
 	SIGNIN,
 	SIGNIN_FAIL,
 	SIGNIN_SUCCESS,
-	CLEAR_ERROR_MESSAGE,
-	GET_CSRF,
-	RESOLVE_AUTH,
-	CHANGE_SCREEN,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -15,7 +15,7 @@ const INITIAL_STATE = {
 	password: '',
 	error: '',
 	loading: false,
-	signToken: '',
+	firstLaunchToken: '',
 	isSigned: false,
 	loadStart: '',
 	screenName: '',
