@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StatusBar, TouchableOpacity, PermissionsAndroid } from 'react-native';
-import CameraButtons from '../components/CameraButtons';
-import PhotoCameraScroll from '../components/PhotoCameraScroll';
+import { PermissionsAndroid, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+
 import { Camera } from 'expo-camera';
-import { withNavigationFocus } from '@react-navigation/compat';
+import CameraButtons from '../components/CameraButtons';
 import CameraRoll from '@react-native-community/cameraroll';
+import PhotoCameraScroll from '../components/PhotoCameraScroll';
 import imagePicker from '../hooks/imagePicker';
 import makePhoto from '../hooks/makePhoto';
+import { withNavigationFocus } from '@react-navigation/compat';
 
 /*import makePhoto from '../hooks/makePhoto';*/
 
@@ -94,6 +95,24 @@ const ScanLeafScreen = (route) => {
 						flashMode={flashType}
 						ratio="16:9"
 						ref={(ref) => (camera = ref)}>
+						<Text
+							style={{
+								color: 'white',
+								textAlign: 'center',
+								fontSize: 20,
+								paddingBottom: 2,
+							}}>
+							Поместите лист в данную область
+						</Text>
+						<View
+							style={{
+								borderColor: 'white',
+								borderWidth: 2,
+								height: '50%',
+								marginHorizontal: 5,
+								borderStyle: 'dashed',
+								borderRadius: 1,
+							}}></View>
 						<TouchableOpacity
 							style={{
 								alignItems: 'center',

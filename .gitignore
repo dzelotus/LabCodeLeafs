@@ -29,7 +29,7 @@ DerivedData
 !build.gradle
 local.properties
 *.iml
-/android/app
+/android/app/build
 *.hprof
 *.apk
 
