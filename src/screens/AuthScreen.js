@@ -1,5 +1,5 @@
+import { Image, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from 'react-native-elements';
 import RNBootSplash from 'react-native-bootsplash';
@@ -11,7 +11,7 @@ const AuthScreen = ({ navigation }) => {
 	return (
 		<View style={{ flex: 1, alignItems: 'center' }}>
 			<View style={styles.container}>
-				<Text style={{ textAlign: 'center', fontSize: 30 }}>Логотип листочков</Text>
+				<Image source={require('../../assets/plant_logo.png')} style={styles.imageStyle} />
 				<View style={{ marginVertical: 15 }}>
 					<Button
 						title="Войти"
@@ -56,6 +56,12 @@ const styles = StyleSheet.create({
 		fontSize: 22,
 		alignSelf: 'center',
 		textAlign: 'center',
+	},
+	imageStyle: {
+		height: 120,
+		width: 120,
+		alignSelf: 'center',
+		marginVertical: 15,
 	},
 });
 
