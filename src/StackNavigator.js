@@ -193,9 +193,7 @@ const StackNavigator = (route) => {
 				//Если токен есть, проверяем аутентификацию пользователя
 				route.resolveAuth({ prop: 'fistLaunchToken', value: true });
 				nodeApi
-					.get(
-						'f54ji0eyEmOsOweSpErOsT1poph4nebo4EbubR5SplS2Ly1fim70lwLroCHu5oho/user_authentication',
-					)
+					.get('user_authentication')
 					.then((response) => {
 						if (response.data.data) {
 							route.resolveAuth({ prop: 'loadStart', value: true });

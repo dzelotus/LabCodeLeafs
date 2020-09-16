@@ -74,15 +74,11 @@ const MainScreen = (route) => {
 	}; */
 
 	const checkVerify = () => {
-		nodeApi
-			.get(
-				'f54ji0eyEmOsOweSpErOsT1poph4nebo4EbubR5SplS2Ly1fim70lwLroCHu5oho/user_authentication',
-			)
-			.then((response) => {
-				console.log(response.data);
-				setErrorButton(response.data.data.isVerified);
-				setVerifyToken(response.data.hasValidTokens);
-			});
+		nodeApi.get('user_authentication').then((response) => {
+			console.log(response.data);
+			setErrorButton(response.data.data.isVerified);
+			setVerifyToken(response.data.hasValidTokens);
+		});
 	};
 
 	useEffect(() => {
