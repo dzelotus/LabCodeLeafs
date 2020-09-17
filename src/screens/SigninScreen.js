@@ -18,22 +18,24 @@ import { connect } from 'react-redux';
 import nodeApi from '../api/nodeApi';
 
 function SigninScreen(props) {
+	const [isModalVisible, setModalVisible] = useState(false);
+	const [regexEmail, setRegexEmail] = useState();
+	const [indicator, setIndicator] = useState(false);
+
+	const regexUsername = useRef();
+	const regexPassword = useRef();
+	const activeButton = useRef(true);
+
+	console.log(props.loading);
+
+	const toggleModal = () => {
+		setModalVisible(!isModalVisible);
+	};
 	const onButtonPress = () => {
 		const { username, password, _csrf, email } = props;
 
 		props.signin({ username, password, _csrf, email });
 	};
-
-	const [isModalVisible, setModalVisible] = useState(false);
-	const toggleModal = () => {
-		setModalVisible(!isModalVisible);
-	};
-	const regexUsername = useRef();
-	const regexPassword = useRef();
-	const [regexEmail, setRegexEmail] = useState();
-	const activeButton = useRef(true);
-
-	console.log(props.loading);
 
 	const activityIndicator = () => {
 		if (props.loading) {
@@ -50,6 +52,45 @@ function SigninScreen(props) {
 					title="Войти"
 					onPress={onButtonPress.bind(this)}
 					disabled={activeButton.current}
+				/>
+			);
+		}
+	};
+
+	const activityIndicatorModal = () => {
+		if (indicator) {
+			return (
+				<View>
+					<ActivityIndicator size={'large'} color="#8DC34A" />
+				</View>
+			);
+		} else {
+			return (
+				<Button
+					title="Отправить запрос"
+					buttonStyle={{ backgroundColor: '#8DC34A' }}
+					onPress={() => {
+						setIndicator(true);
+						nodeApi
+							.post('/password-recovery', {
+								email,
+								_csrf: props._csrf,
+							})
+							.then((response) => {
+								console.log(response);
+								if (response.data.success === true) {
+									Alert.alert('', response.data.message);
+									toggleModal();
+								} else {
+									Alert.alert('', response.data.message);
+								}
+								setIndicator(false);
+							})
+							.catch((error) => {
+								console.log('ERR', error.response);
+								setIndicator(false);
+							});
+					}}
 				/>
 			);
 		}
@@ -219,27 +260,7 @@ function SigninScreen(props) {
 						errorStyle={{ color: 'red' }}
 						errorMessage={regexEmail}
 					/>
-					<Button
-						title="Отправить запрос"
-						buttonStyle={{ backgroundColor: '#8DC34A' }}
-						onPress={() => {
-							nodeApi
-								.post('/password-recovery', {
-									email,
-									_csrf: props._csrf,
-								})
-								.then((response) => {
-									console.log(response);
-									if (response.data.success === true) {
-										Alert.alert(response.data.message);
-										toggleModal();
-									} else {
-										Alert.alert(response.data.message);
-									}
-								})
-								.catch((error) => console.log('ERR', error.response));
-						}}
-					/>
+					{activityIndicatorModal()}
 				</View>
 			</Modal>
 		</View>

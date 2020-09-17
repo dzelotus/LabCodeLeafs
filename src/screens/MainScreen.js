@@ -49,29 +49,7 @@ const MainScreen = (route) => {
 				});
 			})
 			.catch((error) => console.log('!!!', error.response));
-	};
-
-	/* const checkWeatherEmu = () => {
-		weatherApi
-			.get('/', {
-				params: {
-					q: 'Perm',
-					appid: '8da265f8c41094bc3f5222f1837a983c',
-					lang: 'ru',
-					units: 'metric',
-				},
-			})
-			.then((info) => {
-				console.log(info.data);
-				setWeather({
-					description: info.data.weather[0].description,
-					icon: info.data.weather[0].icon,
-					temp: info.data.main.temp,
-					location: info.data.name,
-				});
-			})
-			.catch((error) => console.log(error.response));
-	}; */
+	};	
 
 	const checkVerify = () => {
 		nodeApi.get('user_authentication').then((response) => {
@@ -82,8 +60,7 @@ const MainScreen = (route) => {
 	};
 
 	useEffect(() => {
-		getCoords();
-		/* checkWeatherEmu(); */
+		getCoords();		
 	}, []);
 
 	route.navigation.addListener('focus', () => {

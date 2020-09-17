@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { Image, Text, View } from 'react-native';
 
 import CookieManager from '@react-native-community/cookies';
+import React from 'react';
 
 const ResolveAuthScreen = () => {
 	CookieManager.get('https://leafs-app.lab-code.com/').then((cookies) => {
