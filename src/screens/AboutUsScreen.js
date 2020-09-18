@@ -1,12 +1,11 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-const AboutUsScreen = () => {
-	return (
-		<View>
-			<Text>О нас</Text>
-		</View>
-	);
-};
+import React from 'react';
+
+const AboutUsScreen = () => (
+	<View>
+		<Text>О нас</Text>
+	</View>
+);
 
 export default AboutUsScreen;

@@ -1,30 +1,26 @@
 {
 	"env": {
 		"browser": true,
-		"es2020": true,
+		"es2021": true,
 		"node": true
 	},
 	"extends": ["plugin:react/recommended", "airbnb"],
-	"globals": {
-		"Atomics": "readonly",
-		"SharedArrayBuffer": "readonly"
-	},
 	"parser": "babel-eslint",
 	"parserOptions": {
 		"ecmaFeatures": {
 			"jsx": true
 		},
-		"ecmaVersion": 11,
+		"ecmaVersion": 12,
 		"sourceType": "module"
 	},
-	"plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
+	"plugins": ["react", "react-hooks", "prettier"],
 	"rules": {
-		"indent": ["error", 4, "tab", {"SwitchCase": 1, "VariableDeclarator": 1}],
-		"quotes": ["error", "single", {"avoidEscape": true}],
+		"indent": ["error", "tab", { "SwitchCase": 1, "VariableDeclarator": 1 }],
+		"quotes": ["error", "single", { "avoidEscape": true }],
 
 		"no-empty-function": "off",
-		"react/jsx-indent": [4, "tab"],
-		"react/jsx-indent-props": [4, "tab"],
+		"react/jsx-indent": ["error", "tab"],
+		"react/jsx-indent-props": ["error", "tab"],
 		"curly": ["error", "all"],
 		"@typescript-eslint/no-empty-function": "off",
 		"react/display-name": "off",

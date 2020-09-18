@@ -9,7 +9,7 @@ import imagePicker from '../hooks/imagePicker';
 import makePhoto from '../hooks/makePhoto';
 import { withNavigationFocus } from '@react-navigation/compat';
 
-/*import makePhoto from '../hooks/makePhoto';*/
+/* import makePhoto from '../hooks/makePhoto'; */
 
 const ScanLeafScreen = (route) => {
 	const [type, setType] = useState(Camera.Constants.Type.back);
@@ -34,7 +34,7 @@ const ScanLeafScreen = (route) => {
 
 	const dataMoreLoading = async () => {
 		if (nextPage.has_next_page) {
-			let moreData = await CameraRoll.getPhotos({
+			const moreData = await CameraRoll.getPhotos({
 				first: 20,
 				after: nextPage.end_cursor,
 				assetType: 'Photos',
@@ -60,30 +60,30 @@ const ScanLeafScreen = (route) => {
 		await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
 		await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
 		getImages();
-		/*checkCameraPermissions();*/
+		/* checkCameraPermissions(); */
 	};
 
-	/*const checkCameraPermissions = async () => {
+	/* const checkCameraPermissions = async () => {
     const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
 
     if (status != 'granted') {
       Alert.alert('Внимание!', 'Для сканирования требуется доступ к камере и галерее');
     }
-  };*/
+  }; */
 
-	/*const checkLocationPermissions = async () => {
+	/* const checkLocationPermissions = async () => {
     const { status } = await Permissions.getAsync(Permissions.LOCATION);
 
     if (status != 'granted') {
       Alert.alert('Внимание!', 'Для правильной работы приложения требуется доступ к геолокации');
     }
-  };*/
+  }; */
 
 	return (
 		<View style={{ flex: 1, justifyContent: 'flex-end' }}>
 			{route.isFocused && (
 				<>
-					<StatusBar hidden={true} />
+					<StatusBar hidden />
 					<Camera
 						style={{
 							flex: 1,
@@ -112,16 +112,16 @@ const ScanLeafScreen = (route) => {
 								marginHorizontal: 5,
 								borderStyle: 'dashed',
 								borderRadius: 1,
-							}}></View>
+							}}
+						/>
 						<TouchableOpacity
 							style={{
 								alignItems: 'center',
 							}}
-							onPress={() =>
-								imagePicker({
+							onPress={() => imagePicker({
 									nav: route.navigation.navigate,
-								})
-							}>
+								})}
+						>
 							<Text style={{ fontSize: 20, color: 'white' }}>Выбрать из галереи</Text>
 						</TouchableOpacity>
 
@@ -135,12 +135,10 @@ const ScanLeafScreen = (route) => {
 										: Camera.Constants.Type.back,
 								);
 							}}
-							photo={() =>
-								makePhoto({
-									camera: camera,
+							photo={() => makePhoto({
+									camera,
 									nav: route.navigation.navigate,
-								})
-							}
+								})}
 							flash={() => {
 								setFlashType(
 									flashType === Camera.Constants.FlashMode.off

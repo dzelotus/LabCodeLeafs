@@ -34,66 +34,67 @@ function SigninScreen(props) {
 	const onButtonPress = () => {
 		const { username, password, _csrf, email } = props;
 
-		props.signin({ username, password, _csrf, email });
+		props.signin({
+            username, password, _csrf, email, 
+		});
 	};
 
 	const activityIndicator = () => {
-		if (props.loading) {
-			return (
-				<View>
-					<ActivityIndicator size={'large'} color="#8DC34A" />
-				</View>
-			);
-		} else {
-			return (
-				<Button
-					containerStyle={{ paddingHorizontal: 8 }}
+        if (props.loading) {
+            return (
+                <View>
+                    <ActivityIndicator size="large" color="#8DC34A" />
+                </View>
+            );
+        }
+        return (
+			<Button
+                containerStyle={{ paddingHorizontal: 8 }}
 					buttonStyle={{ backgroundColor: '#8DC34A' }}
 					title="Войти"
 					onPress={onButtonPress.bind(this)}
 					disabled={activeButton.current}
 				/>
-			);
-		}
-	};
-
+		);
+    };
+	// comment
 	const activityIndicatorModal = () => {
-		if (indicator) {
-			return (
-				<View>
-					<ActivityIndicator size={'large'} color="#8DC34A" />
-				</View>
-			);
-		} else {
-			return (
-				<Button
-					title="Отправить запрос"
+        if (indicator) {
+            return (
+                <View>
+                    <ActivityIndicator size="large" color="#8DC34A" />
+                </View>
+            );
+        }
+        return (
+			<Button
+                title="Отправить запрос"
 					buttonStyle={{ backgroundColor: '#8DC34A' }}
-					onPress={() => {
-						setIndicator(true);
+				onPress={() => {
+                    setIndicator(true);
 						nodeApi
 							.post('/password-recovery', {
 								email,
 								_csrf: props._csrf,
 							})
-							.then((response) => {
-								console.log(response);
-								if (response.data.success === true) {
-									Alert.alert('', response.data.message);
+						.then((response) => {
+                            console.log(response);
+							if (response.data.success === true) {
+                                Alert.alert('', response.data.message);
 									toggleModal();
 								} else {
 									Alert.alert('', response.data.message);
 								}
 								setIndicator(false);
-							})
-							.catch((error) => {
-								console.log('ERR', error.response);
-								setIndicator(false);
+						})
+                        .catch((error) => {
+							console.log('ERR', error.response);
+                            setIndicator(false);
 							});
 					}}
 				/>
 			);
-		}
+		
 	};
 
 	if (props.username && props.password && !regexPassword.current && !regexUsername.current) {
@@ -131,7 +132,7 @@ function SigninScreen(props) {
 		getCsrf();
 	}, []);
 
-	const email = props.email;
+	const { email } = props;
 
 	const regex = {};
 
@@ -155,13 +156,15 @@ function SigninScreen(props) {
 				paddingTop: StatusBar.currentHeight,
 				justifyContent: 'center',
 			}}>
-			<ScrollView
-				contentContainerStyle={styles.container}
-				keyboardShouldPersistTaps={'always'}>
+        >
+            <ScrollView
+              contentContainerStyle={styles.container}
+              keyboardShouldPersistTaps="always"
+            >
 				<Spacer>
 					<Text h3 style={{ alignSelf: 'center', marginTop: 10 }}>
-						Вход в Листочки
-					</Text>
+                      Вход в Листочки
+                    </Text>
 				</Spacer>
 				<Spacer>
 					<View style={styles.inputsContainer}>
@@ -216,19 +219,21 @@ function SigninScreen(props) {
 								marginTop: 20,
 								borderBottomWidth: 1,
 							}}
-							onPress={toggleModal}>
-							<Text>Забыл пароль?</Text>
+                          onPress={toggleModal}
+                        >
+                          <Text>Забыл пароль?</Text>
 						</TouchableOpacity>
 					</View>
 				</Spacer>
 			</ScrollView>
 
-			<Modal visible={isModalVisible} animationType="slide" transparent={true}>
+			<Modal visible={isModalVisible} animationType="slide" transparent>
 				<View style={styles.modalContainer}>
 					<TouchableOpacity
 						onPress={toggleModal}
-						style={{ alignSelf: 'flex-end', marginBottom: 10 }}>
-						<MaterialCommunityIcons name="close" size={35} />
+                      style={{ alignSelf: 'flex-end', marginBottom: 10 }}
+                    >
+                      <MaterialCommunityIcons name="close" size={35} />
 					</TouchableOpacity>
 					<Text
 						style={{
@@ -267,11 +272,9 @@ function SigninScreen(props) {
 	);
 }
 
-SigninScreen.navigationOptions = () => {
-	return {
-		headerShown: false,
-	};
-};
+SigninScreen.navigationOptions = () => ({
+    headerShown: false,
+	});
 
 const mapStateToProps = ({ auth }) => {
 	const { username, password, email, loading, error, _csrf, isSigned, loadStart } = auth;
