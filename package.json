@@ -1,5 +1,5 @@
 {
-	"name": "Leafs",
+	"name": "leafs",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -29,6 +29,7 @@
 		"expo-image-picker": "^8.4.0",
 		"expo-location": "^8.3.0",
 		"expo-media-library": "^8.4.0",
+		"husky": "^4.3.0",
 		"moment": "^2.27.0",
 		"react": "16.13.1",
 		"react-native": "0.63.2",
@@ -64,8 +65,8 @@
 		"eslint-plugin-prettier": "^3.1.4",
 		"eslint-plugin-react": "^7.20.6",
 		"eslint-plugin-react-hooks": "^4.1.2",
-		"husky": "^4.2.5",
 		"jest": "^25.1.0",
+		"lint-staged": "^10.4.0",
 		"metro-react-native-babel-preset": "^0.59.0",
 		"prettier": "^2.1.2",
 		"react-test-renderer": "16.13.1"
@@ -75,9 +76,14 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "npm test",
-			"pre-push": "npm test",
-			"...": "..."
+			"pre-commit": "lint-staged"
 		}
+	},
+	"lint-staged": {
+		"src/**/*.{js,jsx}": [
+			"eslint",
+			"pretty-quick — staged",
+			"git add"
+		]
 	}
 }
