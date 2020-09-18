@@ -1,24 +1,40 @@
+/* eslint-disable consistent-return */
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
-import FavoritesCard from '../components/FavoritesCard';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Geolocation from '@react-native-community/geolocation';
-import LastScansCard from '../components/LastScansCard';
 import RNBootSplash from 'react-native-bootsplash';
+import LastScansCard from '../components/LastScansCard';
+import FavoritesCard from '../components/FavoritesCard';
 import WeatherCard from '../components/WeatherCard';
 import nodeApi from '../api/nodeApi';
 import weatherApi from '../api/weatherApi';
 
-const MainScreen = (route) => {
-	/*const verify = route.navigation.state.params.verify;*/
+const MainScreen = ({ navigation }) => {
+	console.log('NAV', { navigation });
 	const [errorButton, setErrorButton] = useState(true);
 	const [scans, setScans] = useState();
 	const [verifyToken, setVerifyToken] = useState(true);
 	const [weather, setWeather] = useState();
+	const testScans = useRef();
 
-	const getCoords = async () =>
-		await Geolocation.getCurrentPosition(
+	const getLastScans = async () => {
+		await nodeApi
+			.get('/scans')
+			.then((response) => {
+				const startArray = response.data.data.reverse();
+				const data = startArray.slice(0, 9);
+				setScans(data);
+				testScans.current = data;
+			})
+			.catch((error) => console.log(error.response));
+		RNBootSplash.hide();
+	};
+	console.log('TEST', testScans);
+
+	const getCoords = () =>
+		Geolocation.getCurrentPosition(
 			(info) => {
 				checkWeather({ lon: info.coords.longitude, lat: info.coords.latitude });
 			},
@@ -33,8 +49,8 @@ const MainScreen = (route) => {
 		weatherApi
 			.get('/', {
 				params: {
-					lon: lon,
-					lat: lat,
+					lon,
+					lat,
 					units: 'metric',
 					lang: 'ru',
 					appid: '8da265f8c41094bc3f5222f1837a983c',
@@ -49,7 +65,7 @@ const MainScreen = (route) => {
 				});
 			})
 			.catch((error) => console.log('!!!', error.response));
-	};	
+	};
 
 	const checkVerify = () => {
 		nodeApi.get('user_authentication').then((response) => {
@@ -60,29 +76,17 @@ const MainScreen = (route) => {
 	};
 
 	useEffect(() => {
-		getCoords();		
+		const getFocus = navigation.addListener('focus', () => {
+			getLastScans();
+			checkVerify();
+			getCoords();
+		});
+
+		return getFocus;
 	}, []);
-
-	route.navigation.addListener('focus', () => {
-		checkVerify();
-		getLastScans();
-	});
-
-	const getLastScans = () => {
-		nodeApi
-			.get('/scans')
-			.then((response) => {
-				let startArray = response.data.data.reverse();
-				let data = startArray.slice(0, 9);
-				setScans(data);
-			})
-			.catch((error) => console.log(error.response));
-		RNBootSplash.hide();
-	};
 
 	const EmailVerify = () => {
 		if (!errorButton && !verifyToken) {
-			console.log('!!!!');
 			return (
 				<TouchableOpacity
 					style={styles.errorButton}
@@ -91,13 +95,13 @@ const MainScreen = (route) => {
 							.post('/verify', {})
 							.then((response) => Alert.alert(response.data.message))
 							.catch((error) => console.log(error.response))
-					}>
+					}
+				>
 					<FontAwesome name="exclamation-triangle" size={30} color="white" />
 				</TouchableOpacity>
 			);
-		} else {
-			return <Text />;
 		}
+		return <Text />;
 	};
 
 	const WeatherCardShow = () => {
@@ -137,7 +141,6 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		alignItems: 'center',
 		borderColor: 'red',
-		justifyContent: 'center',
 		borderWidth: 1,
 		borderRadius: 50,
 		height: 60,

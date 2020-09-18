@@ -1,8 +1,7 @@
 import 'moment/locale/ru';
 
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
-import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 import moment from 'moment';
@@ -26,7 +25,7 @@ const LastScansCard = ({ weatherInfo }) => {
 			'Декабря',
 		],
 	});
-	let now = moment().locale('ru').format('D MMMM');
+	const now = moment().locale('ru').format('D MMMM');
 
 	console.log(now);
 
@@ -47,12 +46,14 @@ const LastScansCard = ({ weatherInfo }) => {
 						alignContent: 'flex-end',
 						justifyContent: 'center',
 						flex: 1,
-					}}>
+					}}
+				>
 					<View
 						style={{
 							flexDirection: 'row',
 							marginTop: 5,
-						}}>
+						}}
+					>
 						<Text style={{ fontSize: 15, color: '#8DC34A' }}>
 							{weatherInfo.location},
 						</Text>
@@ -60,37 +61,35 @@ const LastScansCard = ({ weatherInfo }) => {
 					</View>
 					<View
 						style={{
-							alignSelf: 'center',
 							flexDirection: 'row',
 							alignSelf: 'flex-start',
-						}}>
+						}}
+					>
 						<Text
 							style={{
 								textAlignVertical: 'center',
 								fontSize: 40,
 								color: '#FF9800',
-							}}>
+							}}
+						>
 							{weatherInfo.temp}
 						</Text>
-						<Icon
-							name="circle-o"
-							size={12}
-							style={{ marginTop: 7 }}
-							color={'#FF9800'}
-						/>
+						<Icon name="circle-o" size={12} style={{ marginTop: 7 }} color="#FF9800" />
 						<Text
 							style={{
 								textAlignVertical: 'center',
 								fontSize: 40,
 								color: '#FF9800',
-							}}>
+							}}
+						>
 							С
 						</Text>
 					</View>
 					<View
 						style={{
 							alignSelf: 'flex-start',
-						}}>
+						}}
+					>
 						<Text style={{ marginBottom: 5, color: '#8DC34A' }}>
 							{weatherInfo.description}
 						</Text>

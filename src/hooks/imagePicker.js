@@ -16,4 +16,3 @@ const imagePicker = async ({ nav }) => {
 };
 
 export default imagePicker;
-

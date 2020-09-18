@@ -2,7 +2,9 @@
 	"env": {
 		"browser": true,
 		"es2021": true,
-		"node": true
+		"node": true,
+		"react-native/react-native": true,
+		"amd": true
 	},
 	"extends": ["plugin:react/recommended", "airbnb"],
 	"parser": "babel-eslint",
@@ -13,7 +15,7 @@
 		"ecmaVersion": 12,
 		"sourceType": "module"
 	},
-	"plugins": ["react", "react-hooks", "prettier"],
+	"plugins": ["react", "react-native", "react-hooks", "prettier"],
 	"rules": {
 		"indent": ["error", "tab", { "SwitchCase": 1, "VariableDeclarator": 1 }],
 		"quotes": ["error", "single", { "avoidEscape": true }],
@@ -21,10 +23,24 @@
 		"no-empty-function": "off",
 		"react/jsx-indent": ["error", "tab"],
 		"react/jsx-indent-props": ["error", "tab"],
+		"react/jsx-filename-extension": ["off"],
 		"curly": ["error", "all"],
 		"@typescript-eslint/no-empty-function": "off",
 		"react/display-name": "off",
 		"react/prop-types": "off",
-		"prettier/prettier": "error"
+		"prettier/prettier": "error",
+		"no-tabs": 0,
+		"no-console": 0,
+		"implicit-arrow-linebreak": "off",
+		"no-return-assign": "off",
+		"object-curly-newline": "off",
+		"no-underscore-dangle": "off",
+		"no-use-before-define": 0,
+		"no-shadow": "off",
+		"no-param-reassign": "off",
+		"react/jsx-one-expression-per-line": "off",
+		"react/jsx-curly-newline": "off",
+		"operator-linebreak": ["error", "after"],
+		"react/jsx-props-no-spreading": "off"
 	}
 }

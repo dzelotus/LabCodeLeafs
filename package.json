@@ -25,6 +25,7 @@
 		"@react-navigation/stack": "^5.9.0",
 		"@reduxjs/toolkit": "^1.4.0",
 		"axios": "^0.19.2",
+		"eslint-plugin-react-native": "^3.9.1",
 		"expo-camera": "^8.3.1",
 		"expo-image-picker": "^8.4.0",
 		"expo-location": "^8.3.0",
@@ -56,6 +57,7 @@
 		"@babel/core": "^7.8.4",
 		"@babel/runtime": "^7.8.4",
 		"@react-native-community/eslint-config": "^1.1.0",
+		"babel-eslint": "^10.1.0",
 		"babel-jest": "^25.1.0",
 		"eslint": "^7.9.0",
 		"eslint-config-airbnb": "^18.2.0",
@@ -69,9 +71,22 @@
 		"lint-staged": "^10.4.0",
 		"metro-react-native-babel-preset": "^0.59.0",
 		"prettier": "^2.1.2",
+		"pretty-quick": "^3.0.2",
 		"react-test-renderer": "16.13.1"
 	},
 	"jest": {
 		"preset": "react-native"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"src/**/*.{js,jsx}": [
+			"eslint",
+			"pretty-quick — staged",
+			"git add"
+		]
 	}
 }

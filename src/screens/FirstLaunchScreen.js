@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -10,7 +11,7 @@ import { connect } from 'react-redux';
 import { resolveAuth } from '../actions/AuthActions';
 
 const FirstLaunchScreen = (props) => {
-	const viewPager = useRef(<ViewPager></ViewPager>);
+	const viewPager = useRef(<ViewPager />);
 	const [page, setPage] = useState();
 
 	useEffect(() => {
@@ -36,8 +37,10 @@ const FirstLaunchScreen = (props) => {
 				style={styles.viewPager}
 				initialPage={0}
 				onPageSelected={(e) => {
-					setPage(e.nativeEvent.position), console.log(e.nativeEvent);
-				}}>
+					setPage(e.nativeEvent.position);
+					console.log(e.nativeEvent);
+				}}
+			>
 				<View key="1" style={styles.textContainer}>
 					<Text style={{ fontSize: 20 }}>Добро пожаловать в Листочки</Text>
 				</View>
@@ -64,7 +67,8 @@ const FirstLaunchScreen = (props) => {
 						style={{
 							flex: 0.1,
 							justifyContent: 'flex-end',
-						}}>
+						}}
+					>
 						<TouchableOpacity
 							onPress={() => {
 								console.log('TAP', console.log(props));
@@ -74,7 +78,8 @@ const FirstLaunchScreen = (props) => {
 							style={{
 								borderBottomWidth: 1,
 								borderBottomColor: '#8DC34A',
-							}}>
+							}}
+						>
 							<Text style={{ color: '#8DC34A' }}>
 								Перейти на экран входа и регистрации?
 							</Text>
@@ -87,33 +92,38 @@ const FirstLaunchScreen = (props) => {
 					flexDirection: 'row',
 					justifyContent: 'center',
 					marginBottom: 20,
-				}}>
+				}}
+			>
 				<TouchableOpacity
 					style={{ marginHorizontal: 10 }}
 					onPress={() => {
 						viewPager.current.setPage(0);
-					}}>
+					}}
+				>
 					<FontAwesome name={page1} size={15} />
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={{ marginHorizontal: 10 }}
 					onPress={() => {
 						viewPager.current.setPage(1);
-					}}>
+					}}
+				>
 					<FontAwesome name={page2} size={15} />
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={{ marginHorizontal: 10 }}
 					onPress={() => {
 						viewPager.current.setPage(2);
-					}}>
+					}}
+				>
 					<FontAwesome name={page3} size={15} />
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={{ marginHorizontal: 10 }}
 					onPress={() => {
 						viewPager.current.setPage(3);
-					}}>
+					}}
+				>
 					<FontAwesome name={page4} size={15} />
 				</TouchableOpacity>
 			</View>

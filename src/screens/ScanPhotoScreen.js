@@ -7,24 +7,19 @@ import {
 	ActivityIndicator,
 	Text,
 	Alert,
-	Image,
 } from 'react-native';
 import { withNavigationFocus } from '@react-navigation/compat';
 import { Button } from 'react-native-elements';
-import GoBackButton from '../components/GoBackButton';
 import { connect } from 'react-redux';
-import { getCsrf } from '../actions/AuthActions';
-import nodeApi from '../api/nodeApi';
 import Modal from 'react-native-modal';
 import { StackActions } from '@react-navigation/native';
+import GoBackButton from '../components/GoBackButton';
+import { getCsrf } from '../actions/AuthActions';
+import nodeApi from '../api/nodeApi';
 
 const ScanPhotoScreen = (route) => {
 	const fileURL = route.route.params.img.uri;
 	const cleanURL = fileURL.replace('file:///', 'file:/');
-
-	/*if (route.navigation.state.params.location) {
-    location.current = route.navigation.state.params.location;
-  }*/
 
 	const [loading, setLoading] = useState(false);
 	const [alertText, setAlertText] = useState('Загружаем фотографию на сервер');
@@ -35,23 +30,23 @@ const ScanPhotoScreen = (route) => {
 			.get('/scans/new', {})
 			.then((response) => {
 				console.log('RESP_CSRF', response);
-				/*route.getCsrf({
+				/* route.getCsrf({
 					prop: '_csrf',
 					value: response.data.csrfToken,
-				});*/
+				}); */
 
 				postPhoto({ _csrf: response.data.csrfToken });
 			})
 
 			.catch((error) => {
-				console.log('ERRR', error.response),
-					setLoading(false),
-					Alert.alert(error.response.data.message);
+				console.log('ERRR', error.response);
+				setLoading(false);
+				Alert.alert(error.response.data.message);
 			});
 	};
 
 	const postPhoto = ({ _csrf }) => {
-		let image = new FormData();
+		const image = new FormData();
 		image.append('image', {
 			uri: cleanURL,
 			name: 'image.jpg',
@@ -72,20 +67,20 @@ const ScanPhotoScreen = (route) => {
 				getScans({ id: response.data.data.scan_request_id });
 			})
 			.catch((error) => {
-				console.log('ERROR PHOTO', error),
-					setLoading(false),
-					Alert.alert('Ошибка', 'Что-то пошло не так, попробуйте еще раз');
+				console.log('ERROR PHOTO', error);
+				setLoading(false);
+				Alert.alert('Ошибка', 'Что-то пошло не так, попробуйте еще раз');
 			});
 	};
 	let counter = 0;
 
-	const getScans = ({ id }) => {
-		return nodeApi
-			.get('scans/' + id)
+	const getScans = ({ id }) =>
+		nodeApi
+			.get(`scans/${id}`)
 			.then((response) => {
 				if (response.data.data.status === 'WAIT' && counter < 10) {
 					console.log('WAIT', counter);
-					counter = counter + 1;
+					counter += 1;
 					setTimeout(() => {
 						getScans({
 							id: response.data.data.id,
@@ -113,7 +108,6 @@ const ScanPhotoScreen = (route) => {
 				}
 			})
 			.catch((error) => console.log('RES ERROR', error));
-	};
 
 	const ScanPhoto = () => {
 		if (loading === false) {
@@ -124,16 +118,15 @@ const ScanPhotoScreen = (route) => {
 					onPress={getCsrf}
 				/>
 			);
-		} else {
-			return null;
 		}
+		return null;
 	};
 
 	return (
 		<View style={styles.container}>
 			{route.isFocused && (
 				<>
-					<StatusBar hidden={true} />
+					<StatusBar hidden />
 				</>
 			)}
 			<ImageBackground
@@ -141,9 +134,10 @@ const ScanPhotoScreen = (route) => {
 				imageStyle={{ resizeMode: 'contain' }}
 				source={{
 					uri: fileURL,
-				}}>
+				}}
+			>
 				<View style={styles.backButtonContainer}>
-					<GoBackButton nav={'ScanLeaf'} />
+					<GoBackButton nav="ScanLeaf" />
 				</View>
 				<View>
 					<Modal isVisible={loading} animationIn="fadeIn">
@@ -154,7 +148,8 @@ const ScanPhotoScreen = (route) => {
 								backgroundColor: 'white',
 								alignSelf: 'center',
 								borderRadius: 25,
-							}}>
+							}}
+						>
 							<ActivityIndicator
 								size="large"
 								style={{
@@ -170,11 +165,13 @@ const ScanPhotoScreen = (route) => {
 									flex: 1,
 									justifyContent: 'center',
 									alignItems: 'center',
-								}}>
+								}}
+							>
 								<Text
 									style={{
 										textAlign: 'center',
-									}}>
+									}}
+								>
 									{alertText}
 								</Text>
 							</View>

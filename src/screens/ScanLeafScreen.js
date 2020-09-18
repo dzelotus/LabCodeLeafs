@@ -1,13 +1,14 @@
+/* eslint-disable operator-linebreak */
 import { PermissionsAndroid, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 import { Camera } from 'expo-camera';
-import CameraButtons from '../components/CameraButtons';
 import CameraRoll from '@react-native-community/cameraroll';
+import { withNavigationFocus } from '@react-navigation/compat';
+import CameraButtons from '../components/CameraButtons';
 import PhotoCameraScroll from '../components/PhotoCameraScroll';
 import imagePicker from '../hooks/imagePicker';
 import makePhoto from '../hooks/makePhoto';
-import { withNavigationFocus } from '@react-navigation/compat';
 
 /* import makePhoto from '../hooks/makePhoto'; */
 
@@ -34,26 +35,18 @@ const ScanLeafScreen = (route) => {
 
 	const dataMoreLoading = async () => {
 		if (nextPage.has_next_page) {
-			const moreData = await CameraRoll.getPhotos({
+			await CameraRoll.getPhotos({
 				first: 20,
 				after: nextPage.end_cursor,
 				assetType: 'Photos',
 				include: ['imageSize', 'filename', 'fileSize', 'location', 'playableDuration'],
 				groupTypes: 'All',
-			}).then(
-				(response) => (
-					setData([...data, ...response.edges]), setNextPage(response.page_info)
-				),
-			);
+			}).then((response) => {
+				setData([...data, ...response.edges]);
+				setNextPage(response.page_info);
+			});
 		}
 	};
-
-	useEffect(() => {
-		const focus = route.navigation.addListener('focus', () => {
-			console.log('ASK');
-			askPerms();
-		});
-	}, []);
 
 	const askPerms = async () => {
 		await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
@@ -62,6 +55,13 @@ const ScanLeafScreen = (route) => {
 		getImages();
 		/* checkCameraPermissions(); */
 	};
+
+	useEffect(() => {
+		route.navigation.addListener('focus', () => {
+			console.log('ASK');
+			askPerms();
+		});
+	}, []);
 
 	/* const checkCameraPermissions = async () => {
     const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
@@ -88,39 +88,91 @@ const ScanLeafScreen = (route) => {
 						style={{
 							flex: 1,
 							justifyContent: 'flex-end',
-							borderWidth: 5,
-							borderColor: 'green',
 						}}
 						type={type}
 						flashMode={flashType}
 						ratio="16:9"
-						ref={(ref) => (camera = ref)}>
-						<Text
-							style={{
-								color: 'white',
-								textAlign: 'center',
-								fontSize: 20,
-								paddingBottom: 2,
-							}}>
-							Поместите лист в данную область
-						</Text>
+						ref={(ref) => (camera = ref)}
+					>
+						<Text style={{}} />
 						<View
 							style={{
-								borderColor: 'white',
-								borderWidth: 2,
-								height: '50%',
-								marginHorizontal: 5,
-								borderStyle: 'dashed',
-								borderRadius: 1,
+								height: '100%',
+								width: '100%',
+								position: 'absolute',
+								zIndex: 1,
+								justifyContent: 'space-between',
 							}}
-						/>
+						>
+							<View
+								style={{
+									height: '18%',
+									backgroundColor: 'rgba(1,1,1,0.6)',
+									justifyContent: 'flex-end',
+								}}
+							>
+								<Text
+									style={{
+										color: 'white',
+										fontSize: 20,
+										textAlign: 'center',
+										justifyContent: 'flex-end',
+										marginBottom: '1%',
+									}}
+								>
+									Поместите лист в данную область
+								</Text>
+							</View>
+							<View
+								style={{
+									height: '50%',
+
+									flexDirection: 'row',
+								}}
+							>
+								<View
+									style={{
+										height: '100%',
+										width: '3%',
+										backgroundColor: 'rgba(1,1,1,0.6)',
+									}}
+								/>
+								<View
+									style={{
+										borderColor: 'white',
+										borderWidth: 2,
+										height: '100%',
+										width: '94%',
+										borderStyle: 'dashed',
+										borderRadius: 1,
+									}}
+								/>
+								<View
+									style={{
+										height: '100%',
+										width: '3%',
+										backgroundColor: 'rgba(1,1,1,0.6)',
+									}}
+								/>
+							</View>
+							<View
+								style={{
+									height: '32%',
+									backgroundColor: 'rgba(1,1,1,0.6)',
+									justifyContent: 'flex-end',
+								}}
+							/>
+						</View>
+
 						<TouchableOpacity
 							style={{
 								alignItems: 'center',
 							}}
-							onPress={() => imagePicker({
+							onPress={() =>
+								imagePicker({
 									nav: route.navigation.navigate,
-								})}
+								})
+							}
 						>
 							<Text style={{ fontSize: 20, color: 'white' }}>Выбрать из галереи</Text>
 						</TouchableOpacity>
@@ -135,10 +187,12 @@ const ScanLeafScreen = (route) => {
 										: Camera.Constants.Type.back,
 								);
 							}}
-							photo={() => makePhoto({
+							photo={() =>
+								makePhoto({
 									camera,
 									nav: route.navigation.navigate,
-								})}
+								})
+							}
 							flash={() => {
 								setFlashType(
 									flashType === Camera.Constants.FlashMode.off

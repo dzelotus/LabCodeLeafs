@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+/* eslint-disable global-require */
+import { Image, StyleSheet, View } from 'react-native';
 import React, { useEffect } from 'react';
 
 import { Button } from 'react-native-elements';
@@ -8,6 +9,7 @@ const AuthScreen = ({ navigation }) => {
 	useEffect(() => {
 		RNBootSplash.hide();
 	});
+
 	return (
 		<View style={{ flex: 1, alignItems: 'center' }}>
 			<View style={styles.container}>

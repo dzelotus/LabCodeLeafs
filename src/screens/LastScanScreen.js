@@ -5,11 +5,11 @@ import FastImage from 'react-native-fast-image';
 const LastScanScreen = (route) => {
 	const [disease, setDisease] = useState('');
 
-	const data = route.route.params.data;
+	const { data } = route.route.params;
 
 	const renderItem = ({ item }) => {
-		let image_url = item.image_url;
-		let image_url_ready = image_url
+		const imageUrl = item.image_url;
+		const imageUrlReady = imageUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
 			.replace(
 				'\\\\172.16.0.5\\Share\\leafs_files\\upload\\',
@@ -27,7 +27,8 @@ const LastScanScreen = (route) => {
 				style={{
 					marginTop: 15,
 					marginLeft: 15,
-				}}>
+				}}
+			>
 				<View style={{ flexDirection: 'row' }}>
 					<Text>{disease}</Text>
 				</View>
@@ -36,16 +37,17 @@ const LastScanScreen = (route) => {
 					<TouchableOpacity
 						onPress={() =>
 							route.navigation.navigate('LastScanFullscreenPhoto', {
-								uri: image_url_ready,
+								uri: imageUrlReady,
 							})
-						}>
+						}
+					>
 						<FastImage
 							resizeMode="contain"
 							style={{
 								height: 200,
 								width: 200,
 							}}
-							source={{ uri: image_url_ready }}
+							source={{ uri: imageUrlReady }}
 						/>
 					</TouchableOpacity>
 				</View>
@@ -61,13 +63,14 @@ const LastScanScreen = (route) => {
 					marginTop: 10,
 					fontWeight: 'bold',
 					fontSize: 15,
-				}}>
+				}}
+			>
 				Последние 10 сканирований
 			</Text>
 			<FlatList
 				data={data}
 				keyExtractor={(item) => item.id}
-				removeClippedSubviews={true}
+				removeClippedSubviews
 				renderItem={renderItem}
 				windowSize={10}
 				initialNumToRender={2}

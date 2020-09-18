@@ -12,7 +12,6 @@ import { resolveAuth } from '../actions/AuthActions';
 const ProfileScreen = (route) => {
 	const [name, setName] = useState('');
 	const [surname, setSurname] = useState('');
-	const [image, setImage] = useState('');
 
 	const getProfile = () => {
 		nodeApi
@@ -20,7 +19,6 @@ const ProfileScreen = (route) => {
 			.then((response) => {
 				setName(response.data.data.userData.name);
 				setSurname(response.data.data.userData.surname);
-				setImage(response.data.data.userData.logo_url);
 			})
 			.catch((error) => console.log(error.response));
 	};
@@ -43,18 +41,16 @@ const ProfileScreen = (route) => {
 				},
 				{
 					text: 'Да',
-					onPress: async () =>
-						await nodeApi
+					onPress: () =>
+						nodeApi
 							.post('/logout', {})
-							.then(
-								(response) => (
-									console.log('LOGOUT', response),
-									AsyncStorage.removeItem('token').then((token) =>
-										console.log(token),
-									),
-									route.resolveAuth({ prop: 'isSigned', value: false })
-								),
-							)
+							.then((response) => {
+								console.log('LOGOUT', response);
+								AsyncStorage.removeItem('token').then((token) => {
+									console.log(token);
+									route.resolveAuth({ prop: 'isSigned', value: false });
+								});
+							})
 							.catch((error) => console.log('ERROR', error)),
 				},
 			],
@@ -70,7 +66,8 @@ const ProfileScreen = (route) => {
 					paddingLeft: 10,
 					borderBottomWidth: 1,
 					borderBottomColor: '#8DC34A',
-				}}>
+				}}
+			>
 				<Image
 					style={styles.imageStyle}
 					source={{
@@ -83,7 +80,8 @@ const ProfileScreen = (route) => {
 						flex: 1,
 						marginLeft: 15,
 						alignSelf: 'center',
-					}}>
+					}}
+				>
 					<Text style={styles.name}>{name}</Text>
 					<Text style={styles.name}>{surname}</Text>
 				</View>
@@ -94,7 +92,8 @@ const ProfileScreen = (route) => {
 						rippleDuration={700}
 						onPress={() => {
 							route.navigation.navigate('EditProfile');
-						}}>
+						}}
+					>
 						<View style={styles.menuButton}>
 							<MaterialCommunityIcons
 								name="account-edit"
@@ -108,7 +107,8 @@ const ProfileScreen = (route) => {
 						rippleDuration={700}
 						onPress={() => {
 							route.navigation.navigate('Help');
-						}}>
+						}}
+					>
 						<View style={styles.menuButton}>
 							<MaterialCommunityIcons
 								name="help-rhombus"
@@ -122,7 +122,8 @@ const ProfileScreen = (route) => {
 						rippleDuration={700}
 						onPress={() => {
 							route.navigation.navigate('AboutUs');
-						}}>
+						}}
+					>
 						<View style={styles.menuButton}>
 							<MaterialCommunityIcons
 								name="information"
@@ -138,7 +139,8 @@ const ProfileScreen = (route) => {
 						flex: 1,
 						justifyContent: 'flex-end',
 						marginBottom: 15,
-					}}>
+					}}
+				>
 					<Button
 						title="выход"
 						onPress={createTwoButtonAlert}
@@ -179,9 +181,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-ProfileScreen.navigationOptions = () => {
-	return { title: 'Профиль' };
-};
+ProfileScreen.navigationOptions = () => ({ title: 'Профиль' });
 
 const mapStateToProps = ({ auth }) => {
 	const { fistLaunchToken, isSigned } = auth;

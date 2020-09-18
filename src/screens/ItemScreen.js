@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, FlatList, Button, Image } from 'react-native';
+import { View, StyleSheet, Text, FlatList, Image } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 const ItemScreen = ({ navigation }) => {
@@ -13,9 +13,7 @@ const ItemScreen = ({ navigation }) => {
 					showsHorizontalScrollIndicator={false}
 					data={list.img}
 					keyExtractor={(img) => img}
-					renderItem={({ item }) => {
-						return <Image style={styles.image} source={{ uri: item }} />;
-					}}
+					renderItem={({ item }) => <Image style={styles.image} source={{ uri: item }} />}
 				/>
 			</View>
 			<View
@@ -24,7 +22,8 @@ const ItemScreen = ({ navigation }) => {
 					alignItems: 'center',
 					justifyContent: 'space-between',
 					margin: 10,
-				}}>
+				}}
+			>
 				<TouchableOpacity style={styles.buttons}>
 					<Text style={{ textAlign: 'center' }}>Добавить в избранное</Text>
 				</TouchableOpacity>

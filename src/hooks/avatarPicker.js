@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 import nodeApi from '../api/nodeApi';
 
-/*const getCsrf = ({ uri }) => {
+/* const getCsrf = ({ uri }) => {
 		nodeApi
 				.get("/profile/edit", {})
 				.then((response) => {
@@ -13,10 +13,10 @@ import nodeApi from '../api/nodeApi';
 						console.log("ERRR", error),
 								Alert.alert(error.response.data.message);
 				});
-};*/
+}; */
 
 const postPhoto = ({ _csrf, fileURL }) => {
-	let image = new FormData();
+	const image = new FormData();
 	image.append('image', {
 		uri: fileURL,
 		name: 'image.jpg',
@@ -35,8 +35,8 @@ const postPhoto = ({ _csrf, fileURL }) => {
 			console.log('RESPPHOTO', response);
 		})
 		.catch((error) => {
-			console.log('ERROR PHOTO', error.response),
-				Alert.alert('Ошибка', 'Что-то пошло не так, попробуйте еще раз');
+			console.log('ERROR PHOTO', error.response);
+			Alert.alert('Ошибка', 'Что-то пошло не так, попробуйте еще раз');
 		});
 };
 
@@ -51,7 +51,7 @@ const avatarPicker = async ({ _csrf }) => {
 		.then((result) => {
 			console.log('URI1', result.uri);
 			if (result.uri) {
-				postPhoto({ fileURL: result.uri, _csrf: _csrf });
+				postPhoto({ fileURL: result.uri, _csrf });
 			}
 		})
 		.catch((error) => console.log(error));

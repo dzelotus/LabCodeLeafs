@@ -1,17 +1,18 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable react/jsx-no-bind */
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { inputChange, signup, clearErrorMessage, getCsrf } from '../actions/AuthActions';
 import {
 	View,
-	StatusBar,
 	KeyboardAvoidingView,
 	ActivityIndicator,
 	ScrollView,
 	StyleSheet,
 } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
+
 import Spacer from '../components/Spacer';
-import { NavigationEvents } from '@react-navigation/native';
+import { inputChange, signup, clearErrorMessage, getCsrf } from '../actions/AuthActions';
 import nodeApi from '../api/nodeApi';
 
 function SignupScreen(props) {
@@ -27,27 +28,28 @@ function SignupScreen(props) {
 	const activeButton = useRef(true);
 	const [regexEmail, setRegexEmail] = useState();
 
+	const { username, password, password2, email, navigation } = props;
+
 	const activityIndicator = () => {
 		if (props.loading) {
-			return <ActivityIndicator size={'large'} color="#8DC34A" />;
-		} else {
-			return (
-				<Button
-					title="Зарегистрироваться"
-					onPress={onButtonPress.bind(this)}
-					disabled={activeButton.current}
-					containerStyle={{ paddingHorizontal: 8 }}
-					buttonStyle={{ backgroundColor: '#8DC34A' }}
-				/>
-			);
+			return <ActivityIndicator size="large" color="#8DC34A" />;
 		}
+		return (
+			<Button
+				title="Зарегистрироваться"
+				onPress={onButtonPress.bind(this)}
+				disabled={activeButton.current}
+				containerStyle={{ paddingHorizontal: 8 }}
+				buttonStyle={{ backgroundColor: '#8DC34A' }}
+			/>
+		);
 	};
 
 	if (
-		props.username &&
-		props.password &&
-		props.password2 &&
-		props.email &&
+		username &&
+		password &&
+		password2 &&
+		email &&
 		!regexPassword.current &&
 		!regexEmail &&
 		!regexUsername.current &&
@@ -61,26 +63,23 @@ function SignupScreen(props) {
 	const error = () => {
 		if (!props.error) {
 			return null;
-		} else {
-			return <Text>{props.error}</Text>;
 		}
+		return <Text>{props.error}</Text>;
 	};
 
 	const getCsrf = () => {
-		nodeApi.get('/register').then(
-			(response) => (
-				props.getCsrf({
-					prop: '_csrf',
-					value: response.data.csrfToken,
-				}),
-				console.log(response)
-			),
-		);
+		nodeApi.get('/register').then((response) => {
+			props.getCsrf({
+				prop: '_csrf',
+				value: response.data.csrfToken,
+			});
+			console.log(response);
+		});
 	};
 
 	console.log('CSRF', props);
 
-	const focus = props.navigation.addListener('focus', () => {
+	navigation.addListener('focus', () => {
 		props.clearErrorMessage();
 	});
 
@@ -106,7 +105,7 @@ function SignupScreen(props) {
 
 	return (
 		<View>
-			<ScrollView keyboardShouldPersistTaps={'always'}>
+			<ScrollView keyboardShouldPersistTaps="always">
 				<KeyboardAvoidingView behavior="padding">
 					<Spacer>
 						<Text
@@ -114,7 +113,8 @@ function SignupScreen(props) {
 							style={{
 								alignSelf: 'center',
 								textAlign: 'center',
-							}}>
+							}}
+						>
 							Регистрация в Листочках
 						</Text>
 					</Spacer>
@@ -124,7 +124,7 @@ function SignupScreen(props) {
 								label="Имя пользователя"
 								autoCapitalize="none"
 								autoCorrect={false}
-								value={props.username}
+								value={username}
 								onChangeText={(text) => {
 									props.inputChange({
 										prop: 'username',
@@ -150,7 +150,7 @@ function SignupScreen(props) {
 								label="E-mail"
 								autoCapitalize="none"
 								autoCorrect={false}
-								value={props.email}
+								value={email}
 								onChangeText={(text) => {
 									props.inputChange({
 										prop: 'email',
@@ -174,13 +174,13 @@ function SignupScreen(props) {
 								label="Пароль"
 								autoCapitalize="none"
 								autoCorrect={false}
-								value={props.password}
+								value={password}
 								onChangeText={(text) => {
 									props.inputChange({
 										prop: 'password',
 										value: text,
 									});
-									console.log(props.password);
+									console.log(password);
 									if (
 										validatePassword(text) &&
 										text.length > 7 &&
@@ -200,13 +200,13 @@ function SignupScreen(props) {
 								label="Повторите пароль"
 								autoCapitalize="none"
 								autoCorrect={false}
-								value={props.password2}
+								value={password2}
 								onChangeText={(text) => {
 									props.inputChange({
 										prop: 'password2',
 										value: text,
 									});
-									console.log(props.password2);
+									console.log(password2);
 									if (
 										validatePassword(text) &&
 										props.password.toString === props.password2.toString
@@ -250,11 +250,9 @@ const styles = StyleSheet.create({
 	},
 });
 
-SignupScreen.navigationOptions = () => {
-	return {
-		headerShown: false,
-	};
-};
+SignupScreen.navigationOptions = () => ({
+	headerShown: false,
+});
 
 const mapStateToProps = ({ auth }) => {
 	const { username, email, password, password2, loading, error, _csrf } = auth;

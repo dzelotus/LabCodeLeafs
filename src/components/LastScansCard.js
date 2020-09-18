@@ -1,50 +1,50 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
 
-const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
-	return (
-		<View style={styles.containerStyle}>
-			<TouchableOpacity
-				style={styles.cardStyle}
-				onPress={() => navigation.navigate(nav, { data })}
-				activeOpacity={0.5}>
-				<View
-					style={{
-						flexDirection: 'row',
-					}}>
-					<Icon name={iconName} size={30} color="#8DC34A" />
-					<Text style={styles.cardHeaderText}>{headerText}</Text>
-				</View>
-			</TouchableOpacity>
-			<View style={{ marginLeft: 5, marginTop: 10 }}>
-				<FlatList
-					horizontal
-					keyExtractor={(item) => item.id}
-					data={data}
-					refreshing={false}
-					renderItem={({ item }) => {
-						let image_url = item.image_url;
-						let image_url_ready = image_url
-							.replace(
-								'/var/leafs_files/upload/',
-								'https://leafs-app.lab-code.com/upload/',
-							)
-							.replace(
-								'\\\\172.16.0.5\\Share\\leafs_files\\upload\\',
-								'https://leafs-app.lab-code.com/upload/',
-							);
-
-						return <FastImage style={styles.image} source={{ uri: image_url_ready }} />;
-					}}
-				/>
+const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => (
+	<View style={styles.containerStyle}>
+		<TouchableOpacity
+			style={styles.cardStyle}
+			onPress={() => navigation.navigate(nav, { data })}
+			activeOpacity={0.5}
+		>
+			<View
+				style={{
+					flexDirection: 'row',
+				}}
+			>
+				<Icon name={iconName} size={30} color="#8DC34A" />
+				<Text style={styles.cardHeaderText}>{headerText}</Text>
 			</View>
+		</TouchableOpacity>
+		<View style={{ marginLeft: 5, marginTop: 10 }}>
+			<FlatList
+				horizontal
+				keyExtractor={(item) => item.id}
+				data={data}
+				refreshing={false}
+				renderItem={({ item }) => {
+					const imageUrl = item.image_url;
+					const imageUrlReady = imageUrl
+						.replace(
+							'/var/leafs_files/upload/',
+							'https://leafs-app.lab-code.com/upload/',
+						)
+						.replace(
+							'\\\\172.16.0.5\\Share\\leafs_files\\upload\\',
+							'https://leafs-app.lab-code.com/upload/',
+						);
+
+					return <FastImage style={styles.image} source={{ uri: imageUrlReady }} />;
+				}}
+			/>
 		</View>
-	);
-};
+	</View>
+);
 
 const styles = StyleSheet.create({
 	containerStyle: {

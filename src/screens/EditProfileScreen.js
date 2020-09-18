@@ -10,14 +10,8 @@ import {
 	ScrollView,
 	Alert,
 } from 'react-native';
-import {
-	inputChange,
-	getProfileInfo,
-	updateProfileInfo,
-	getCsrf,
-} from '../actions/EditProfileActions';
 import { Button } from 'react-native-elements';
-import avatarPicker from '../hooks/avatarPicker';
+import { inputChange, getProfileInfo, updateProfileInfo } from '../actions/EditProfileActions';
 
 const EditProfileScreen = (props) => {
 	const onButtonPress = () => {
@@ -26,6 +20,8 @@ const EditProfileScreen = (props) => {
 		props.updateProfileInfo({ name, surname });
 	};
 
+	const { screenLoading, photo, name, surname } = props;
+
 	useEffect(() => {
 		props.getProfileInfo();
 	}, []);
@@ -33,99 +29,95 @@ const EditProfileScreen = (props) => {
 	const activeButton = () => {
 		if (props.loading === true) {
 			return <ActivityIndicator size="large" />;
-		} else {
-			return (
-				<Button
-					style={{ marginHorizontal: 15 }}
-					title="Обновить профиль"
-					onPress={() => onButtonPress()}
-					containerStyle={{ paddingHorizontal: 10 }}
-					buttonStyle={{ backgroundColor: '#8DC34A' }}
-				/>
-			);
 		}
-	};
-
-	if (props.screenLoading) {
-		return <ActivityIndicator size="large" color={'#8DC34A'} />;
-	} else {
 		return (
-			<View>
-				<ScrollView keyboardShouldPersistTaps={'always'}>
-					<TouchableOpacity
-						style={{ marginBottom: 10 }}
-						onPress={() => {
-							Alert.alert('Ошибка', 'функция пока недоступна');
-						}}>
-						<Image
-							style={{
-								borderColor: 'green',
-								borderWidth: 1,
-								borderRadius: 75,
-								height: 120,
-								width: 120,
-								alignSelf: 'center',
-								marginTop: 15,
-								marginBottom: 10,
-							}}
-							source={{
-								uri: props.photo,
-							}}
-						/>
-						<Text
-							style={{
-								textAlign: 'center',
-								fontSize: 15,
-								fontWeight: 'bold',
-							}}>
-							Сменить фото профиля
-						</Text>
-					</TouchableOpacity>
-					<View
-						style={{
-							marginHorizontal: 10,
-							borderBottomColor: '#8DC34A',
-							borderBottomWidth: 1,
-						}}>
-						<Text>Имя</Text>
-						<TextInput
-							value={props.name}
-							onChangeText={(text) => {
-								props.inputChange({
-									prop: 'name',
-									value: text,
-								});
-							}}
-						/>
-					</View>
-					<View
-						style={{
-							marginHorizontal: 10,
-							borderBottomColor: '#8DC34A',
-							borderBottomWidth: 1,
-						}}>
-						<Text>Фамилия</Text>
-						<TextInput
-							value={props.surname}
-							onChangeText={(text) => {
-								props.inputChange({
-									prop: 'surname',
-									value: text,
-								});
-							}}
-						/>
-					</View>
-					<View style={{ marginTop: 20 }}>{activeButton()}</View>
-				</ScrollView>
-			</View>
+			<Button
+				style={{ marginHorizontal: 15 }}
+				title="Обновить профиль"
+				onPress={() => onButtonPress()}
+				containerStyle={{ paddingHorizontal: 10 }}
+				buttonStyle={{ backgroundColor: '#8DC34A' }}
+			/>
 		);
-	}
-};
-
-EditProfileScreen.navigationOptions = ({ navigation }) => {
-	return {
-		title: 'Редактировать профиль',
 	};
+
+	if (screenLoading) {
+		return <ActivityIndicator size="large" color="#8DC34A" />;
+	}
+	return (
+		<View>
+			<ScrollView keyboardShouldPersistTaps="always">
+				<TouchableOpacity
+					style={{ marginBottom: 10 }}
+					onPress={() => {
+						Alert.alert('Ошибка', 'функция пока недоступна');
+					}}
+				>
+					<Image
+						style={{
+							borderColor: 'green',
+							borderWidth: 1,
+							borderRadius: 75,
+							height: 120,
+							width: 120,
+							alignSelf: 'center',
+							marginTop: 15,
+							marginBottom: 10,
+						}}
+						source={{
+							uri: photo,
+						}}
+					/>
+					<Text
+						style={{
+							textAlign: 'center',
+							fontSize: 15,
+							fontWeight: 'bold',
+						}}
+					>
+						Сменить фото профиля
+					</Text>
+				</TouchableOpacity>
+				<View
+					style={{
+						marginHorizontal: 10,
+						borderBottomColor: '#8DC34A',
+						borderBottomWidth: 1,
+					}}
+				>
+					<Text>Имя</Text>
+					<TextInput
+						value={name}
+						onChangeText={(text) => {
+							props.inputChange({
+								prop: 'name',
+								value: text,
+							});
+						}}
+					/>
+				</View>
+				<View
+					style={{
+						marginHorizontal: 10,
+						borderBottomColor: '#8DC34A',
+						borderBottomWidth: 1,
+					}}
+				>
+					<Text>Фамилия</Text>
+					<TextInput
+						value={surname}
+						onChangeText={(text) => {
+							props.inputChange({
+								prop: 'surname',
+								value: text,
+							});
+						}}
+					/>
+				</View>
+				<View style={{ marginTop: 20 }}>{activeButton()}</View>
+			</ScrollView>
+		</View>
+	);
 };
 
 const mapStateToProps = ({ profile }) => {
@@ -138,5 +130,4 @@ export default connect(mapStateToProps, {
 	inputChange,
 	getProfileInfo,
 	updateProfileInfo,
-	getCsrf,
 })(EditProfileScreen);

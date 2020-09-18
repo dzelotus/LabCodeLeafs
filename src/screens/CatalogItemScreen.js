@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, Text } from 'react-native';
 
 const CatalogItemScreen = ({ route }) => {
 	const list = route.params.item;
@@ -12,18 +12,6 @@ const CatalogItemScreen = ({ route }) => {
 		</View>
 	);
 };
-
-const styles = StyleSheet.create({
-	textStyle: {
-		height: 50,
-		margin: 10,
-		backgroundColor: '#009599',
-		borderRadius: 15,
-		textAlign: 'center',
-		textAlignVertical: 'center',
-		fontSize: 20,
-	},
-});
 
 CatalogItemScreen.navigationOptions = ({ navigation }) => {
 	const data = navigation.state.params.item;

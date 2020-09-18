@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable react/jsx-no-bind */
 import {
 	ActivityIndicator,
 	Alert,
@@ -10,11 +12,11 @@ import {
 } from 'react-native';
 import { Button, Input, Text } from 'react-native-elements';
 import React, { useEffect, useRef, useState } from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { connect } from 'react-redux';
 import { clearErrorMessage, getCsrf, inputChange, signin } from '../actions/AuthActions';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Spacer from '../components/Spacer';
-import { connect } from 'react-redux';
 import nodeApi from '../api/nodeApi';
 
 function SigninScreen(props) {
@@ -26,8 +28,6 @@ function SigninScreen(props) {
 	const regexPassword = useRef();
 	const activeButton = useRef(true);
 
-	console.log(props.loading);
-
 	const toggleModal = () => {
 		setModalVisible(!isModalVisible);
 	};
@@ -35,104 +35,104 @@ function SigninScreen(props) {
 		const { username, password, _csrf, email } = props;
 
 		props.signin({
-            username, password, _csrf, email, 
+			username,
+			password,
+			_csrf,
+			email,
 		});
 	};
 
+	const { email, username, password, error, navigation } = props;
+
 	const activityIndicator = () => {
-        if (props.loading) {
-            return (
-                <View>
-                    <ActivityIndicator size="large" color="#8DC34A" />
-                </View>
-            );
-        }
-        return (
-			<Button
-                containerStyle={{ paddingHorizontal: 8 }}
-					buttonStyle={{ backgroundColor: '#8DC34A' }}
-					title="Войти"
-					onPress={onButtonPress.bind(this)}
-					disabled={activeButton.current}
-				/>
-		);
-    };
-	// comment
-	const activityIndicatorModal = () => {
-        if (indicator) {
-            return (
-                <View>
-                    <ActivityIndicator size="large" color="#8DC34A" />
-                </View>
-            );
-        }
-        return (
-			<Button
-                title="Отправить запрос"
-					buttonStyle={{ backgroundColor: '#8DC34A' }}
-				onPress={() => {
-                    setIndicator(true);
-						nodeApi
-							.post('/password-recovery', {
-								email,
-								_csrf: props._csrf,
-							})
-						.then((response) => {
-                            console.log(response);
-							if (response.data.success === true) {
-                                Alert.alert('', response.data.message);
-									toggleModal();
-								} else {
-									Alert.alert('', response.data.message);
-								}
-								setIndicator(false);
-						})
-                        .catch((error) => {
-							console.log('ERR', error.response);
-                            setIndicator(false);
-							});
-					}}
-				/>
+		if (props.loading) {
+			return (
+				<View>
+					<ActivityIndicator size="large" color="#8DC34A" />
+				</View>
 			);
-		
+		}
+		return (
+			<Button
+				containerStyle={{ paddingHorizontal: 8 }}
+				buttonStyle={{ backgroundColor: '#8DC34A' }}
+				title="Войти"
+				onPress={onButtonPress.bind(this)}
+				disabled={activeButton.current}
+			/>
+		);
 	};
 
-	if (props.username && props.password && !regexPassword.current && !regexUsername.current) {
+	const activityIndicatorModal = () => {
+		if (indicator) {
+			return (
+				<View>
+					<ActivityIndicator size="large" color="#8DC34A" />
+				</View>
+			);
+		}
+		return (
+			<Button
+				title="Отправить запрос"
+				buttonStyle={{ backgroundColor: '#8DC34A' }}
+				onPress={() => {
+					setIndicator(true);
+					nodeApi
+						.post('/password-recovery', {
+							email,
+							_csrf: props._csrf,
+						})
+						.then((response) => {
+							console.log(response);
+							if (response.data.success === true) {
+								Alert.alert('', response.data.message);
+								toggleModal();
+							} else {
+								Alert.alert('', response.data.message);
+							}
+							setIndicator(false);
+						})
+						.catch((e) => {
+							console.log('ERR', e.response);
+							setIndicator(false);
+						});
+				}}
+			/>
+		);
+	};
+
+	if (username && password && !regexPassword.current && !regexUsername.current) {
 		activeButton.current = false;
 	} else {
 		activeButton.current = true;
 	}
 
-	const error = () => {
-		if (props.error) {
-			return <Text>{props.error}</Text>;
+	const errorMessage = () => {
+		if (error) {
+			return <Text>{error}</Text>;
 		}
 	};
 
-	const getCsrf = () => {
+	const getCsrfToken = () => {
 		nodeApi
 			.get('/login')
-			.then(
-				(response) => (
-					console.log(response),
-					props.getCsrf({
-						prop: '_csrf',
-						value: response.data.csrfToken,
-					})
-				),
-			)
-			.catch((error) => console.log('ERR', error.response));
+			.then((response) => {
+				console.log(response);
+				props.getCsrf({
+					prop: '_csrf',
+					value: response.data.csrfToken,
+				});
+			})
+			.catch((e) => console.log('ERR', e.response));
 	};
 
-	const focus = props.navigation.addListener('focus', () => {
+	navigation.addListener('focus', () => {
 		props.clearErrorMessage();
 	});
 
 	useEffect(() => {
-		getCsrf();
+		getCsrfToken();
 	}, []);
-
-	const { email } = props;
 
 	const regex = {};
 
@@ -155,16 +155,13 @@ function SigninScreen(props) {
 			style={{
 				paddingTop: StatusBar.currentHeight,
 				justifyContent: 'center',
-			}}>
-        >
-            <ScrollView
-              contentContainerStyle={styles.container}
-              keyboardShouldPersistTaps="always"
-            >
+			}}
+		>
+			<ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
 				<Spacer>
 					<Text h3 style={{ alignSelf: 'center', marginTop: 10 }}>
-                      Вход в Листочки
-                    </Text>
+						Вход в Листочки
+					</Text>
 				</Spacer>
 				<Spacer>
 					<View style={styles.inputsContainer}>
@@ -172,7 +169,7 @@ function SigninScreen(props) {
 							label="Имя пользователя"
 							autoCapitalize="none"
 							autoCorrect={false}
-							value={props.username}
+							value={username}
 							onChangeText={(text) => {
 								props.inputChange({
 									prop: 'username',
@@ -195,7 +192,7 @@ function SigninScreen(props) {
 							label="Пароль"
 							autoCapitalize="none"
 							autoCorrect={false}
-							value={props.password}
+							value={password}
 							onChangeText={(text) => {
 								props.inputChange({
 									prop: 'password',
@@ -212,42 +209,42 @@ function SigninScreen(props) {
 						/>
 
 						{activityIndicator()}
-						{error()}
+						{errorMessage()}
 						<TouchableOpacity
 							style={{
 								alignSelf: 'center',
 								marginTop: 20,
 								borderBottomWidth: 1,
 							}}
-                          onPress={toggleModal}
-                        >
-                          <Text>Забыл пароль?</Text>
+							onPress={toggleModal}
+						>
+							<Text>Забыл пароль?</Text>
 						</TouchableOpacity>
 					</View>
 				</Spacer>
 			</ScrollView>
-
 			<Modal visible={isModalVisible} animationType="slide" transparent>
 				<View style={styles.modalContainer}>
 					<TouchableOpacity
 						onPress={toggleModal}
-                      style={{ alignSelf: 'flex-end', marginBottom: 10 }}
-                    >
-                      <MaterialCommunityIcons name="close" size={35} />
+						style={{ alignSelf: 'flex-end', marginBottom: 10 }}
+					>
+						<MaterialCommunityIcons name="close" size={35} />
 					</TouchableOpacity>
 					<Text
 						style={{
 							textAlign: 'center',
 							fontSize: 16,
 							marginBottom: 10,
-						}}>
+						}}
+					>
 						Для восстановления пароля введите адрес электронной почты!
 					</Text>
 					<Input
 						label="E-mail"
 						autoCapitalize="none"
 						autoCorrect={false}
-						value={props.email}
+						value={email}
 						onChangeText={(text) => {
 							props.inputChange({
 								prop: 'email',
@@ -256,7 +253,7 @@ function SigninScreen(props) {
 						}}
 						onBlur={() => {
 							console.log('BLUR');
-							if (validateEmail(props.email)) {
+							if (validateEmail(email)) {
 								setRegexEmail();
 							} else {
 								setRegexEmail('Некорректный емейл');
@@ -273,8 +270,8 @@ function SigninScreen(props) {
 }
 
 SigninScreen.navigationOptions = () => ({
-    headerShown: false,
-	});
+	headerShown: false,
+});
 
 const mapStateToProps = ({ auth }) => {
 	const { username, password, email, loading, error, _csrf, isSigned, loadStart } = auth;

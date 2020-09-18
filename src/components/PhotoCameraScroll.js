@@ -4,46 +4,42 @@ import { withNavigation } from '@react-navigation/compat';
 
 import FastImage from 'react-native-fast-image';
 
-const PhotoCameraScroll = ({ data, navigation, moreLoading }) => {
-	return (
-		<View
-			style={{
-				backgroundColor: 'transparent',
-				flexDirection: 'row',
-				justifyContent: 'space-between',
-				alignItems: 'flex-end',
-				marginBottom: 15,
+const PhotoCameraScroll = ({ data, navigation, moreLoading }) => (
+	<View
+		style={{
+			backgroundColor: 'transparent',
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'flex-end',
+			marginBottom: 15,
 
-				height: 100,
-			}}>
-			<FlatList
-				horizontal
-				data={data}
-				keyExtractor={(item) => item.node.image.uri}
-				onEndReached={moreLoading}
-				onEndReachedThreshold={4}
-				renderItem={({ item }) => {
-					let imageUrl = item.node.image.uri;
+			height: 100,
+		}}
+	>
+		<FlatList
+			horizontal
+			data={data}
+			keyExtractor={(item) => item.node.image.uri}
+			onEndReached={moreLoading}
+			onEndReachedThreshold={4}
+			renderItem={({ item }) => {
+				const imageUrl = item.node.image.uri;
 
-					return (
-						<TouchableOpacity
-							onPress={() =>
-								navigation.navigate('ScanPhoto', {
-									img: item.node.image,
-								})
-							}>
-							<FastImage
-								style={styles.image}
-								source={{ uri: imageUrl }}
-								key={imageUrl}
-							/>
-						</TouchableOpacity>
-					);
-				}}
-			/>
-		</View>
-	);
-};
+				return (
+					<TouchableOpacity
+						onPress={() =>
+							navigation.navigate('ScanPhoto', {
+								img: item.node.image,
+							})
+						}
+					>
+						<FastImage style={styles.image} source={{ uri: imageUrl }} key={imageUrl} />
+					</TouchableOpacity>
+				);
+			}}
+		/>
+	</View>
+);
 
 const styles = StyleSheet.create({
 	image: {
