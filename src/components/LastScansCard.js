@@ -5,46 +5,67 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 import { withNavigation } from '@react-navigation/compat';
 
-const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => (
-	<View style={styles.containerStyle}>
-		<TouchableOpacity
-			style={styles.cardStyle}
-			onPress={() => navigation.navigate(nav, { data })}
-			activeOpacity={0.5}
-		>
-			<View
-				style={{
-					flexDirection: 'row',
-				}}
-			>
-				<Icon name={iconName} size={30} color="#8DC34A" />
-				<Text style={styles.cardHeaderText}>{headerText}</Text>
-			</View>
-		</TouchableOpacity>
-		<View style={{ marginLeft: 5, marginTop: 10 }}>
-			<FlatList
-				horizontal
-				keyExtractor={(item) => item.id}
-				data={data}
-				refreshing={false}
-				renderItem={({ item }) => {
-					const imageUrl = item.image_url;
-					const imageUrlReady = imageUrl
-						.replace(
-							'/var/leafs_files/upload/',
-							'https://leafs-app.lab-code.com/upload/',
-						)
-						.replace(
-							'\\\\172.16.0.5\\Share\\leafs_files\\upload\\',
-							'https://leafs-app.lab-code.com/upload/',
-						);
+const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
+	const renderItem = ({ item }) => {
+		const imageUrl = item.image_url;
+		const imageUrlReady = imageUrl
+			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
+			.replace(
+				'\\\\172.16.0.5\\Share\\leafs_files\\upload\\',
+				'https://leafs-app.lab-code.com/upload/',
+			);
 
-					return <FastImage style={styles.image} source={{ uri: imageUrlReady }} />;
-				}}
-			/>
+		return (
+			<TouchableOpacity
+				onPress={() =>
+					navigation.navigate('LastScanFullscreenPhoto', {
+						uri: imageUrlReady,
+						route: 'Main',
+					})
+				}
+			>
+				<FastImage
+					style={styles.image}
+					source={{ uri: imageUrlReady }}
+					resizeMode="contain"
+				/>
+			</TouchableOpacity>
+		);
+	};
+
+	return (
+		<View style={styles.containerStyle}>
+			<View style={styles.cardStyle}>
+				<TouchableOpacity
+					style={styles.rowDirection}
+					onPress={() => navigation.navigate(nav, { data })}
+				>
+					<Icon name={iconName} size={30} color="#8DC34A" />
+					<Text style={styles.cardHeaderText}>{headerText}</Text>
+				</TouchableOpacity>
+			</View>
+			<TouchableOpacity
+				style={styles.scanButtonStyle}
+				onPress={() => navigation.navigate('CameraFlow')}
+			>
+				<View style={styles.rowDirection}>
+					<Icon name="camera" size={25} color="#8DC34A" />
+					<Text style={{ fontSize: 18, marginLeft: 10, color: '#FF9800' }}>
+						Сканировать растение
+					</Text>
+				</View>
+			</TouchableOpacity>
+			<View style={{ marginLeft: 10, marginRight: 15 }}>
+				<FlatList
+					horizontal
+					keyExtractor={(item) => item.id}
+					data={data}
+					renderItem={renderItem}
+				/>
+			</View>
 		</View>
-	</View>
-);
+	);
+};
 
 const styles = StyleSheet.create({
 	containerStyle: {
@@ -63,7 +84,25 @@ const styles = StyleSheet.create({
 		borderColor: '#000',
 		backgroundColor: '#fff',
 	},
+	scanButtonStyle: {
+		marginHorizontal: 15,
+		marginVertical: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 12,
+		},
+		shadowOpacity: 0.58,
+		shadowRadius: 16.0,
 
+		elevation: 3,
+		borderRadius: 10,
+		borderColor: '#000',
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		height: 40,
+		justifyContent: 'center',
+	},
 	cardStyle: {
 		paddingTop: 10,
 		paddingHorizontal: 10,
@@ -87,17 +126,19 @@ const styles = StyleSheet.create({
 	},
 	textItem: {
 		flex: 1,
-		color: '#FF9800',
+
 		fontSize: 15,
 	},
-
 	image: {
-		width: 75,
-		height: 75,
+		width: 100,
+		height: 100,
 		marginBottom: 10,
 		marginHorizontal: 5,
 		borderColor: 'red',
 		borderRadius: 5,
+	},
+	rowDirection: {
+		flexDirection: 'row',
 	},
 });
 

@@ -28,6 +28,7 @@ import SignupScreen from './screens/SignupScreen';
 import WishlistScreen from './screens/WishlistScreen';
 import nodeApi from './api/nodeApi';
 import { resolveAuth } from './actions/AuthActions';
+import NewsScreen from './screens/NewsScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -59,12 +60,12 @@ const MainFlow = () => (
 		<Stack.Screen
 			name="LastScan"
 			component={LastScanScreen}
-			options={{ title: 'Последние сканирования' }}
+			options={{ headerTitle: 'Мои сканирования' }}
 		/>
 		<Stack.Screen
 			name="LastScanFullscreenPhoto"
 			component={LastScanFullscreenPhotoScreen}
-			options={{ title: 'Последние сканирования' }}
+			options={{ headerTitle: 'Последние сканирования' }}
 		/>
 	</Stack.Navigator>
 );
@@ -94,6 +95,12 @@ const AuthFlow = () => (
 		<Stack.Screen name="Auth" component={AuthScreen} />
 		<Stack.Screen name="Signup" component={SignupScreen} />
 		<Stack.Screen name="Signin" component={SigninScreen} />
+	</Stack.Navigator>
+);
+
+const NewsFlow = () => (
+	<Stack.Navigator screenOptions={{ title: 'Статьи', headerTintColor: '#8DC34A' }}>
+		<Stack.Screen name="News" component={NewsScreen} />
 	</Stack.Navigator>
 );
 
@@ -131,12 +138,11 @@ const TabNavigator = () => (
 			}}
 		/>
 		<Tab.Screen
-			name="Camera"
-			component={CameraFlow}
+			name="News"
+			component={NewsFlow}
 			options={{
-				tabBarVisible: false,
-				tabBarLabel: 'Определение ',
-				tabBarIcon: () => <Icon name="camera" size={27} color="#8DC34A" />,
+				tabBarLabel: 'Статьи',
+				tabBarIcon: () => <Icon name="newspaper-o" size={27} color="#8DC34A" />,
 				tabBarButton: (props) => (
 					<Pressable android_ripple={{ color: '#8DC34A', borderless: true }} {...props} />
 				),
@@ -223,6 +229,11 @@ const StackNavigator = (route) => {
 					options={{ headerShown: false }}
 				/>
 			)}
+			<Stack.Screen
+				name="CameraFlow"
+				component={CameraFlow}
+				options={{ headerShown: false }}
+			/>
 		</Stack.Navigator>
 	);
 };

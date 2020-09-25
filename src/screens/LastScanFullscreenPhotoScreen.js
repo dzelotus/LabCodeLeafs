@@ -3,15 +3,15 @@ import React from 'react';
 
 import GoBackButton from '../components/GoBackButton';
 
-const LastScanFullscreenPhotoScreen = (route) => (
+const LastScanFullscreenPhotoScreen = ({ route, navigation }) => (
 	<View>
 		<Modal
 			animationType="slide"
 			visible
-			onRequestClose={() => route.navigation.navigate('LastScan')}
+			onRequestClose={() => navigation.navigate(route.params.route)}
 		>
 			<ImageBackground
-				source={{ uri: route.route.params.uri }}
+				source={{ uri: route.params.uri }}
 				style={{
 					flex: 1,
 					resizeMode: 'center',
@@ -19,7 +19,7 @@ const LastScanFullscreenPhotoScreen = (route) => (
 				}}
 				imageStyle={{ resizeMode: 'contain' }}
 			>
-				<GoBackButton nav="LastScan" />
+				<GoBackButton nav={route.params.route} />
 			</ImageBackground>
 		</Modal>
 	</View>

@@ -12,7 +12,7 @@ import { withNavigationFocus } from '@react-navigation/compat';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
-import { StackActions } from '@react-navigation/native';
+
 import GoBackButton from '../components/GoBackButton';
 import { getCsrf } from '../actions/AuthActions';
 import nodeApi from '../api/nodeApi';
@@ -22,14 +22,12 @@ const ScanPhotoScreen = (route) => {
 	const cleanURL = fileURL.replace('file:///', 'file:/');
 
 	const [loading, setLoading] = useState(false);
-	const [alertText, setAlertText] = useState('Загружаем фотографию на сервер');
 
 	const getCsrf = () => {
 		setLoading(true);
 		nodeApi
 			.get('/scans/new', {})
 			.then((response) => {
-				console.log('RESP_CSRF', response);
 				/* route.getCsrf({
 					prop: '_csrf',
 					value: response.data.csrfToken,
@@ -62,52 +60,33 @@ const ScanPhotoScreen = (route) => {
 				},
 			})
 			.then((response) => {
-				console.log('RESPPHOTO', response);
-
-				getScans({ id: response.data.data.scan_request_id });
+				console.log('RESPPHOTO', response.data.data.is_plant);
+				setLoading(false);
+				const result = response.data.data.disease;
+				const { status } = response.data.data;
+				const isPlant = response.data.data.is_plant;
+				if (result === 'healthy') {
+					Alert.alert('Сканирование выполнено', 'Ваше растение здоровое', [
+						{ text: 'OK', onPress: () => route.navigation.pop() },
+					]);
+				} else if (status === 'ERROR' || isPlant === false) {
+					Alert.alert(
+						'Ошибка',
+						'Не получается распознать растение или растение не обнаружено, попробуйте другое фото',
+						[{ text: 'OK', onPress: () => route.navigation.pop() }],
+					);
+				} else {
+					Alert.alert('Обнаружено заражение ', response.data.data.disease, [
+						{ text: 'OK', onPress: () => route.navigation.pop() },
+					]);
+				}
 			})
 			.catch((error) => {
-				console.log('ERROR PHOTO', error);
+				console.log('ERROR PHOTO', error.response);
 				setLoading(false);
 				Alert.alert('Ошибка', 'Что-то пошло не так, попробуйте еще раз');
 			});
 	};
-	let counter = 0;
-
-	const getScans = ({ id }) =>
-		nodeApi
-			.get(`scans/${id}`)
-			.then((response) => {
-				if (response.data.data.status === 'WAIT' && counter < 10) {
-					console.log('WAIT', counter);
-					counter += 1;
-					setTimeout(() => {
-						getScans({
-							id: response.data.data.id,
-						});
-						setAlertText('Выполняем сканирование');
-					}, 1000);
-				} else if (counter < 10) {
-					setLoading(false);
-					Alert.alert(
-						'Обнаружено заражение ',
-
-						response.data.data.result.disease,
-					);
-				} else {
-					setLoading(false);
-					Alert.alert(
-						'',
-						'Сканирование выполняется слишком долго, результат вы сможете увидеть в разделе "Последние сканирования" ',
-					);
-
-					const popAction = StackActions.pop(3);
-
-					route.navigation.dispatch(popAction);
-					route.navigation.navigate('Main');
-				}
-			})
-			.catch((error) => console.log('RES ERROR', error));
 
 	const ScanPhoto = () => {
 		if (loading === false) {
@@ -172,7 +151,7 @@ const ScanPhotoScreen = (route) => {
 										textAlign: 'center',
 									}}
 								>
-									{alertText}
+									Загружаем фотографию на сервер
 								</Text>
 							</View>
 						</View>

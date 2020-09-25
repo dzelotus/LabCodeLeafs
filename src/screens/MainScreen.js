@@ -1,10 +1,12 @@
+/* eslint-disable no-sequences */
 /* eslint-disable consistent-return */
 import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Geolocation from '@react-native-community/geolocation';
 import RNBootSplash from 'react-native-bootsplash';
+import messaging from '@react-native-firebase/messaging';
 import LastScansCard from '../components/LastScansCard';
 import FavoritesCard from '../components/FavoritesCard';
 import WeatherCard from '../components/WeatherCard';
@@ -12,26 +14,22 @@ import nodeApi from '../api/nodeApi';
 import weatherApi from '../api/weatherApi';
 
 const MainScreen = ({ navigation }) => {
-	console.log('NAV', { navigation });
 	const [errorButton, setErrorButton] = useState(true);
 	const [scans, setScans] = useState();
 	const [verifyToken, setVerifyToken] = useState(true);
 	const [weather, setWeather] = useState();
-	const testScans = useRef();
 
 	const getLastScans = async () => {
 		await nodeApi
 			.get('/scans')
 			.then((response) => {
-				const startArray = response.data.data.reverse();
+				const startArray = response.data.data;
 				const data = startArray.slice(0, 9);
 				setScans(data);
-				testScans.current = data;
 			})
 			.catch((error) => console.log(error.response));
 		RNBootSplash.hide();
 	};
-	console.log('TEST', testScans);
 
 	const getCoords = () =>
 		Geolocation.getCurrentPosition(
@@ -45,7 +43,6 @@ const MainScreen = ({ navigation }) => {
 		);
 
 	const checkWeather = ({ lon, lat }) => {
-		console.log('WEATHER COORDS', lon, lat);
 		weatherApi
 			.get('/', {
 				params: {
@@ -82,7 +79,11 @@ const MainScreen = ({ navigation }) => {
 			getCoords();
 		});
 
-		return getFocus;
+		const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+			Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+		});
+
+		return getFocus, unsubscribe;
 	}, []);
 
 	const EmailVerify = () => {
@@ -121,7 +122,7 @@ const MainScreen = ({ navigation }) => {
 				/>
 
 				<LastScansCard
-					headerText="Последние сканирования"
+					headerText="Мои сканирования"
 					nav="LastScan"
 					iconName="pagelines"
 					data={scans}

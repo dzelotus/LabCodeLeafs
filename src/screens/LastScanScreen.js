@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 const LastScanScreen = (route) => {
-	const [disease, setDisease] = useState('');
-
 	const { data } = route.route.params;
 
 	const renderItem = ({ item }) => {
+		let status;
 		const imageUrl = item.image_url;
 		const imageUrlReady = imageUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
@@ -16,10 +15,10 @@ const LastScanScreen = (route) => {
 				'https://leafs-app.lab-code.com/upload/',
 			);
 
-		if (item.result) {
-			setDisease(item.result.disease);
+		if (item.result.status === 'ERROR') {
+			status = 'Ошибка сканирования фотографии';
 		} else {
-			setDisease('Ждем обработку');
+			status = item.result.disease;
 		}
 
 		return (
@@ -30,7 +29,7 @@ const LastScanScreen = (route) => {
 				}}
 			>
 				<View style={{ flexDirection: 'row' }}>
-					<Text>{disease}</Text>
+					<Text>{status}</Text>
 				</View>
 
 				<View style={{ paddingTop: 10 }}>
@@ -38,6 +37,7 @@ const LastScanScreen = (route) => {
 						onPress={() =>
 							route.navigation.navigate('LastScanFullscreenPhoto', {
 								uri: imageUrlReady,
+								route: 'LastScan',
 							})
 						}
 					>
@@ -56,7 +56,7 @@ const LastScanScreen = (route) => {
 	};
 
 	return (
-		<View>
+		<View style={{ flex: 1, marginBottom: 10 }}>
 			<Text
 				style={{
 					textAlign: 'center',
@@ -73,7 +73,6 @@ const LastScanScreen = (route) => {
 				removeClippedSubviews
 				renderItem={renderItem}
 				windowSize={10}
-				initialNumToRender={2}
 			/>
 		</View>
 	);
