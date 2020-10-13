@@ -88,7 +88,6 @@ function SignupScreen(props) {
 	}, []);
 
 	const regex = {};
-
 	const validateUsername = (username) => {
 		regex.username = /^[a-zA-Z0-9]+$/;
 		return regex.username.test(username);
@@ -97,7 +96,6 @@ function SignupScreen(props) {
 		regex.email = /^([\w!.%+\-])+@([\w\-])+(?:\.[\w\-]+)+$/;
 		return regex.email.test(email);
 	};
-
 	const validatePassword = (password) => {
 		regex.password = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/;
 		return regex.password.test(password);

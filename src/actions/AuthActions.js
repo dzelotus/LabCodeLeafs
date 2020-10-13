@@ -1,12 +1,15 @@
+import AsyncStorage from '@react-native-community/async-storage';
+import FingerprintScanner from 'react-native-fingerprint-scanner';
 import {
-	CHANGE_SCREEN,
 	CLEAR_ERROR_MESSAGE,
 	GET_CSRF,
+	HAS_BIO_SCANNER,
 	INPUT_CHANGE,
 	RESOLVE_AUTH,
 	SIGNIN,
 	SIGNIN_FAIL,
 	SIGNIN_SUCCESS,
+	IS_BIO_AUTH_ACTIVE,
 } from './types';
 
 import nodeApi from '../api/nodeApi';
@@ -16,10 +19,15 @@ export const inputChange = ({ prop, value }) => ({
 	payload: { prop, value },
 });
 
-export const getCsrf = ({ prop, value }) => ({
-	type: GET_CSRF,
-	payload: { prop, value },
-});
+export const getCsrf = () => (dispatch) => {
+	dispatch({ type: GET_CSRF, loading: true });
+	nodeApi
+		.get('/login')
+		.then((response) => {
+			dispatch({ type: GET_CSRF, payload: response.data.csrfToken, loading: false });
+		})
+		.catch((e) => console.log('ERR', e.response));
+};
 
 export const signin = ({ username, password, _csrf }) => (dispatch) => {
 	nodeApi
@@ -29,10 +37,15 @@ export const signin = ({ username, password, _csrf }) => (dispatch) => {
 			_csrf,
 		})
 		.then((response) => {
-			const success = response;
-			console.log('SUCCESS', success);
-			if (success) {
-				signinSuccess(dispatch, response.data);
+			if (response) {
+				AsyncStorage.getItem('BioAuth').then((result) => {
+					console.log('RES', result);
+					if (result === null) {
+						activateBioAuth({ dispatch, response, username, password });
+					} else {
+						signinSuccess(dispatch, response.data);
+					}
+				});
 			} else {
 				console.log('FAIL');
 				signinFail(dispatch, response.data.message);
@@ -44,6 +57,24 @@ export const signin = ({ username, password, _csrf }) => (dispatch) => {
 		});
 
 	dispatch({ type: SIGNIN });
+};
+
+const activateBioAuth = ({ dispatch, response, username, password }) => {
+	FingerprintScanner.authenticate({
+		title: 'Вход по отпечатку пальца',
+		cancelButton: 'Отмена',
+	})
+		.then(() => {
+			console.log('Активация', response);
+			signinSuccess(dispatch, response.data);
+			AsyncStorage.setItem('BioAuth', JSON.stringify({ username, password }));
+			FingerprintScanner.release();
+		})
+		.catch((error) => {
+			console.log('Отмена активации', error);
+			signinSuccess(dispatch, response.data);
+			FingerprintScanner.release();
+		});
 };
 
 export const signup = ({ username, email, password, _csrf }) => (dispatch) => {
@@ -86,7 +117,6 @@ const signinSuccess = (dispatch, response) => {
 	});
 	dispatch({
 		type: RESOLVE_AUTH,
-
 		payload: { prop: 'loadStart', value: true },
 	});
 	dispatch({
@@ -108,9 +138,25 @@ export const resolveAuth = ({ prop, value }) => ({
 	payload: { prop, value },
 });
 
-export const changeScreen = ({ screenName, screenComponent, screenOptions }) => ({
-	type: CHANGE_SCREEN,
-	name: screenName,
-	component: screenComponent,
-	options: screenOptions,
-});
+// логика для входа по отпечатку пальца
+
+export const checkBioScanner = () => (dispatch) => {
+	FingerprintScanner.isSensorAvailable()
+		.then(() => {
+			dispatch({
+				type: HAS_BIO_SCANNER,
+				hasBioPayload: true,
+			});
+			AsyncStorage.getItem('BioAuth')
+				.then((result) => {
+					console.log('BIO AUTH?', result);
+					if (!result) {
+						dispatch({ type: IS_BIO_AUTH_ACTIVE, isBioAuthActive: false });
+					} else {
+						dispatch({ type: IS_BIO_AUTH_ACTIVE, isBioAuthActive: true });
+					}
+				})
+				.catch((error) => console.log('ERROR', error));
+		})
+		.catch((error) => console.log('ERROR', error));
+};

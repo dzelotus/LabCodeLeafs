@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
 	},
 	textItem: {
 		flex: 1,
-
 		fontSize: 15,
 	},
 	image: {

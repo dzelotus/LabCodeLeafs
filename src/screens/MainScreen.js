@@ -23,6 +23,7 @@ const MainScreen = ({ navigation }) => {
 		await nodeApi
 			.get('/scans')
 			.then((response) => {
+				/* console.log(response.data); */
 				const startArray = response.data.data;
 				const data = startArray.slice(0, 9);
 				setScans(data);
@@ -66,7 +67,7 @@ const MainScreen = ({ navigation }) => {
 
 	const checkVerify = () => {
 		nodeApi.get('user_authentication').then((response) => {
-			console.log(response.data);
+			console.log('TOKEN', response.data);
 			setErrorButton(response.data.data.isVerified);
 			setVerifyToken(response.data.hasValidTokens);
 		});

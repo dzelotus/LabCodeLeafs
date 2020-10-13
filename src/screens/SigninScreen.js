@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-no-bind */
 import {
@@ -14,7 +15,16 @@ import { Button, Input, Text } from 'react-native-elements';
 import React, { useEffect, useRef, useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import { clearErrorMessage, getCsrf, inputChange, signin } from '../actions/AuthActions';
+import FingerprintScanner from 'react-native-fingerprint-scanner';
+import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {
+	clearErrorMessage,
+	getCsrf,
+	inputChange,
+	signin,
+	checkBioScanner,
+} from '../actions/AuthActions';
 
 import Spacer from '../components/Spacer';
 import nodeApi from '../api/nodeApi';
@@ -28,21 +38,72 @@ function SigninScreen(props) {
 	const regexPassword = useRef();
 	const activeButton = useRef(true);
 
+	const {
+		email,
+		username,
+		password,
+		error,
+		navigation,
+		_csrf,
+		hasBioScanner,
+		/* isBioAuthActive, */
+	} = props;
+	console.log('ITS PROPS', props);
+
 	const toggleModal = () => {
 		setModalVisible(!isModalVisible);
 	};
-	const onButtonPress = () => {
-		const { username, password, _csrf, email } = props;
 
+	useEffect(() => {
+		props.getCsrf();
+		props.checkBioScanner();
+		fingerprintLogin();
+	}, []);
+
+	const fingerprintLogin = () => {
+		console.log('ITS CSRF', _csrf);
+		AsyncStorage.getItem('BioAuth').then((resp) => {
+			const response = JSON.parse(resp);
+			console.log('TEST', response);
+			FingerprintScanner.authenticate({ title: 'Войти в приложение' }).then(() => {
+				console.log('TRY TRY CATCH', response);
+				onButtonPress({
+					username: response.username,
+					password: response.password,
+				});
+				FingerprintScanner.release();
+			});
+		});
+
+		/* if (isBioAuthActive) {
+			FingerprintScanner.authenticate({ title: 'Войти в приложение' })
+				.then(() => {
+					AsyncStorage.getItem('BioAuth').then((resp) => {
+						const response = JSON.parse(resp);
+						onButtonPress({
+							username: response.username,
+							password: response.password,
+						});
+					});
+					FingerprintScanner.release();
+				})
+				.catch((error) => {
+					console.log('FING ERROR', error);
+					FingerprintScanner.release();
+				});
+		} else {
+			console.log('Вход по отпечатку не активен');
+		} */
+	};
+
+	const onButtonPress = ({ username, password }) => {
+		console.log('LOGIN', _csrf);
 		props.signin({
 			username,
 			password,
 			_csrf,
-			email,
 		});
 	};
-
-	const { email, username, password, error, navigation } = props;
 
 	const activityIndicator = () => {
 		if (props.loading) {
@@ -51,16 +112,35 @@ function SigninScreen(props) {
 					<ActivityIndicator size="large" color="#8DC34A" />
 				</View>
 			);
+		} else if (hasBioScanner) {
+			return (
+				<View style={{ flexDirection: 'row' }}>
+					<Button
+						containerStyle={{ paddingHorizontal: 8, flex: 3 }}
+						buttonStyle={{ backgroundColor: '#8DC34A', height: 40 }}
+						title="Войти"
+						onPress={() => onButtonPress({ username, password })}
+						disabled={activeButton.current}
+					/>
+					<Button
+						containerStyle={{ paddingHorizontal: 8, flex: 1, height: 60 }}
+						buttonStyle={{ backgroundColor: '#8DC34A', height: 40 }}
+						icon={<Icon name="finger-print" size={20} color="black" />}
+						onPress={() => fingerprintLogin()}
+					/>
+				</View>
+			);
+		} else {
+			return (
+				<Button
+					containerStyle={{ paddingHorizontal: 8 }}
+					buttonStyle={{ backgroundColor: '#8DC34A' }}
+					title="Войти"
+					onPress={() => onButtonPress({ username, password })}
+					disabled={activeButton.current}
+				/>
+			);
 		}
-		return (
-			<Button
-				containerStyle={{ paddingHorizontal: 8 }}
-				buttonStyle={{ backgroundColor: '#8DC34A' }}
-				title="Войти"
-				onPress={onButtonPress.bind(this)}
-				disabled={activeButton.current}
-			/>
-		);
 	};
 
 	const activityIndicatorModal = () => {
@@ -113,26 +193,9 @@ function SigninScreen(props) {
 		}
 	};
 
-	const getCsrfToken = () => {
-		nodeApi
-			.get('/login')
-			.then((response) => {
-				console.log(response);
-				props.getCsrf({
-					prop: '_csrf',
-					value: response.data.csrfToken,
-				});
-			})
-			.catch((e) => console.log('ERR', e.response));
-	};
-
 	navigation.addListener('focus', () => {
 		props.clearErrorMessage();
 	});
-
-	useEffect(() => {
-		getCsrfToken();
-	}, []);
 
 	const regex = {};
 
@@ -274,7 +337,18 @@ SigninScreen.navigationOptions = () => ({
 });
 
 const mapStateToProps = ({ auth }) => {
-	const { username, password, email, loading, error, _csrf, isSigned, loadStart } = auth;
+	const {
+		username,
+		password,
+		email,
+		loading,
+		error,
+		_csrf,
+		isSigned,
+		loadStart,
+		hasBioScanner,
+		isBioAuthActive,
+	} = auth;
 
 	return {
 		username,
@@ -285,6 +359,8 @@ const mapStateToProps = ({ auth }) => {
 		_csrf,
 		isSigned,
 		loadStart,
+		hasBioScanner,
+		isBioAuthActive,
 	};
 };
 
@@ -335,4 +411,5 @@ export default connect(mapStateToProps, {
 	signin,
 	clearErrorMessage,
 	getCsrf,
+	checkBioScanner,
 })(SigninScreen);

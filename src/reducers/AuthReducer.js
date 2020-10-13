@@ -1,5 +1,4 @@
 import {
-	CHANGE_SCREEN,
 	CLEAR_ERROR_MESSAGE,
 	GET_CSRF,
 	INPUT_CHANGE,
@@ -7,12 +6,14 @@ import {
 	SIGNIN,
 	SIGNIN_FAIL,
 	SIGNIN_SUCCESS,
+	HAS_BIO_SCANNER,
+	IS_BIO_AUTH_ACTIVE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
-	username: '',
+	username: 'ivan',
 	email: '',
-	password: '',
+	password: '19091991q',
 	error: '',
 	loading: false,
 	firstLaunchToken: '',
@@ -21,6 +22,8 @@ const INITIAL_STATE = {
 	screenName: '',
 	screenComponent: '',
 	screenOptions: {},
+	hasBioScanner: false,
+	isBioAuthActive: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -28,7 +31,7 @@ export default (state = INITIAL_STATE, action) => {
 		case INPUT_CHANGE:
 			return { ...state, [action.payload.prop]: action.payload.value };
 		case GET_CSRF:
-			return { ...state, [action.payload.prop]: action.payload.value };
+			return { ...state, _csrf: action.payload, loading: action.loading };
 		case SIGNIN:
 			return { ...state, loading: true };
 		case SIGNIN_SUCCESS:
@@ -43,13 +46,14 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, error: '' };
 		case RESOLVE_AUTH:
 			return { ...state, [action.payload.prop]: action.payload.value };
-		case CHANGE_SCREEN:
+
+		case HAS_BIO_SCANNER:
 			return {
 				...state,
-				screenName: action.name,
-				screenComponent: action.component,
-				screenOptions: action.options,
+				hasBioScanner: action.hasBioPayload,
 			};
+		case IS_BIO_AUTH_ACTIVE:
+			return { ...state, isBioAuthActive: action.isBioAuthActive };
 		default:
 			return state;
 	}

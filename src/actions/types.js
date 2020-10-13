@@ -8,7 +8,8 @@ export const SIGNIN_SUCCESS = 'signin_success';
 export const SIGNUP = 'signup';
 export const CLEAR_ERROR_MESSAGE = 'clear_error_message';
 export const RESOLVE_AUTH = 'resolve_auth';
-export const CHANGE_SCREEN = 'change_screen';
+export const HAS_BIO_SCANNER = 'has_bio_scanner';
+export const IS_BIO_AUTH_ACTIVE = 'is_bio_auth_active';
 // Catalog fetch action types
 export const FETCH_CATALOG = 'fetch_catalog';
 export const FETCH_SUCCESS = 'fetch_success';
