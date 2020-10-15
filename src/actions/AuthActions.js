@@ -37,15 +37,34 @@ export const signin = ({ username, password, _csrf }) => (dispatch) => {
 			_csrf,
 		})
 		.then((response) => {
-			if (response) {
-				AsyncStorage.getItem('BioAuth').then((result) => {
-					console.log('RES', result);
-					if (result === null) {
-						activateBioAuth({ dispatch, response, username, password });
-					} else {
-						signinSuccess(dispatch, response.data);
-					}
-				});
+			if (response.data) {
+				AsyncStorage.getItem('BioAuth')
+					.then((result) => {
+						const loginData = JSON.parse(result);
+						if (result === null) {
+							activateBioAuth({
+								dispatch,
+								response,
+								username,
+								password,
+								title: 'Активировать биометрическую систему аутентификации?',
+							});
+						} else if (loginData.username === username) {
+							signinSuccess(dispatch, response.data);
+						} else {
+							AsyncStorage.removeItem('BioAuth');
+							activateBioAuth({
+								dispatch,
+								response,
+								username,
+								password,
+								title: 'Сменить пользователя для биометрической аутентификации?',
+							});
+						}
+					})
+					.catch((error) => {
+						console.log(error);
+					});
 			} else {
 				console.log('FAIL');
 				signinFail(dispatch, response.data.message);
@@ -59,9 +78,9 @@ export const signin = ({ username, password, _csrf }) => (dispatch) => {
 	dispatch({ type: SIGNIN });
 };
 
-const activateBioAuth = ({ dispatch, response, username, password }) => {
+export const activateBioAuth = ({ dispatch, response, username, password, title }) => {
 	FingerprintScanner.authenticate({
-		title: 'Вход по отпечатку пальца',
+		title,
 		cancelButton: 'Отмена',
 	})
 		.then(() => {
@@ -86,10 +105,21 @@ export const signup = ({ username, email, password, _csrf }) => (dispatch) => {
 			_csrf,
 		})
 		.then((response) => {
-			const { success } = response.data;
-			console.log('SUCCESS', success);
-			if (success) {
-				signinSuccess(dispatch, response.data);
+			if (response.data) {
+				AsyncStorage.getItem('BioAuth').then((result) => {
+					console.log('RES', result);
+					if (result === null) {
+						activateBioAuth({
+							dispatch,
+							response,
+							username,
+							password,
+							title: 'Активировать биометрическую систему аутентификации?',
+						});
+					} else {
+						signinSuccess(dispatch, response.data);
+					}
+				});
 			} else {
 				console.log('FAIL');
 				signinFail(dispatch, response.data.message);

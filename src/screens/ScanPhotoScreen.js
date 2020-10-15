@@ -60,7 +60,7 @@ const ScanPhotoScreen = (route) => {
 				},
 			})
 			.then((response) => {
-				console.log('RESPPHOTO', response.data.data.is_plant);
+				console.log('RESPPHOTO', response);
 				setLoading(false);
 				const result = response.data.data.disease;
 				const { status } = response.data.data;

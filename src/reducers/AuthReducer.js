@@ -11,9 +11,9 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-	username: 'ivan',
+	username: '',
 	email: '',
-	password: '19091991q',
+	password: '',
 	error: '',
 	loading: false,
 	firstLaunchToken: '',

@@ -46,7 +46,7 @@ function SigninScreen(props) {
 		navigation,
 		_csrf,
 		hasBioScanner,
-		/* isBioAuthActive, */
+		isBioAuthActive,
 	} = props;
 	console.log('ITS PROPS', props);
 
@@ -58,6 +58,7 @@ function SigninScreen(props) {
 		props.getCsrf();
 		props.checkBioScanner();
 		fingerprintLogin();
+		/* AsyncStorage.removeItem('BioAuth'); */
 	}, []);
 
 	const fingerprintLogin = () => {
@@ -65,35 +66,24 @@ function SigninScreen(props) {
 		AsyncStorage.getItem('BioAuth').then((resp) => {
 			const response = JSON.parse(resp);
 			console.log('TEST', response);
-			FingerprintScanner.authenticate({ title: 'Войти в приложение' }).then(() => {
-				console.log('TRY TRY CATCH', response);
-				onButtonPress({
-					username: response.username,
-					password: response.password,
-				});
-				FingerprintScanner.release();
-			});
-		});
-
-		/* if (isBioAuthActive) {
-			FingerprintScanner.authenticate({ title: 'Войти в приложение' })
-				.then(() => {
-					AsyncStorage.getItem('BioAuth').then((resp) => {
-						const response = JSON.parse(resp);
+			if (response) {
+				FingerprintScanner.authenticate({ title: 'Войти в приложение' })
+					.then(() => {
+						console.log('TRY TRY CATCH', response);
 						onButtonPress({
 							username: response.username,
 							password: response.password,
 						});
+						FingerprintScanner.release();
+					})
+					.catch((error) => {
+						console.log('Отмена активации', error);
+						FingerprintScanner.release();
 					});
-					FingerprintScanner.release();
-				})
-				.catch((error) => {
-					console.log('FING ERROR', error);
-					FingerprintScanner.release();
-				});
-		} else {
-			console.log('Вход по отпечатку не активен');
-		} */
+			} else {
+				return null;
+			}
+		});
 	};
 
 	const onButtonPress = ({ username, password }) => {
@@ -112,7 +102,7 @@ function SigninScreen(props) {
 					<ActivityIndicator size="large" color="#8DC34A" />
 				</View>
 			);
-		} else if (hasBioScanner) {
+		} else if (hasBioScanner && isBioAuthActive) {
 			return (
 				<View style={{ flexDirection: 'row' }}>
 					<Button

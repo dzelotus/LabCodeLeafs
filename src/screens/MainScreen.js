@@ -95,8 +95,11 @@ const MainScreen = ({ navigation }) => {
 					onPress={() =>
 						nodeApi
 							.post('/verify', {})
-							.then((response) => Alert.alert(response.data.message))
-							.catch((error) => console.log(error.response))
+							.then((response) => Alert.alert('', response.data.message))
+							.catch((error) => {
+								console.log(error.response.data.message);
+								Alert.alert('', error.response.data.message);
+							})
 					}
 				>
 					<FontAwesome name="exclamation-triangle" size={30} color="white" />
@@ -139,7 +142,7 @@ const MainScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
 	errorButton: {
 		position: 'absolute',
-		justifyContent: 'flex-end',
+		justifyContent: 'center',
 		alignSelf: 'center',
 		alignItems: 'center',
 		borderColor: 'red',
@@ -148,7 +151,7 @@ const styles = StyleSheet.create({
 		height: 60,
 		width: 60,
 		right: 30,
-		bottom: 30,
+		bottom: -100,
 		backgroundColor: 'red',
 	},
 });

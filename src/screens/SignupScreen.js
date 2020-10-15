@@ -8,27 +8,66 @@ import {
 	ActivityIndicator,
 	ScrollView,
 	StyleSheet,
+	Modal,
+	TouchableOpacity,
 } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
 
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FingerprintScanner from 'react-native-fingerprint-scanner';
+import AsyncStorage from '@react-native-community/async-storage';
 import Spacer from '../components/Spacer';
-import { inputChange, signup, clearErrorMessage, getCsrf } from '../actions/AuthActions';
-import nodeApi from '../api/nodeApi';
+import {
+	inputChange,
+	signup,
+	clearErrorMessage,
+	getCsrf,
+	activateBioAuth,
+} from '../actions/AuthActions';
 
 function SignupScreen(props) {
-	const onButtonPress = () => {
-		const { username, email, password, _csrf } = props;
-
-		props.signup({ username, email, password, _csrf });
-	};
-
 	const regexUsername = useRef();
 	const regexPassword = useRef();
 	const regexPassword2 = useRef();
 	const activeButton = useRef(true);
 	const [regexEmail, setRegexEmail] = useState();
+	const [isModalVisible, setModalVisible] = useState(false);
 
-	const { username, password, password2, email, navigation } = props;
+	const { username, password, password2, email, navigation, _csrf } = props;
+
+	useEffect(() => {
+		props.getCsrf();
+	}, []);
+
+	const onButtonPress = () => {
+		AsyncStorage.getItem('BioAuth').then((resp) => {
+			console.log(resp);
+			if (resp) {
+				setModalVisible(true);
+			} else {
+				props.signup({ username, email, password, _csrf });
+			}
+		});
+
+		/* props.signup({ username, email, password, _csrf }); */
+	};
+
+	const changeBioAuthUser = () => {
+		console.log('CHANGE', username);
+		FingerprintScanner.authenticate({
+			title: 'Активировать биометрическую аутентификацию для другого пользователя?',
+			cancelButton: 'Отмена',
+		})
+			.then(() => {
+				props.signup({ username, email, password, _csrf });
+				AsyncStorage.setItem('BioAuth', JSON.stringify({ username, password }));
+				FingerprintScanner.release();
+			})
+			.catch((error) => {
+				console.log('Отмена активации', error);
+				FingerprintScanner.release();
+			});
+	};
 
 	const activityIndicator = () => {
 		if (props.loading) {
@@ -37,7 +76,7 @@ function SignupScreen(props) {
 		return (
 			<Button
 				title="Зарегистрироваться"
-				onPress={onButtonPress.bind(this)}
+				onPress={onButtonPress}
 				disabled={activeButton.current}
 				containerStyle={{ paddingHorizontal: 8 }}
 				buttonStyle={{ backgroundColor: '#8DC34A' }}
@@ -67,25 +106,11 @@ function SignupScreen(props) {
 		return <Text>{props.error}</Text>;
 	};
 
-	const getCsrf = () => {
-		nodeApi.get('/register').then((response) => {
-			props.getCsrf({
-				prop: '_csrf',
-				value: response.data.csrfToken,
-			});
-			console.log(response);
-		});
-	};
-
 	console.log('CSRF', props);
 
 	navigation.addListener('focus', () => {
 		props.clearErrorMessage();
 	});
-
-	useEffect(() => {
-		getCsrf();
-	}, []);
 
 	const regex = {};
 	const validateUsername = (username) => {
@@ -224,6 +249,33 @@ function SignupScreen(props) {
 					</Spacer>
 				</KeyboardAvoidingView>
 			</ScrollView>
+			<Modal visible={isModalVisible} animationType="slide" transparent>
+				<View style={styles.modalContainer}>
+					<TouchableOpacity
+						onPress={() => setModalVisible(false)}
+						style={{ alignSelf: 'flex-end', marginBottom: 10 }}
+					>
+						<MaterialCommunityIcons name="close" size={35} />
+					</TouchableOpacity>
+					<Text style={{ textAlign: 'center', fontSize: 20 }}>
+						Активировать биометрическую аутентификацию для другого пользователя?
+					</Text>
+					<View style={{ flexDirection: 'row', paddingTop: 15, flex: 1 }}>
+						<Button
+							title="Нет"
+							onPress={() => props.signup({ username, email, password, _csrf })}
+							containerStyle={{ paddingHorizontal: 8, flex: 1 }}
+							buttonStyle={{ backgroundColor: '#8DC34A' }}
+						/>
+						<Button
+							title="Да"
+							onPress={() => changeBioAuthUser()}
+							containerStyle={{ paddingHorizontal: 8, flex: 1 }}
+							buttonStyle={{ backgroundColor: '#8DC34A' }}
+						/>
+					</View>
+				</View>
+			</Modal>
 		</View>
 	);
 }
@@ -246,6 +298,23 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		margin: 10,
 	},
+	modalContainer: {
+		margin: 20,
+		backgroundColor: 'white',
+		borderRadius: 5,
+		padding: 15,
+		alignItems: 'center',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		height: 320,
+		marginTop: 120,
+	},
 });
 
 SignupScreen.navigationOptions = () => ({
@@ -263,4 +332,5 @@ export default connect(mapStateToProps, {
 	signup,
 	clearErrorMessage,
 	getCsrf,
+	activateBioAuth,
 })(SignupScreen);

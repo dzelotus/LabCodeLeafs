@@ -17,8 +17,9 @@ const ProfileScreen = (route) => {
 		nodeApi
 			.get('/profile')
 			.then((response) => {
-				setName(response.data.data.userData.name);
-				setSurname(response.data.data.userData.surname);
+				console.log(response.data.data.username);
+				setName(response.data.data.name);
+				setSurname(response.data.data.surname);
 			})
 			.catch((error) => console.log(error.response));
 	};
