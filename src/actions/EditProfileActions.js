@@ -11,12 +11,12 @@ export const getProfileInfo = () => (dispatch) => {
 	nodeApi
 		.get('/profile')
 		.then((response) => {
-			console.log('ACTION', response.data.data.userData);
+			console.log('ACTION', response);
 			dispatch({
 				type: GET_PROFILE_INFO,
-				name: response.data.data.userData.name,
-				surname: response.data.data.userData.surname,
-				photo: response.data.data.userData.logo_url,
+				name: response.data.data.name,
+				surname: response.data.data.surname,
+				photo: response.data.data.logo_url,
 				screenLoading: false,
 			});
 		})

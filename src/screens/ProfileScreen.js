@@ -1,5 +1,5 @@
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import { Button } from 'react-native-elements';
@@ -8,26 +8,11 @@ import Ripple from 'react-native-material-ripple';
 import { connect } from 'react-redux';
 import nodeApi from '../api/nodeApi';
 import { resolveAuth } from '../actions/AuthActions';
+import { getProfileInfo } from '../actions/EditProfileActions';
 
 const ProfileScreen = (route) => {
-	const [name, setName] = useState('');
-	const [surname, setSurname] = useState('');
-
-	const getProfile = () => {
-		nodeApi
-			.get('/profile')
-			.then((response) => {
-				console.log(response.data.data.username);
-				setName(response.data.data.name);
-				setSurname(response.data.data.surname);
-			})
-			.catch((error) => console.log(error.response));
-	};
-
 	useEffect(() => {
-		route.navigation.addListener('focus', () => {
-			getProfile();
-		});
+		route.getProfileInfo();
 	}, []);
 
 	const createTwoButtonAlert = () => {
@@ -83,8 +68,8 @@ const ProfileScreen = (route) => {
 						alignSelf: 'center',
 					}}
 				>
-					<Text style={styles.name}>{name}</Text>
-					<Text style={styles.name}>{surname}</Text>
+					<Text style={styles.name}>{route.name}</Text>
+					<Text style={styles.name}>{route.surname}</Text>
 				</View>
 			</View>
 			<View style={{ flex: 1 }}>
@@ -184,10 +169,11 @@ const styles = StyleSheet.create({
 
 ProfileScreen.navigationOptions = () => ({ title: 'Профиль' });
 
-const mapStateToProps = ({ auth }) => {
+const mapStateToProps = ({ auth, profile }) => {
 	const { fistLaunchToken, isSigned } = auth;
+	const { name, surname } = profile;
 
-	return { fistLaunchToken, isSigned };
+	return { fistLaunchToken, isSigned, name, surname };
 };
 
-export default connect(mapStateToProps, { resolveAuth })(ProfileScreen);
+export default connect(mapStateToProps, { resolveAuth, getProfileInfo })(ProfileScreen);

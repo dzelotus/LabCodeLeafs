@@ -25,7 +25,7 @@ export default (state = INITIAL_STATE, action) => {
 				name: action.name,
 				surname: action.surname,
 				photo: action.avatar,
-				screenLoading: false,
+				screenLoading: true,
 			};
 		case GET_PROFILE_CSRF:
 			return { ...state };

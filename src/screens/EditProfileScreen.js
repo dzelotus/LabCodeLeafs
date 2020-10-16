@@ -14,6 +14,8 @@ import { Button } from 'react-native-elements';
 import { inputChange, getProfileInfo, updateProfileInfo } from '../actions/EditProfileActions';
 
 const EditProfileScreen = (props) => {
+	console.log('THIS IS PROPS', props);
+
 	const onButtonPress = () => {
 		const { name, surname } = props;
 
