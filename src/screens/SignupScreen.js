@@ -162,7 +162,7 @@ function SignupScreen(props) {
 										regexUsername.current = '';
 									} else {
 										regexUsername.current =
-											'Логин может содержать только буквы и цифры';
+											'Логин может содержать только буквы латинского алфавита и цифры';
 									}
 								}}
 								errorStyle={{ color: 'red' }}
@@ -212,7 +212,7 @@ function SignupScreen(props) {
 										regexPassword.current = '';
 									} else {
 										regexPassword.current =
-											'Пароль должен содержать цифры и буквы';
+											'Пароль должен содержать цифры и хотя бы одну букву латинского алфавита';
 									}
 								}}
 								errorStyle={{ color: 'red' }}

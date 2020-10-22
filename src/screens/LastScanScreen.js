@@ -15,6 +15,8 @@ const LastScanScreen = (route) => {
 				'https://leafs-app.lab-code.com/upload/',
 			);
 
+		console.log(item.result);
+
 		if (item.result.status === 'ERROR') {
 			status = 'Ошибка сканирования фотографии';
 		} else {

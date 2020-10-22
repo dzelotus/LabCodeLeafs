@@ -19,6 +19,8 @@ const MainScreen = ({ navigation }) => {
 	const [verifyToken, setVerifyToken] = useState(true);
 	const [weather, setWeather] = useState();
 
+	const isHermes = () => !!global.HermesInternal;
+
 	const getLastScans = async () => {
 		await nodeApi
 			.get('/scans')
@@ -78,6 +80,7 @@ const MainScreen = ({ navigation }) => {
 			getLastScans();
 			checkVerify();
 			getCoords();
+			isHermes();
 		});
 
 		const unsubscribe = messaging().onMessage(async (remoteMessage) => {

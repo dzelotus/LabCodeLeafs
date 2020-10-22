@@ -43,7 +43,7 @@ export default (state = INITIAL_STATE, action) => {
 		case SIGNIN_FAIL:
 			return { ...state, error: action.payload, loading: false };
 		case CLEAR_ERROR_MESSAGE:
-			return { ...state, error: '' };
+			return { ...state, error: '', username: '', password: '', email: '' };
 		case RESOLVE_AUTH:
 			return { ...state, [action.payload.prop]: action.payload.value };
 
