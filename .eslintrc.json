@@ -28,7 +28,7 @@
 		"@typescript-eslint/no-empty-function": "off",
 		"react/display-name": "off",
 		"react/prop-types": "off",
-		"prettier/prettier": "error",
+		"prettier/prettier": ["error", { "endOfLine": "auto" }],
 		"no-tabs": 0,
 		"no-console": 0,
 		"implicit-arrow-linebreak": "off",
