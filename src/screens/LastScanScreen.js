@@ -10,14 +10,13 @@ const LastScanScreen = (route) => {
 		const imageUrl = item.image_url;
 		const imageUrlReady = imageUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
-			.replace(
-				'\\\\172.16.0.5\\Share\\leafs_files\\upload\\',
-				'https://leafs-app.lab-code.com/upload/',
-			);
+			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
 
-		console.log(item.result);
+		console.log('STATUS', item.result);
 
-		if (item.result.status === 'ERROR') {
+		if (item.result === null) {
+			status = 'Ошибка сканирования фотографии';
+		} else if (item.result.status === 'ERROR') {
 			status = 'Ошибка сканирования фотографии';
 		} else {
 			status = item.result.disease;

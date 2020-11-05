@@ -10,10 +10,7 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 		const imageUrl = item.image_url;
 		const imageUrlReady = imageUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
-			.replace(
-				'\\\\172.16.0.5\\Share\\leafs_files\\upload\\',
-				'https://leafs-app.lab-code.com/upload/',
-			);
+			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
 
 		return (
 			<TouchableOpacity

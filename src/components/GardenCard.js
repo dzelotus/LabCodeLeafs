@@ -3,13 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from '@react-navigation/compat';
 
-const BadgeIcon = () => (
-	<View>
-		<FontAwesome name="chevron-right" size={20} color="#FF9800" />
-	</View>
-);
-
-const FavoritesCard = ({ iconName, navigation, nav, headerText, itemText }) => (
+const FavoritesCard = ({ iconName, navigation, nav, headerText }) => (
 	<View style={styles.containerStyle}>
 		<TouchableOpacity
 			onPress={() => navigation.navigate(nav)}
@@ -26,21 +20,11 @@ const FavoritesCard = ({ iconName, navigation, nav, headerText, itemText }) => (
 				</View>
 				<Text style={styles.cardHeaderText}>{headerText}</Text>
 			</View>
-
-			<TouchableOpacity style={styles.cardItem}>
-				<Text style={styles.textItem}>Последнее добавленное в{itemText}1</Text>
-				<BadgeIcon />
-			</TouchableOpacity>
-
-			<TouchableOpacity style={styles.cardItem}>
-				<Text style={styles.textItem}>Последнее добавленное в{itemText} 2</Text>
-				<BadgeIcon />
-			</TouchableOpacity>
-
-			<TouchableOpacity style={styles.lastCardItem}>
-				<Text style={styles.textItem}>Последнее добавленное в{itemText} 3</Text>
-				<BadgeIcon />
-			</TouchableOpacity>
+			<View>
+				<Text>Мой огород 1</Text>
+				<Text>Мой огород 2</Text>
+				<Text>Мой огород 3</Text>
+			</View>
 		</TouchableOpacity>
 	</View>
 );

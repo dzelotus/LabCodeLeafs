@@ -12,7 +12,7 @@ import AuthScreen from './screens/AuthScreen';
 import CatalogItemScreen from './screens/CatalogItemScreen';
 import CatalogScreen from './screens/CatalogScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
-import FavoritesScreen from './screens/FavoritesScreen';
+import GardenScreen from './screens/GardenScreen';
 import FirstLaunchScreen from './screens/FirstLaunchScreen';
 import HelpScreen from './screens/HelpScreen';
 import ItemScreen from './screens/ItemScreen';
@@ -53,7 +53,7 @@ const MainFlow = () => (
 		<Stack.Screen name="Main" component={MainScreen} />
 		<Stack.Screen
 			name="Favorites"
-			component={FavoritesScreen}
+			component={GardenScreen}
 			options={{ title: 'Мои растения' }}
 		/>
 		<Stack.Screen name="Wishlist" component={WishlistScreen} />

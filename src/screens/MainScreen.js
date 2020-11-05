@@ -8,7 +8,7 @@ import Geolocation from '@react-native-community/geolocation';
 import RNBootSplash from 'react-native-bootsplash';
 import messaging from '@react-native-firebase/messaging';
 import LastScansCard from '../components/LastScansCard';
-import FavoritesCard from '../components/FavoritesCard';
+import GardenCard from '../components/GardenCard';
 import WeatherCard from '../components/WeatherCard';
 import nodeApi from '../api/nodeApi';
 import weatherApi from '../api/weatherApi';
@@ -25,7 +25,7 @@ const MainScreen = ({ navigation }) => {
 		await nodeApi
 			.get('/scans')
 			.then((response) => {
-				/* console.log(response.data); */
+				console.log(response.data.data);
 				const startArray = response.data.data;
 				const data = startArray.slice(0, 9);
 				setScans(data);
@@ -121,13 +121,7 @@ const MainScreen = ({ navigation }) => {
 	return (
 		<View>
 			<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: 15 }}>
-				<FavoritesCard
-					iconName="star-o"
-					nav="Favorites"
-					headerText="Мои растения"
-					itemText="мои растения"
-				/>
-
+				<GardenCard iconName="star-o" nav="Favorites" headerText="Мои растения" />
 				<LastScansCard
 					headerText="Мои сканирования"
 					nav="LastScan"
