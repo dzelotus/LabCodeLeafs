@@ -23,3 +23,6 @@ export const EDIT = 'edit';
 export const EDIT_SUCCESS = 'edit_success';
 export const EDIT_FAIL = 'edis_fail';
 export const GET_PROFILE_CSRF = 'get_profile_csrf';
+// Garden action types
+export const GARDEN_INPUT_CHANGE = 'garnden_input_change';
+export const GET_GARDENS = 'get_gardens';

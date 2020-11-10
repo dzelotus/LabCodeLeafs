@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable operator-linebreak */
 /* eslint-disable consistent-return */
 import React, { useEffect, useState } from 'react';
@@ -8,48 +9,44 @@ import {
 	StyleSheet,
 	FlatList,
 	ActivityIndicator,
+	Alert,
 } from 'react-native';
 import { Input, Button } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { inputChange, getCsrf, getGardens, openGarden } from '../actions/GardenActions';
 
 import nodeApi from '../api/nodeApi';
 
-const GardenScreen = () => {
-	const [csrf, setCsrf] = useState();
+const GardenScreen = (props) => {
+	console.log('PROPS', props);
+	const {
+		// eslint-disable-next-line no-unused-vars
+		gardenName,
+		// eslint-disable-next-line no-unused-vars
+		gardenDescription,
+		inputChange,
+		csrf,
+		getCsrf,
+		getGardens,
+		gardenData,
+	} = props;
+
 	const [check, setCheck] = useState(false);
-	const [garden, setGarden] = useState({});
 	const [newGarden, setNewGarden] = useState({
 		name: '',
 		description: '',
+		id: '',
 	});
 	const [loading, setLoading] = useState({
-		screenLoading: true,
+		screenLoading: false,
 		buttonLoading: false,
+		gardenLoading: false,
 	});
+	const [editLoading, setEditLoading] = useState();
 	const [gardenOpen, setGardenOpen] = useState({});
-
-	const getCsrf = () => {
-		nodeApi
-			.get('/garden/new')
-			.then((response) => {
-				console.log('GARDEN RESPONSE', response.data.csrfToken);
-				setCsrf(response.data.csrfToken);
-			})
-			.catch((error) => console.log('GARDEN ERROR', error));
-	};
-
-	const getGardens = () => {
-		setLoading({ screenLoading: true });
-		nodeApi
-			.get('/garden')
-			.then((response) => {
-				console.log('GET GARDENS', response.data.data[0]);
-				setGarden(response.data.data);
-				setLoading({ screenLoading: false });
-			})
-			.catch((error) => console.log(error));
-	};
+	const [btnTitle, setBtnTitle] = useState({ title: '', edit: false });
 
 	useEffect(() => {
 		getCsrf();
@@ -65,15 +62,25 @@ const GardenScreen = () => {
 							label="Название Огорода"
 							onChangeText={(text) => {
 								setNewGarden({ ...newGarden, name: text });
+								inputChange({
+									prop: 'gardenName',
+									value: text,
+								});
 							}}
+							value={newGarden.name}
 						/>
 						<Input
 							label="Описание"
 							onChangeText={(text) => {
 								setNewGarden({ ...newGarden, description: text });
+								inputChange({
+									prop: 'gardenDescription',
+									value: text,
+								});
 							}}
+							value={newGarden.description}
 						/>
-						<LoadingButton />
+						{loadingButton()}
 						<View style={{ position: 'absolute', bottom: 0, right: 0 }}>
 							<TouchableOpacity
 								style={styles.addGardenBtnPressed}
@@ -99,7 +106,10 @@ const GardenScreen = () => {
 				<TouchableOpacity
 					style={styles.addGardenBtnNormal}
 					onPress={() => {
+						setBtnTitle({ title: 'Создать огород', edit: false });
+						console.log('CREATE BTN', btnTitle);
 						setCheck(true);
+						setNewGarden({ name: '', description: '' });
 					}}
 				>
 					<Icon
@@ -133,90 +143,200 @@ const GardenScreen = () => {
 			});
 	};
 
+	const editGarden = (gardenId) => {
+		nodeApi
+			.get(`garden/${gardenId}/edit`)
+			.then((response) => {
+				setNewGarden({
+					name: response.data.data.name,
+					description: response.data.data.description,
+					id: response.data.data.id,
+				});
+			})
+			.catch((error) => console.log(error));
+	};
+
+	const updateGarden = () => {
+		console.log('START UPDATE');
+		setEditLoading(() => true);
+
+		console.log('LOADING SETTED', editLoading);
+		setGardenOpen({ ...gardenOpen, [newGarden.id]: 'edit' });
+		nodeApi
+			.put(`garden/${newGarden.id}`, {
+				name: newGarden.name,
+				description: newGarden.description,
+				_csrf: csrf,
+			})
+			.then((response) => {
+				console.log('GARDEN UPDATE', response);
+				console.log('GARDEN ID', newGarden.id);
+				setCheck(false);
+				getGardens();
+
+				setGardenOpen({ ...gardenOpen, [newGarden.id]: true });
+			})
+			.catch((error) => {
+				console.log(error.response);
+			});
+	};
+
 	const Indicator = () => (
 		<View>
 			<ActivityIndicator size="large" color="#8DC34A" />
 		</View>
 	);
 
-	const LoadingButton = () => {
+	const loadingButton = () => {
 		if (loading.buttonLoading === true) {
 			return <Indicator />;
 		}
 		return (
 			<Button
-				title="Создать огород"
+				title={btnTitle.title}
 				onPress={() => {
-					createGarden();
+					if (btnTitle.edit === false) {
+						createGarden();
+					} else {
+						console.log('UPDATE TAP');
+						updateGarden();
+					}
 				}}
 			/>
 		);
 	};
 
-	const openedGarden = (open) => {
-		if (gardenOpen[open]) {
-			return <Text>Открыто</Text>;
+	const deleteAlert = (gardenId) => {
+		Alert.alert(
+			'Предупреждение',
+			'Вы точно хотите удалить огород? Отмена удаления невозможна!',
+			[
+				{
+					text: 'Отменить',
+				},
+				{
+					text: 'Удалить',
+					onPress: () => {
+						deleteGarden(gardenId);
+					},
+				},
+			],
+		);
+	};
+
+	const deleteGarden = (gardenId) => {
+		setLoading({ buttonLoading: true });
+		setGardenOpen({ ...gardenOpen, gardenId: 'edit' });
+		console.log('BTN TITLE', btnTitle);
+		nodeApi
+			.delete(`garden/${gardenId}`)
+			.then((response) => {
+				console.log(response);
+				getGardens();
+			})
+			.catch((error) => console.log(error));
+	};
+
+	const openedGarden = (gardenId) => {
+		if (gardenOpen[gardenId] === true) {
+			return (
+				<View style={{ flex: 1 }}>
+					<View
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'flex-end',
+						}}
+					>
+						<TouchableOpacity
+							onPress={() => {
+								deleteAlert(gardenId);
+							}}
+						>
+							<Icon name="delete-outline" size={30} color="red" />
+						</TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => {
+								setBtnTitle({ title: 'Редактировать', edit: true });
+								setCheck(!check);
+								addGarden();
+								editGarden(gardenId);
+								console.log('EDIT BUTTON', btnTitle);
+							}}
+						>
+							<Icon name="pencil-outline" size={30} color="orange" />
+						</TouchableOpacity>
+					</View>
+					<View>
+						<Text>Редактирование огорода {gardenId}</Text>
+					</View>
+				</View>
+			);
+		} else if (gardenOpen[gardenId] === 'edit') {
+			return <Indicator />;
 		}
 	};
 
-	console.log('PRESS', gardenOpen);
-
-	if (loading.screenLoading === true) {
+	// eslint-disable-next-line react/destructuring-assignment
+	if (props.loading === true) {
 		return <Indicator />;
 	}
 	return (
 		<View style={{ flex: 1 }}>
 			<View>
 				<FlatList
-					data={garden}
-					renderItem={({ item }) => {
-						console.log('ITEM', item);
-						return (
-							<View>
-								<View
-									style={
-										gardenOpen[item.id]
-											? styles.gardenContainerPressed
-											: styles.gardenContainerNormal
-									}
+					data={gardenData}
+					renderItem={({ item }) => (
+						<View>
+							<View
+								style={
+									gardenOpen[item.id]
+										? styles.gardenContainerPressed
+										: styles.gardenContainerNormal
+								}
+							>
+								<TouchableOpacity
+									style={{
+										flexDirection: 'row',
+										flex: 1,
+										justifyContent: 'space-between',
+									}}
+									onPress={(index) => {
+										index = item.id;
+										if (gardenOpen[index] === true) {
+											setGardenOpen({
+												...gardenOpen,
+												[index]: false,
+											});
+											openGarden({ [index]: false });
+										} else {
+											setGardenOpen({
+												...gardenOpen,
+												[index]: true,
+											});
+											openGarden({ [index]: true });
+										}
+									}}
 								>
-									<TouchableOpacity
-										style={{
-											flexDirection: 'row',
-											flex: 1,
-											justifyContent: 'space-between',
-										}}
-										onPress={(index) => {
-											index = item.id;
-											if (gardenOpen[index] === true) {
-												setGardenOpen({
-													...gardenOpen,
-													[index]: false,
-												});
-											} else {
-												setGardenOpen({
-													...gardenOpen,
-													[index]: true,
-												});
-											}
-										}}
-									>
-										<Text>{item.name}</Text>
-										<Text>{item.description}</Text>
-										<Icon name="chevron-down" size={20} />
-									</TouchableOpacity>
-								</View>
-								<View style={styles.gardenContainerOpened}>
-									{openedGarden(item.id)}
-								</View>
+									<Text>{item.name}</Text>
+									<Text>{item.description}</Text>
+									<Icon name="chevron-down" size={20} />
+								</TouchableOpacity>
 							</View>
-						);
-					}}
+							<View style={styles.gardenContainerOpened}>
+								{openedGarden(item.id, item.name, item.description)}
+							</View>
+						</View>
+					)}
 				/>
 			</View>
 			{addGarden()}
 		</View>
 	);
+};
+
+const mapStateToProps = ({ garden }) => {
+	const { gardenName, gardenDescription, csrf, loading, gardenData, openGardenId } = garden;
+	return { gardenName, gardenDescription, csrf, loading, gardenData, openGardenId };
 };
 
 const styles = StyleSheet.create({
@@ -331,4 +451,6 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default GardenScreen;
+export default connect(mapStateToProps, { inputChange, getCsrf, getGardens, openGarden })(
+	GardenScreen,
+);
