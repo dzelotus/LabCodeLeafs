@@ -31,10 +31,9 @@ import {
 const GardenScreen = (props) => {
 	console.log('PROPS', props);
 	const {
+		navigation,
 		gardenId,
-		// eslint-disable-next-line no-unused-vars
 		gardenName,
-		// eslint-disable-next-line no-unused-vars
 		gardenDescription,
 		inputChange,
 		csrf,
@@ -46,7 +45,6 @@ const GardenScreen = (props) => {
 		deleteGarden,
 		buttonLoading,
 		screenLoading,
-
 		openGarden,
 		itemOpenIndex,
 		changeButtonAction,
@@ -54,11 +52,6 @@ const GardenScreen = (props) => {
 		editGarden,
 		updateGarden,
 	} = props;
-
-	/* 	navigation.addListener('focus', () => {
-		);
-	});
- */
 
 	useEffect(() => {
 		getGardens('screenLoading');
@@ -203,6 +196,17 @@ const GardenScreen = (props) => {
 					</View>
 					<View>
 						<Text>Редактирование огорода {gardenId}</Text>
+						<TouchableOpacity
+							style={styles.addPlantBtn}
+							onPress={() => navigation.navigate('AddPlant')}
+						>
+							<View style={styles.rowDirection}>
+								<Icon name="plus" size={22} color="#8DC34A" />
+								<Text style={{ fontSize: 15, marginLeft: 10, color: '#FF9800' }}>
+									Добавить растение
+								</Text>
+							</View>
+						</TouchableOpacity>
 					</View>
 				</View>
 			);
@@ -401,6 +405,29 @@ const styles = StyleSheet.create({
 		flex: 1,
 		borderTopLeftRadius: 0,
 		borderTopRightRadius: 0,
+	},
+	addPlantBtn: {
+		marginHorizontal: 15,
+		marginVertical: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 12,
+		},
+		shadowOpacity: 0.58,
+		shadowRadius: 16.0,
+
+		elevation: 3,
+		borderRadius: 10,
+		borderColor: '#8DC34A',
+		borderWidth: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		height: 40,
+		justifyContent: 'center',
+	},
+	rowDirection: {
+		flexDirection: 'row',
 	},
 });
 
