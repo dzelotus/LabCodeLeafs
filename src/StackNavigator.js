@@ -26,7 +26,8 @@ import ScanPhotoScreen from './screens/ScanPhotoScreen';
 import SigninScreen from './screens/SigninScreen';
 import SignupScreen from './screens/SignupScreen';
 import WishlistScreen from './screens/WishlistScreen';
-import AddPlantScreen from './screens/AddPlantScreen';
+/* import AddPlantScreen from './screens/AddPlantScreen'; */
+import AddPlantFormHook from './screens/AddPlantScreenFormHook';
 import nodeApi from './api/nodeApi';
 import { resolveAuth } from './actions/AuthActions';
 import NewsScreen from './screens/NewsScreen';
@@ -59,7 +60,7 @@ const MainFlow = () => (
 		/>
 		<Stack.Screen
 			name="AddPlant"
-			component={AddPlantScreen}
+			component={AddPlantFormHook}
 			options={{ headerTitle: 'Добавить Растение' }}
 		/>
 		<Stack.Screen name="Wishlist" component={WishlistScreen} />

@@ -34,3 +34,6 @@ export const OPEN_ITEM = 'open_item';
 export const BUTTON_ACTION = 'button_action';
 export const EDIT_GARDEN = 'edit_garden';
 export const UPDATE_GARDEN = 'update_garden';
+export const GET_PLANTS_DATA = 'get_plants_data';
+// Add plant actions
+export const GET_PLANTS_NAME = 'get_plants_name';

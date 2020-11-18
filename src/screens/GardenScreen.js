@@ -26,10 +26,11 @@ import {
 	changeButtonAction,
 	editGarden,
 	updateGarden,
+	getPlantsData,
 } from '../actions/GardenActions';
 
 const GardenScreen = (props) => {
-	console.log('PROPS', props);
+	console.log('PROPS', plantsData);
 	const {
 		navigation,
 		gardenId,
@@ -51,6 +52,8 @@ const GardenScreen = (props) => {
 		editButton,
 		editGarden,
 		updateGarden,
+		getPlantsData,
+		plantsData,
 	} = props;
 
 	useEffect(() => {
@@ -168,6 +171,7 @@ const GardenScreen = (props) => {
 
 	const openedGarden = (gardenId) => {
 		if (itemOpenIndex[gardenId] === true) {
+			/* getPlantsData(itemOpenIndex); */
 			return (
 				<View style={{ flex: 1 }}>
 					<View
@@ -195,10 +199,9 @@ const GardenScreen = (props) => {
 						</TouchableOpacity>
 					</View>
 					<View>
-						<Text>Редактирование огорода {gardenId}</Text>
 						<TouchableOpacity
 							style={styles.addPlantBtn}
-							onPress={() => navigation.navigate('AddPlant')}
+							onPress={() => navigation.navigate('AddPlant', { gardenId })}
 						>
 							<View style={styles.rowDirection}>
 								<Icon name="plus" size={22} color="#8DC34A" />
@@ -240,10 +243,13 @@ const GardenScreen = (props) => {
 										justifyContent: 'space-between',
 									}}
 									onPress={(index) => {
+										console.log('BLALALALALALA', item);
 										index = item.id;
+
 										if (itemOpenIndex[index] === true) {
 											openGarden({ ...itemOpenIndex, [index]: false });
 										} else {
+											getPlantsData({ index });
 											openGarden({ ...itemOpenIndex, [index]: true });
 										}
 									}}
@@ -279,6 +285,7 @@ const mapStateToProps = ({ garden }) => {
 		itemOpenIndex,
 		editButton,
 		gardenId,
+		plantsData,
 	} = garden;
 	return {
 		gardenName,
@@ -293,6 +300,7 @@ const mapStateToProps = ({ garden }) => {
 		itemOpenIndex,
 		editButton,
 		gardenId,
+		plantsData,
 	};
 };
 
@@ -442,4 +450,5 @@ export default connect(mapStateToProps, {
 	changeButtonAction,
 	editGarden,
 	updateGarden,
+	getPlantsData,
 })(GardenScreen);

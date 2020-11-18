@@ -9,6 +9,7 @@ import {
 	OPEN_ITEM,
 	BUTTON_ACTION,
 	EDIT_GARDEN,
+	GET_PLANTS_DATA,
 } from './types';
 import nodeApi from '../api/nodeApi';
 
@@ -142,4 +143,15 @@ export const updateGarden = (gardenId, gardenName, gardenDescription, csrf) => (
 		.catch((error) => {
 			console.log(error.response);
 		});
+};
+
+export const getPlantsData = (gardenId) => (dispatch) => {
+	console.log('CHECK', gardenId);
+	nodeApi
+		.get(`/garden-planting/${gardenId.index}`)
+		.then((response) => {
+			console.log(`GARDEN PLANTS ${gardenId.index}`, response.data.data);
+			dispatch({ type: GET_PLANTS_DATA, [gardenId.index]: response.data.data });
+		})
+		.catch((error) => console.log(error.response));
 };

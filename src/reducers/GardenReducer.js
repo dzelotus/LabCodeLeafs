@@ -10,6 +10,7 @@ import {
 	BUTTON_ACTION,
 	EDIT_GARDEN,
 	UPDATE_GARDEN,
+	GET_PLANTS_DATA,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -24,6 +25,7 @@ const INITIAL_STATE = {
 	itemLoading: false,
 	itemOpenIndex: [],
 	editButton: false,
+	plantsData: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -79,6 +81,11 @@ export default (state = INITIAL_STATE, action) => {
 		case UPDATE_GARDEN:
 			return {
 				...state,
+			};
+		case GET_PLANTS_DATA:
+			return {
+				...state,
+				plantsData: action.plantsData,
 			};
 		default:
 			return state;
