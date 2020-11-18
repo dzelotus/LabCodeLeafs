@@ -16,16 +16,19 @@ import moment from 'moment';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useForm, Controller } from 'react-hook-form';
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import nodeApi from '../api/nodeApi';
 
-const AddPlantScreenFormHook = ({ route }) => {
+const AddPlantScreenFormHook = (props) => {
 	const [loading, setLoading] = useState({ screenLoading: true, buttonLoading: false });
 	const [plants, setPlants] = useState(null);
 	const [unit, setUnit] = useState(null);
 	const [show, setShow] = useState(false);
 	const [csrf, setCsrf] = useState();
-	const { gardenId } = route.params;
+	// eslint-disable-next-line react/destructuring-assignment
+	const { gardenId } = props.route.params;
+	const { navigation } = props;
 
 	const getPlantsName = () => {
 		nodeApi
@@ -96,8 +99,12 @@ const AddPlantScreenFormHook = ({ route }) => {
 			.then((response) => {
 				console.log('POST RESPONSE', response);
 				setLoading({ ...loading, buttonLoading: false });
+				navigation.navigate('Garden', { onBack: gardenId });
 			})
-			.catch((error) => console.log('POST ERROR', error.response));
+			.catch((error) => {
+				console.log('POST ERROR', error.response);
+				setLoading({ ...loading, buttonLoading: false });
+			});
 	};
 
 	if (loading.screenLoading) {

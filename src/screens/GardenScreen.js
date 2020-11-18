@@ -13,8 +13,9 @@ import {
 } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
-
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import nodeApi from '../api/nodeApi';
+
 import {
 	inputChange,
 	getCsrf,
@@ -27,10 +28,10 @@ import {
 	editGarden,
 	updateGarden,
 	getPlantsData,
+	clearState,
 } from '../actions/GardenActions';
 
 const GardenScreen = (props) => {
-	console.log('PROPS', plantsData);
 	const {
 		navigation,
 		gardenId,
@@ -54,11 +55,21 @@ const GardenScreen = (props) => {
 		updateGarden,
 		getPlantsData,
 		plantsData,
+		route,
+		clearState,
+		plantsLoading,
 	} = props;
 
+	console.log('PROPS', screenLoading);
+
 	useEffect(() => {
-		getGardens('screenLoading');
-	}, []);
+		getGardens();
+		console.log('FOCUS');
+		const unsubscribe = navigation.addListener('focus', () => {
+			route.params ? getPlantsData({ index: props.route.params.onBack }) : console.log('NO');
+		});
+		return unsubscribe;
+	}, [navigation, route.params]);
 
 	const addGarden = () => {
 		if (addBtnSwitch) {
@@ -112,6 +123,7 @@ const GardenScreen = (props) => {
 					style={styles.addGardenBtnNormal}
 					onPress={() => {
 						changeButtonAction(false);
+						clearState();
 						addButtonSwitch(!addBtnSwitch);
 					}}
 				>
@@ -169,9 +181,27 @@ const GardenScreen = (props) => {
 		);
 	};
 
+	const deletePlant = (plantId, gardenId) => {
+		console.log(plantId, gardenId);
+		Alert.alert('Предупреждение', 'Вы точно хотите удалить растение?', [
+			{ text: 'Отменить' },
+			{
+				text: 'Удалить',
+				onPress: () => {
+					nodeApi
+						.delete(`/garden-planting/${gardenId}/planting/${plantId}`)
+						.then((response) => {
+							console.log('DEL RESP', response);
+							getPlantsData({ index: gardenId });
+						})
+						.catch((error) => console.log(error.response));
+				},
+			},
+		]);
+	};
+
 	const openedGarden = (gardenId) => {
 		if (itemOpenIndex[gardenId] === true) {
-			/* getPlantsData(itemOpenIndex); */
 			return (
 				<View style={{ flex: 1 }}>
 					<View
@@ -199,6 +229,57 @@ const GardenScreen = (props) => {
 						</TouchableOpacity>
 					</View>
 					<View>
+						<View
+							style={{
+								flexDirection: 'row',
+								justifyContent: 'space-between',
+								flex: 1,
+							}}
+						>
+							<Text style={{ flex: 1, textAlignVertical: 'center' }}>Растение</Text>
+							<Text style={{ flex: 1, textAlignVertical: 'center' }}>
+								Дата посадки
+							</Text>
+							<Text style={{ flex: 1, textAlignVertical: 'center' }}>
+								Объем посадки
+							</Text>
+							<Text style={{ flex: 0.5, textAlignVertical: 'center' }}>Кнопки</Text>
+						</View>
+						<FlatList
+							data={plantsData[gardenId]}
+							renderItem={(item) => {
+								return (
+									<View
+										style={{
+											flexDirection: 'row',
+											justifyContent: 'space-between',
+										}}
+									>
+										<Text style={{ flex: 1, textAlignVertical: 'center' }}>
+											{item.item.garden_plant_name}
+										</Text>
+										<Text style={{ flex: 1, textAlignVertical: 'center' }}>
+											{item.item.planting_date}
+										</Text>
+										<Text style={{ flex: 1, textAlignVertical: 'center' }}>
+											{item.item.planting_size}{' '}
+											{item.item.planting_unit_short_name}
+										</Text>
+										<TouchableOpacity
+											style={{ flex: 0.5 }}
+											onPress={() => {
+												deletePlant(item.item.id, gardenId);
+											}}
+										>
+											<Icon name="delete-outline" size={30} color="red" />
+										</TouchableOpacity>
+									</View>
+								);
+							}}
+						/>
+						{plantsLoading[gardenId] ? <Indicator /> : null}
+					</View>
+					<View>
 						<TouchableOpacity
 							style={styles.addPlantBtn}
 							onPress={() => navigation.navigate('AddPlant', { gardenId })}
@@ -213,9 +294,7 @@ const GardenScreen = (props) => {
 					</View>
 				</View>
 			);
-		} /* else if (gardenOpen[gardenId] === 'edit') {
-			return <Indicator />;
-		} */
+		}
 	};
 
 	// eslint-disable-next-line react/destructuring-assignment
@@ -243,10 +322,10 @@ const GardenScreen = (props) => {
 										justifyContent: 'space-between',
 									}}
 									onPress={(index) => {
-										console.log('BLALALALALALA', item);
 										index = item.id;
 
 										if (itemOpenIndex[index] === true) {
+											/* getPlantsData({ index }); */
 											openGarden({ ...itemOpenIndex, [index]: false });
 										} else {
 											getPlantsData({ index });
@@ -286,6 +365,7 @@ const mapStateToProps = ({ garden }) => {
 		editButton,
 		gardenId,
 		plantsData,
+		plantsLoading,
 	} = garden;
 	return {
 		gardenName,
@@ -301,6 +381,7 @@ const mapStateToProps = ({ garden }) => {
 		editButton,
 		gardenId,
 		plantsData,
+		plantsLoading,
 	};
 };
 
@@ -451,4 +532,5 @@ export default connect(mapStateToProps, {
 	editGarden,
 	updateGarden,
 	getPlantsData,
+	clearState,
 })(GardenScreen);

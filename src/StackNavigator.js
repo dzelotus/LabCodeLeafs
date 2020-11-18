@@ -54,7 +54,7 @@ const MainFlow = () => (
 	>
 		<Stack.Screen name="Main" component={MainScreen} />
 		<Stack.Screen
-			name="Favorites"
+			name="Garden"
 			component={GardenScreen}
 			options={{ headerTitle: 'Мой Огород' }}
 		/>

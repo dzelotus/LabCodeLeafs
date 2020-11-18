@@ -121,7 +121,7 @@ const MainScreen = ({ navigation }) => {
 	return (
 		<View>
 			<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: 15 }}>
-				<GardenCard iconName="star-o" nav="Favorites" headerText="Мои растения" />
+				<GardenCard iconName="star-o" nav="Garden" headerText="Мои растения" />
 				<LastScansCard
 					headerText="Мои сканирования"
 					nav="LastScan"

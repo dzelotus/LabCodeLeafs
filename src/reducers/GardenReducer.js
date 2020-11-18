@@ -25,7 +25,8 @@ const INITIAL_STATE = {
 	itemLoading: false,
 	itemOpenIndex: [],
 	editButton: false,
-	plantsData: [],
+	plantsData: {},
+	plantsLoading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -85,7 +86,11 @@ export default (state = INITIAL_STATE, action) => {
 		case GET_PLANTS_DATA:
 			return {
 				...state,
-				plantsData: action.plantsData,
+				plantsData: { ...state.plantsData, [action.index]: action.plantsData },
+				plantsLoading: {
+					...state.plantsLoading,
+					[action.index]: action.plantsLoading,
+				},
 			};
 		default:
 			return state;

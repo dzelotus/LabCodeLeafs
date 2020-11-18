@@ -41,6 +41,7 @@
 		"react/jsx-one-expression-per-line": "off",
 		"react/jsx-curly-newline": "off",
 		"operator-linebreak": ["error", "after"],
-		"react/jsx-props-no-spreading": "off"
+        "react/jsx-props-no-spreading": "off",
+        "no-unused-expressions": ["error", {"allowTernary": true}]
 	}
 }

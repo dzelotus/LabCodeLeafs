@@ -31,18 +31,14 @@ export const getCsrf = () => (dispatch) => {
 		.catch((e) => console.log('ERR', e.response));
 };
 
-export const getGardens = (loadingSwitch) => (dispatch) => {
-	console.log('LOADING SWITCH', loadingSwitch);
-	if (loadingSwitch === 'screenLoading') {
-		dispatch({ type: GET_GARDENS, screenLoading: true });
-	} else {
-		dispatch({ type: GET_GARDENS, itemLoading: true });
-	}
+export const getGardens = () => (dispatch) => {
+	console.log('FUCKER');
+	dispatch({ type: GET_GARDENS, screenLoading: true });
+
 	dispatch(getCsrf());
 	nodeApi
 		.get('/garden')
 		.then((response) => {
-			console.log(response.data.data);
 			dispatch({
 				type: GET_GARDENS,
 				data: response.data.data,
@@ -76,15 +72,13 @@ export const createGarden = (gardenName, gardenDescription, csrf) => (dispatch) 
 			description: gardenDescription,
 			_csrf: csrf,
 		})
-		.then((response) => {
-			console.log('GARDEN CREATE', response);
+		.then(() => {
 			dispatch({ type: CREATE_GARDEN, buttonLoading: false });
 
 			dispatch(getGardens('itemLoading'));
 			dispatch(clearState());
 		})
-		.catch((error) => {
-			console.log('GARDEN CREATE ERROR', error.response);
+		.catch(() => {
 			dispatch({ type: CREATE_GARDEN, buttonLoading: false });
 			dispatch(getGardens('itemLoading'));
 		});
@@ -94,8 +88,7 @@ export const deleteGarden = (gardenId) => (dispatch) => {
 	dispatch({ type: DELETE_GARDEN, itemLoading: true });
 	nodeApi
 		.delete(`garden/${gardenId}`)
-		.then((response) => {
-			console.log(response);
+		.then(() => {
 			dispatch(getGardens('itemLoading'));
 		})
 		.catch((error) => {
@@ -109,12 +102,10 @@ export const changeButtonAction = (editButton) => (dispatch) => {
 };
 
 export const editGarden = (gardenId) => (dispatch) => {
-	console.log('GARDEN ID', gardenId);
 	dispatch({ type: EDIT_GARDEN, buttonLoading: true });
 	nodeApi
 		.get(`garden/${gardenId}/edit`)
 		.then((response) => {
-			console.log(response.data.data);
 			dispatch({
 				type: EDIT_GARDEN,
 				name: response.data.data.name,
@@ -128,15 +119,13 @@ export const editGarden = (gardenId) => (dispatch) => {
 };
 
 export const updateGarden = (gardenId, gardenName, gardenDescription, csrf) => (dispatch) => {
-	console.log(gardenId, gardenName, gardenDescription, csrf);
 	nodeApi
 		.put(`garden/${gardenId}`, {
 			name: gardenName,
 			description: gardenDescription,
 			_csrf: csrf,
 		})
-		.then((response) => {
-			console.log(response);
+		.then(() => {
 			dispatch(getGardens());
 			dispatch(clearState());
 		})
@@ -146,12 +135,17 @@ export const updateGarden = (gardenId, gardenName, gardenDescription, csrf) => (
 };
 
 export const getPlantsData = (gardenId) => (dispatch) => {
-	console.log('CHECK', gardenId);
+	dispatch({ type: GET_PLANTS_DATA, index: gardenId.index, plantsLoading: true });
+
 	nodeApi
 		.get(`/garden-planting/${gardenId.index}`)
 		.then((response) => {
-			console.log(`GARDEN PLANTS ${gardenId.index}`, response.data.data);
-			dispatch({ type: GET_PLANTS_DATA, [gardenId.index]: response.data.data });
+			dispatch({
+				type: GET_PLANTS_DATA,
+				index: gardenId.index,
+				plantsData: response.data.data,
+				plantsLoading: false,
+			});
 		})
 		.catch((error) => console.log(error.response));
 };
