@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable operator-linebreak */
 /* eslint-disable indent */
 /* eslint-disable arrow-body-style */
@@ -26,9 +27,26 @@ const AddPlantScreenFormHook = (props) => {
 	const [unit, setUnit] = useState(null);
 	const [show, setShow] = useState(false);
 	const [csrf, setCsrf] = useState();
+	const [editData, setEditData] = useState(null);
 	// eslint-disable-next-line react/destructuring-assignment
 	const { gardenId } = props.route.params;
 	const { navigation } = props;
+
+	const editP = () => {
+		if (props.route.params.plantId) {
+			const { plantId } = props.route.params;
+			nodeApi
+				.get(`/garden-planting/${gardenId}/planting/${plantId}/edit`)
+				.then((response) => {
+					console.log(response.data);
+					setEditData(response.data.data);
+					setCsrf(response.data.csrfToken);
+				})
+				.catch((error) => console.log(error));
+		} else {
+			console.log('NO');
+		}
+	};
 
 	const getPlantsName = () => {
 		nodeApi
@@ -60,6 +78,7 @@ const AddPlantScreenFormHook = (props) => {
 	};
 
 	useEffect(() => {
+		editP();
 		getPlantsName();
 		getPlantsUnits();
 		getCsrf();
@@ -107,6 +126,8 @@ const AddPlantScreenFormHook = (props) => {
 			});
 	};
 
+	console.log('DATA', editData);
+
 	if (loading.screenLoading) {
 		return <Indicator />;
 	}
@@ -143,7 +164,7 @@ const AddPlantScreenFormHook = (props) => {
 						</View>
 					)}
 					name="garden_plant_id"
-					defaultValue="0"
+					defaultValue={editData ? Number.parseInt(editData.garden_plant_id) : '0'}
 				/>
 			</View>
 			<View style={styles.container}>
@@ -187,7 +208,7 @@ const AddPlantScreenFormHook = (props) => {
 						</View>
 					)}
 					name="planting_date"
-					defaultValue={new Date()}
+					defaultValue={editData ? editData.planting_date : new Date()}
 				/>
 			</View>
 			<View style={styles.container}>
@@ -217,7 +238,7 @@ const AddPlantScreenFormHook = (props) => {
 						</View>
 					)}
 					name="planting_unit"
-					defaultValue=""
+					defaultValue={editData ? Number.parseInt(editData.planting_unit) : '0'}
 				/>
 			</View>
 			<View style={styles.container}>
@@ -234,11 +255,12 @@ const AddPlantScreenFormHook = (props) => {
 								onBlur={onBlur}
 								textValue={value}
 								style={{ paddingHorizontal: 10 }}
+								defaultValue={value.toString()}
 							/>
 						</View>
 					)}
 					name="planting_size"
-					defaultValue=""
+					defaultValue={editData ? editData.planting_size : ''}
 				/>
 			</View>
 

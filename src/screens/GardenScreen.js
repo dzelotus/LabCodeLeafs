@@ -60,11 +60,9 @@ const GardenScreen = (props) => {
 		plantsLoading,
 	} = props;
 
-	console.log('PROPS', screenLoading);
-
 	useEffect(() => {
-		getGardens();
-		console.log('FOCUS');
+		route.params ? getGardens('itemLoading') : getGardens('screenLoading');
+
 		const unsubscribe = navigation.addListener('focus', () => {
 			route.params ? getPlantsData({ index: props.route.params.onBack }) : console.log('NO');
 		});
@@ -208,15 +206,14 @@ const GardenScreen = (props) => {
 						style={{
 							flexDirection: 'row',
 							justifyContent: 'flex-end',
+							marginHorizontal: 10,
+							paddingVertical: 5,
+							borderTopWidth: 2,
+							borderTopColor: '#dedede',
+							borderBottomWidth: 2,
+							borderBottomColor: '#8DC34A',
 						}}
 					>
-						<TouchableOpacity
-							onPress={() => {
-								deleteAlert(gardenId);
-							}}
-						>
-							<Icon name="delete-outline" size={30} color="red" />
-						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => {
 								changeButtonAction(true);
@@ -225,7 +222,14 @@ const GardenScreen = (props) => {
 								editGarden(gardenId);
 							}}
 						>
-							<Icon name="pencil-outline" size={30} color="orange" />
+							<Icon name="pencil-outline" size={25} color="orange" />
+						</TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => {
+								deleteAlert(gardenId);
+							}}
+						>
+							<Icon name="delete-outline" size={25} color="red" />
 						</TouchableOpacity>
 					</View>
 					<View>
@@ -234,16 +238,29 @@ const GardenScreen = (props) => {
 								flexDirection: 'row',
 								justifyContent: 'space-between',
 								flex: 1,
+								paddingHorizontal: 10,
 							}}
 						>
-							<Text style={{ flex: 1, textAlignVertical: 'center' }}>Растение</Text>
-							<Text style={{ flex: 1, textAlignVertical: 'center' }}>
+							<Text style={{ flex: 0.9, textAlignVertical: 'center' }}>Растение</Text>
+							<Text
+								style={{
+									flex: 1,
+									textAlignVertical: 'center',
+									textAlign: 'center',
+								}}
+							>
 								Дата посадки
 							</Text>
-							<Text style={{ flex: 1, textAlignVertical: 'center' }}>
+							<Text
+								style={{
+									flex: 1,
+									textAlignVertical: 'center',
+									textAlign: 'center',
+								}}
+							>
 								Объем посадки
 							</Text>
-							<Text style={{ flex: 0.5, textAlignVertical: 'center' }}>Кнопки</Text>
+							<Text style={{ flex: 0.7, textAlignVertical: 'center' }} />
 						</View>
 						<FlatList
 							data={plantsData[gardenId]}
@@ -253,26 +270,65 @@ const GardenScreen = (props) => {
 										style={{
 											flexDirection: 'row',
 											justifyContent: 'space-between',
+											paddingHorizontal: 10,
 										}}
 									>
-										<Text style={{ flex: 1, textAlignVertical: 'center' }}>
+										<Text
+											style={{
+												flex: 0.9,
+												textAlignVertical: 'center',
+											}}
+										>
 											{item.item.garden_plant_name}
 										</Text>
-										<Text style={{ flex: 1, textAlignVertical: 'center' }}>
+										<Text
+											style={{
+												flex: 1,
+												textAlignVertical: 'center',
+												textAlign: 'center',
+											}}
+										>
 											{item.item.planting_date}
 										</Text>
-										<Text style={{ flex: 1, textAlignVertical: 'center' }}>
+										<Text
+											style={{
+												flex: 1,
+												textAlignVertical: 'center',
+												textAlign: 'center',
+											}}
+										>
 											{item.item.planting_size}{' '}
 											{item.item.planting_unit_short_name}
 										</Text>
-										<TouchableOpacity
-											style={{ flex: 0.5 }}
-											onPress={() => {
-												deletePlant(item.item.id, gardenId);
+										<View
+											style={{
+												flex: 0.7,
+												flexDirection: 'row',
+												justifyContent: 'flex-end',
 											}}
 										>
-											<Icon name="delete-outline" size={30} color="red" />
-										</TouchableOpacity>
+											<TouchableOpacity
+												onPress={() => {
+													navigation.navigate('AddPlant', {
+														gardenId,
+														plantId: item.item.id,
+													});
+												}}
+											>
+												<Icon
+													name="pencil-outline"
+													size={25}
+													color="orange"
+												/>
+											</TouchableOpacity>
+											<TouchableOpacity
+												onPress={() => {
+													deletePlant(item.item.id, gardenId);
+												}}
+											>
+												<Icon name="delete-outline" size={25} color="red" />
+											</TouchableOpacity>
+										</View>
 									</View>
 								);
 							}}
@@ -320,6 +376,7 @@ const GardenScreen = (props) => {
 										flexDirection: 'row',
 										flex: 1,
 										justifyContent: 'space-between',
+										padding: 10,
 									}}
 									onPress={(index) => {
 										index = item.id;
@@ -327,8 +384,10 @@ const GardenScreen = (props) => {
 										if (itemOpenIndex[index] === true) {
 											/* getPlantsData({ index }); */
 											openGarden({ ...itemOpenIndex, [index]: false });
-										} else {
+										} else if (!plantsData[index]) {
 											getPlantsData({ index });
+											openGarden({ ...itemOpenIndex, [index]: true });
+										} else {
 											openGarden({ ...itemOpenIndex, [index]: true });
 										}
 									}}
@@ -439,7 +498,7 @@ const styles = StyleSheet.create({
 	},
 
 	gardenContainerNormal: {
-		marginHorizontal: 15,
+		marginHorizontal: 10,
 		marginTop: 15,
 		shadowColor: '#000',
 		shadowOffset: {
@@ -457,7 +516,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	gardenContainerPressed: {
-		marginHorizontal: 15,
+		marginHorizontal: 10,
 		marginTop: 15,
 		shadowColor: '#000',
 		shadowOffset: {
@@ -477,7 +536,7 @@ const styles = StyleSheet.create({
 		borderBottomRightRadius: 0,
 	},
 	gardenContainerOpened: {
-		marginHorizontal: 15,
+		marginHorizontal: 10,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -494,6 +553,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		borderTopLeftRadius: 0,
 		borderTopRightRadius: 0,
+		marginBottom: 5,
 	},
 	addPlantBtn: {
 		marginHorizontal: 15,

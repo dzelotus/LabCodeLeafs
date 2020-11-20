@@ -31,9 +31,13 @@ export const getCsrf = () => (dispatch) => {
 		.catch((e) => console.log('ERR', e.response));
 };
 
-export const getGardens = () => (dispatch) => {
-	console.log('FUCKER');
-	dispatch({ type: GET_GARDENS, screenLoading: true });
+export const getGardens = (switcher) => (dispatch) => {
+	console.log('FUCKER', switcher);
+	if (switcher === 'screenLoading') {
+		dispatch({ type: GET_GARDENS, screenLoading: true });
+	} else {
+		dispatch({ type: GET_GARDENS, itemLoading: true });
+	}
 
 	dispatch(getCsrf());
 	nodeApi
