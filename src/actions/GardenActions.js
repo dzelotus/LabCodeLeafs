@@ -10,6 +10,8 @@ import {
 	BUTTON_ACTION,
 	EDIT_GARDEN,
 	GET_PLANTS_DATA,
+	OPEN_PLANT,
+	SET_PLANT_SWITCHER,
 } from './types';
 import nodeApi from '../api/nodeApi';
 
@@ -32,7 +34,6 @@ export const getCsrf = () => (dispatch) => {
 };
 
 export const getGardens = (switcher) => (dispatch) => {
-	console.log('FUCKER', switcher);
 	if (switcher === 'screenLoading') {
 		dispatch({ type: GET_GARDENS, screenLoading: true });
 	} else {
@@ -62,6 +63,15 @@ export const getGardens = (switcher) => (dispatch) => {
 
 export const openGarden = (index) => (dispatch) => {
 	dispatch({ type: OPEN_ITEM, payload: index });
+};
+
+export const setPlantSwitcher = (check) => (dispatch) => {
+	console.log('check', check);
+	dispatch({ type: SET_PLANT_SWITCHER, payload: check });
+};
+
+export const openPlants = (gardenId) => (dispatch) => {
+	dispatch({ type: OPEN_PLANT, payload: gardenId });
 };
 
 export const addButtonSwitch = (btnSwitch) => (dispatch) => {
@@ -144,12 +154,25 @@ export const getPlantsData = (gardenId) => (dispatch) => {
 	nodeApi
 		.get(`/garden-planting/${gardenId.index}`)
 		.then((response) => {
+			const gardenData = groupObjectArrayByKey(response.data.data, 'garden_plant_name');
+
 			dispatch({
 				type: GET_PLANTS_DATA,
 				index: gardenId.index,
-				plantsData: response.data.data,
+				plantsData: gardenData,
 				plantsLoading: false,
 			});
 		})
 		.catch((error) => console.log(error.response));
+};
+
+const groupObjectArrayByKey = (arrayOfObjects, groupKey) => {
+	return arrayOfObjects.reduce((groups, item) => {
+		const group = groups[item[groupKey]] || [];
+		group.push(item);
+
+		groups[item[groupKey]] = group;
+
+		return groups;
+	}, {});
 };

@@ -11,6 +11,8 @@ import {
 	EDIT_GARDEN,
 	UPDATE_GARDEN,
 	GET_PLANTS_DATA,
+	OPEN_PLANT,
+	SET_PLANT_SWITCHER,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -27,6 +29,7 @@ const INITIAL_STATE = {
 	editButton: false,
 	plantsData: {},
 	plantsLoading: false,
+	plantItemOpenSwitcher: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -91,6 +94,16 @@ export default (state = INITIAL_STATE, action) => {
 					...state.plantsLoading,
 					[action.index]: action.plantsLoading,
 				},
+			};
+		case SET_PLANT_SWITCHER:
+			return {
+				...state,
+				plantItemOpenSwitcher: action.payload,
+			};
+		case OPEN_PLANT:
+			return {
+				...state,
+				plantItemOpenSwitcher: action.payload,
 			};
 		default:
 			return state;

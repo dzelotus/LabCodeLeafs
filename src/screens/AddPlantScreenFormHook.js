@@ -32,6 +32,8 @@ const AddPlantScreenFormHook = (props) => {
 	const { gardenId } = props.route.params;
 	const { navigation } = props;
 
+	const screenTitle = () => navigation.setOptions({ title: 'ТАЙТЛ' });
+
 	const editP = () => {
 		if (props.route.params.plantId) {
 			const { plantId } = props.route.params;
@@ -82,6 +84,7 @@ const AddPlantScreenFormHook = (props) => {
 		getPlantsName();
 		getPlantsUnits();
 		getCsrf();
+		screenTitle();
 	}, []);
 
 	const Indicator = () => (
@@ -100,7 +103,7 @@ const AddPlantScreenFormHook = (props) => {
 					<View style={styles.rowDirection}>
 						<Icon name="plus" size={22} color="#8DC34A" />
 						<Text style={{ fontSize: 15, marginLeft: 10, color: '#FF9800' }}>
-							Добавить растение
+							{editData ? 'Редактировать растение' : 'Добавить растение'}
 						</Text>
 					</View>
 				</TouchableOpacity>
@@ -113,17 +116,34 @@ const AddPlantScreenFormHook = (props) => {
 		setLoading({ ...loading, buttonLoading: true });
 		console.log('DATA', data);
 		console.log(gardenId);
-		nodeApi
-			.post(`/garden-planting/${gardenId}`, { ...data, _csrf: csrf })
-			.then((response) => {
-				console.log('POST RESPONSE', response);
-				setLoading({ ...loading, buttonLoading: false });
-				navigation.navigate('Garden', { onBack: gardenId });
-			})
-			.catch((error) => {
-				console.log('POST ERROR', error.response);
-				setLoading({ ...loading, buttonLoading: false });
-			});
+		if (editData) {
+			nodeApi
+				.put(`/garden-planting/${editData.garden_id}/planting/${editData.id}`, {
+					...data,
+					_csrf: csrf,
+				})
+				.then((response) => {
+					console.log('POST RESPONSE', response);
+					setLoading({ ...loading, buttonLoading: false });
+					navigation.navigate('Garden', { onBack: gardenId });
+				})
+				.catch((error) => {
+					console.log('POST ERROR', error.response);
+					setLoading({ ...loading, buttonLoading: false });
+				});
+		} else {
+			nodeApi
+				.post(`/garden-planting/${gardenId}`, { ...data, _csrf: csrf })
+				.then((response) => {
+					console.log('POST RESPONSE', response);
+					setLoading({ ...loading, buttonLoading: false });
+					navigation.navigate('Garden', { onBack: gardenId });
+				})
+				.catch((error) => {
+					console.log('POST ERROR', error.response);
+					setLoading({ ...loading, buttonLoading: false });
+				});
+		}
 	};
 
 	console.log('DATA', editData);
@@ -208,7 +228,7 @@ const AddPlantScreenFormHook = (props) => {
 						</View>
 					)}
 					name="planting_date"
-					defaultValue={editData ? editData.planting_date : new Date()}
+					defaultValue={editData ? new Date(editData.planting_date) : new Date()}
 				/>
 			</View>
 			<View style={styles.container}>

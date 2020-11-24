@@ -14,7 +14,7 @@ import {
 import { Input, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import nodeApi from '../api/nodeApi';
+/* import nodeApi from '../api/nodeApi'; */
 
 import {
 	inputChange,
@@ -29,6 +29,8 @@ import {
 	updateGarden,
 	getPlantsData,
 	clearState,
+	openPlants,
+	setPlantSwitcher,
 } from '../actions/GardenActions';
 
 const GardenScreen = (props) => {
@@ -58,6 +60,8 @@ const GardenScreen = (props) => {
 		route,
 		clearState,
 		plantsLoading,
+		openPlants,
+		plantItemOpenSwitcher,
 	} = props;
 
 	useEffect(() => {
@@ -179,7 +183,7 @@ const GardenScreen = (props) => {
 		);
 	};
 
-	const deletePlant = (plantId, gardenId) => {
+	/* const deletePlant = (plantId, gardenId) => {
 		console.log(plantId, gardenId);
 		Alert.alert('Предупреждение', 'Вы точно хотите удалить растение?', [
 			{ text: 'Отменить' },
@@ -196,10 +200,19 @@ const GardenScreen = (props) => {
 				},
 			},
 		]);
-	};
+	}; */
+
+	console.log('THIS IS PROPS', plantItemOpenSwitcher);
 
 	const openedGarden = (gardenId) => {
 		if (itemOpenIndex[gardenId] === true) {
+			const arr = plantsData[gardenId];
+
+			let unique = [];
+			if (plantsData[gardenId]) {
+				unique = Object.keys(arr);
+			}
+
 			return (
 				<View style={{ flex: 1 }}>
 					<View
@@ -242,92 +255,99 @@ const GardenScreen = (props) => {
 							}}
 						>
 							<Text style={{ flex: 0.9, textAlignVertical: 'center' }}>Растение</Text>
-							<Text
-								style={{
-									flex: 1,
-									textAlignVertical: 'center',
-									textAlign: 'center',
-								}}
-							>
-								Дата посадки
-							</Text>
-							<Text
-								style={{
-									flex: 1,
-									textAlignVertical: 'center',
-									textAlign: 'center',
-								}}
-							>
-								Объем посадки
-							</Text>
-							<Text style={{ flex: 0.7, textAlignVertical: 'center' }} />
 						</View>
 						<FlatList
-							data={plantsData[gardenId]}
+							data={unique}
+							keyExtractor={(item, index) => index.toString()}
 							renderItem={(item) => {
+								const name = item.item;
+								const plantData = plantsData[gardenId][name];
+
 								return (
-									<View
-										style={{
-											flexDirection: 'row',
-											justifyContent: 'space-between',
-											paddingHorizontal: 10,
-										}}
-									>
-										<Text
-											style={{
-												flex: 0.9,
-												textAlignVertical: 'center',
-											}}
-										>
-											{item.item.garden_plant_name}
-										</Text>
-										<Text
-											style={{
-												flex: 1,
-												textAlignVertical: 'center',
-												textAlign: 'center',
-											}}
-										>
-											{item.item.planting_date}
-										</Text>
-										<Text
-											style={{
-												flex: 1,
-												textAlignVertical: 'center',
-												textAlign: 'center',
-											}}
-										>
-											{item.item.planting_size}{' '}
-											{item.item.planting_unit_short_name}
-										</Text>
+									<View>
 										<View
 											style={{
-												flex: 0.7,
 												flexDirection: 'row',
-												justifyContent: 'flex-end',
+												justifyContent: 'space-between',
+												borderColor: 'red',
+												borderWidth: 1,
 											}}
 										>
 											<TouchableOpacity
+												style={{
+													flexDirection: 'row',
+													flex: 1,
+													justifyContent: 'space-between',
+													padding: 10,
+												}}
 												onPress={() => {
-													navigation.navigate('AddPlant', {
-														gardenId,
-														plantId: item.item.id,
-													});
+													if (
+														plantItemOpenSwitcher[gardenId] ===
+														undefined
+													) {
+														openPlants({
+															...plantItemOpenSwitcher,
+															[gardenId]: {
+																...plantItemOpenSwitcher[gardenId],
+																[name]: true,
+															},
+														});
+													} else if (
+														plantItemOpenSwitcher[gardenId][name]
+													) {
+														openPlants({
+															...plantItemOpenSwitcher,
+															[gardenId]: {
+																...plantItemOpenSwitcher[gardenId],
+																[name]: false,
+															},
+														});
+													} else {
+														openPlants({
+															...plantItemOpenSwitcher,
+															[gardenId]: {
+																...plantItemOpenSwitcher[gardenId],
+																[name]: true,
+															},
+														});
+													}
 												}}
 											>
-												<Icon
-													name="pencil-outline"
-													size={25}
-													color="orange"
-												/>
+												<Text
+													style={{
+														textAlign: 'center',
+														textAlignVertical: 'center',
+													}}
+												>
+													{item.item}
+												</Text>
+												<Icon name="chevron-down" size={20} />
 											</TouchableOpacity>
-											<TouchableOpacity
-												onPress={() => {
-													deletePlant(item.item.id, gardenId);
+										</View>
+										<View>
+											<FlatList
+												data={plantData}
+												renderItem={(item) => {
+													if (
+														plantItemOpenSwitcher[gardenId] ===
+														undefined
+													) {
+														return null;
+													} else if (
+														plantItemOpenSwitcher[gardenId][
+															item.item.garden_plant_name
+														] === true
+													) {
+														return (
+															<View>
+																<Text>
+																	{item.item.planting_date}
+																</Text>
+															</View>
+														);
+													}
 												}}
-											>
-												<Icon name="delete-outline" size={25} color="red" />
-											</TouchableOpacity>
+											/>
 										</View>
 									</View>
 								);
@@ -425,6 +445,7 @@ const mapStateToProps = ({ garden }) => {
 		gardenId,
 		plantsData,
 		plantsLoading,
+		plantItemOpenSwitcher,
 	} = garden;
 	return {
 		gardenName,
@@ -441,6 +462,7 @@ const mapStateToProps = ({ garden }) => {
 		gardenId,
 		plantsData,
 		plantsLoading,
+		plantItemOpenSwitcher,
 	};
 };
 
@@ -593,4 +615,6 @@ export default connect(mapStateToProps, {
 	updateGarden,
 	getPlantsData,
 	clearState,
+	openPlants,
+	setPlantSwitcher,
 })(GardenScreen);

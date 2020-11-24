@@ -35,5 +35,7 @@ export const BUTTON_ACTION = 'button_action';
 export const EDIT_GARDEN = 'edit_garden';
 export const UPDATE_GARDEN = 'update_garden';
 export const GET_PLANTS_DATA = 'get_plants_data';
+export const OPEN_PLANT = 'open_plant';
+export const SET_PLANT_SWITCHER = 'set_plant_switcher';
 // Add plant actions
 export const GET_PLANTS_NAME = 'get_plants_name';
