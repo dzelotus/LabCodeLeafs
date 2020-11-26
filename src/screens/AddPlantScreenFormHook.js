@@ -137,7 +137,7 @@ const AddPlantScreenFormHook = (props) => {
 				.then((response) => {
 					console.log('POST RESPONSE', response);
 					setLoading({ ...loading, buttonLoading: false });
-					navigation.navigate('Garden', { onBack: gardenId });
+					navigation.navigate('Garden');
 				})
 				.catch((error) => {
 					console.log('POST ERROR', error.response);
@@ -185,6 +185,7 @@ const AddPlantScreenFormHook = (props) => {
 					)}
 					name="garden_plant_id"
 					defaultValue={editData ? Number.parseInt(editData.garden_plant_id) : '0'}
+					key={editData ? 'plantLoaded' : 'plantLoading'}
 				/>
 			</View>
 			<View style={styles.container}>
@@ -229,6 +230,7 @@ const AddPlantScreenFormHook = (props) => {
 					)}
 					name="planting_date"
 					defaultValue={editData ? new Date(editData.planting_date) : new Date()}
+					key={editData ? 'datetLoaded' : 'datetLoading'}
 				/>
 			</View>
 			<View style={styles.container}>
@@ -259,6 +261,7 @@ const AddPlantScreenFormHook = (props) => {
 					)}
 					name="planting_unit"
 					defaultValue={editData ? Number.parseInt(editData.planting_unit) : '0'}
+					key={editData ? 'unitLoaded' : 'unitLoading'}
 				/>
 			</View>
 			<View style={styles.container}>
@@ -281,6 +284,7 @@ const AddPlantScreenFormHook = (props) => {
 					)}
 					name="planting_size"
 					defaultValue={editData ? editData.planting_size : ''}
+					key={editData ? 'sizeLoaded' : 'plantLoading'}
 				/>
 			</View>
 
@@ -303,6 +307,7 @@ const AddPlantScreenFormHook = (props) => {
 					)}
 					name="description"
 					defaultValue=""
+					key={editData ? 'notesLoaded' : 'notesLoading'}
 				/>
 			</View>
 			<ButtonWithActivityIndicator />
