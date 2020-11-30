@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from '@react-navigation/compat';
 
-const FavoritesCard = ({ iconName, navigation, nav, headerText }) => (
+const NewsCard = ({ iconName, navigation, nav, headerText }) => (
 	<View style={styles.containerStyle}>
 		<TouchableOpacity
 			onPress={() => navigation.navigate(nav)}
@@ -21,9 +21,9 @@ const FavoritesCard = ({ iconName, navigation, nav, headerText }) => (
 				<Text style={styles.cardHeaderText}>{headerText}</Text>
 			</View>
 			<View>
-				<Text>Мой огород 1</Text>
-				<Text>Мой огород 2</Text>
-				<Text>Мой огород 3</Text>
+				<Text>Статья 1</Text>
+				<Text>Статья 2</Text>
+				<Text>Статья 3</Text>
 			</View>
 		</TouchableOpacity>
 	</View>
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default withNavigation(FavoritesCard);
+export default withNavigation(NewsCard);

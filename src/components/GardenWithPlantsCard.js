@@ -10,6 +10,7 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 	const [gardenPlants, setGardenPlants] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [deleteLoading, setDeleteLoading] = useState(false);
+	const [deleted, setDeleted] = useState(null);
 	const gardenId = data.id;
 
 	const getGardenPlants = () => {
@@ -17,7 +18,6 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 		nodeApi
 			.get(`/garden-planting/${gardenId}`)
 			.then((response) => {
-				console.log('RESP', response);
 				const gardenData = groupObjectArrayByKey(response.data.data, 'garden_plant_name');
 				setGardenPlants(gardenData);
 				setLoading(false);
@@ -25,11 +25,9 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 			.catch((error) => console.log('ERR', error.response));
 	};
 
+	console.log('OPEN', open);
 	useEffect(() => {
-		const unsubscribe = nav.addListener('focus', () => {
-			getGardenPlants();
-		});
-		return unsubscribe;
+		getGardenPlants();
 	}, [nav]);
 
 	const deleteAlert = (gardenId) => {
@@ -48,8 +46,9 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 						nodeApi
 							.delete(`garden/${gardenId}`)
 							.then(() => {
-								getGardens();
+								getGardens({ deleteLoading: true });
 								setDeleteLoading(false);
+								setDeleted(true);
 							})
 							.catch((error) => {
 								console.log(error.response);
@@ -80,7 +79,7 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 						plantData={gardenPlants[item]}
 						getGardenPlants={() => getGardenPlants()}
 						nav={nav}
-						key={item.id}
+						key={item}
 					/>
 				);
 			});
@@ -157,7 +156,9 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 			</View>
 		);
 	};
-
+	if (deleted) {
+		return null;
+	}
 	return (
 		<View>
 			<View style={open ? styles.gardenContainerPressed : styles.gardenContainerNormal}>

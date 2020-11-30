@@ -53,16 +53,7 @@ const MainFlow = () => (
 		}}
 	>
 		<Stack.Screen name="Main" component={MainScreen} />
-		<Stack.Screen
-			name="Garden"
-			component={GardenScreen}
-			options={{ headerTitle: 'Мой Огород' }}
-		/>
-		<Stack.Screen
-			name="AddPlant"
-			component={AddPlantFormHook}
-			options={{ headerTitle: 'Добавить Растение' }}
-		/>
+		<Stack.Screen name="News" component={NewsFlow} options={{ headerTitle: 'Новости' }} />
 		<Stack.Screen name="Wishlist" component={WishlistScreen} />
 		<Stack.Screen
 			name="LastScan"
@@ -111,6 +102,21 @@ const NewsFlow = () => (
 	</Stack.Navigator>
 );
 
+const GardenFlow = () => (
+	<Stack.Navigator initialRouteName="Garden">
+		<Stack.Screen
+			name="Garden"
+			component={GardenScreen}
+			options={{ headerTitle: 'Мой Огород', headerTintColor: '#8DC34A' }}
+		/>
+		<Stack.Screen
+			name="AddPlant"
+			component={AddPlantFormHook}
+			options={{ headerTitle: 'Добавить Растение', headerTintColor: '#8DC34A' }}
+		/>
+	</Stack.Navigator>
+);
+
 const TabNavigator = () => (
 	<Tab.Navigator
 		tabBarOptions={{
@@ -145,11 +151,11 @@ const TabNavigator = () => (
 			}}
 		/>
 		<Tab.Screen
-			name="News"
-			component={NewsFlow}
+			name="Garden"
+			component={GardenFlow}
 			options={{
-				tabBarLabel: 'Статьи',
-				tabBarIcon: () => <Icon name="newspaper-o" size={27} color="#8DC34A" />,
+				tabBarLabel: 'Дневник садовода',
+				tabBarIcon: () => <Icon name="tasks" size={27} color="#8DC34A" />,
 				tabBarButton: (props) => (
 					<Pressable android_ripple={{ color: '#8DC34A', borderless: true }} {...props} />
 				),

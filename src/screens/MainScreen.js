@@ -8,7 +8,7 @@ import Geolocation from '@react-native-community/geolocation';
 import RNBootSplash from 'react-native-bootsplash';
 import messaging from '@react-native-firebase/messaging';
 import LastScansCard from '../components/LastScansCard';
-import GardenCard from '../components/GardenCard';
+import NewsCard from '../components/NewsCard';
 import WeatherCard from '../components/WeatherCard';
 import nodeApi from '../api/nodeApi';
 import weatherApi from '../api/weatherApi';
@@ -121,7 +121,7 @@ const MainScreen = ({ navigation }) => {
 	return (
 		<View>
 			<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: 15 }}>
-				<GardenCard iconName="star-o" nav="Garden" headerText="Мои растения" />
+				<NewsCard iconName="star-o" nav="News" headerText="Новости" />
 				<LastScansCard
 					headerText="Мои сканирования"
 					nav="LastScan"

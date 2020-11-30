@@ -23,19 +23,3 @@ export const EDIT = 'edit';
 export const EDIT_SUCCESS = 'edit_success';
 export const EDIT_FAIL = 'edis_fail';
 export const GET_PROFILE_CSRF = 'get_profile_csrf';
-// Garden action types
-export const GARDEN_INPUT_CHANGE = 'garnden_input_change';
-export const GET_GARDENS = 'get_gardens';
-export const ADD_BUTTON = 'add_button';
-export const CREATE_GARDEN = 'create_garden';
-export const CLEAR_STATE = 'clear_state';
-export const DELETE_GARDEN = 'delete_garden';
-export const OPEN_ITEM = 'open_item';
-export const BUTTON_ACTION = 'button_action';
-export const EDIT_GARDEN = 'edit_garden';
-export const UPDATE_GARDEN = 'update_garden';
-export const GET_PLANTS_DATA = 'get_plants_data';
-export const OPEN_PLANT = 'open_plant';
-export const SET_PLANT_SWITCHER = 'set_plant_switcher';
-// Add plant actions
-export const GET_PLANTS_NAME = 'get_plants_name';

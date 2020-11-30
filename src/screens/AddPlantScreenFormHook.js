@@ -31,6 +31,7 @@ const AddPlantScreenFormHook = (props) => {
 	// eslint-disable-next-line react/destructuring-assignment
 	const { gardenId } = props.route.params;
 	const { navigation } = props;
+	console.log(props);
 
 	const screenTitle = () => navigation.setOptions({ title: 'ТАЙТЛ' });
 
@@ -122,10 +123,9 @@ const AddPlantScreenFormHook = (props) => {
 					...data,
 					_csrf: csrf,
 				})
-				.then((response) => {
-					console.log('POST RESPONSE', response);
+				.then(() => {
 					setLoading({ ...loading, buttonLoading: false });
-					navigation.navigate('Garden', { onBack: gardenId });
+					navigation.goBack();
 				})
 				.catch((error) => {
 					console.log('POST ERROR', error.response);
@@ -134,10 +134,9 @@ const AddPlantScreenFormHook = (props) => {
 		} else {
 			nodeApi
 				.post(`/garden-planting/${gardenId}`, { ...data, _csrf: csrf })
-				.then((response) => {
-					console.log('POST RESPONSE', response);
+				.then(() => {
 					setLoading({ ...loading, buttonLoading: false });
-					navigation.navigate('Garden');
+					navigation.goBack();
 				})
 				.catch((error) => {
 					console.log('POST ERROR', error.response);
@@ -152,7 +151,10 @@ const AddPlantScreenFormHook = (props) => {
 		return <Indicator />;
 	}
 	return (
-		<ScrollView style={{ flex: 1, backgroundColor: 'white', paddingVertical: 10 }}>
+		<ScrollView
+			style={{ flex: 1, backgroundColor: 'white', paddingVertical: 10 }}
+			keyboardShouldPersistTaps="always"
+		>
 			<View style={styles.container}>
 				<Controller
 					control={control}

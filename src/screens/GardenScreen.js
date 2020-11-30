@@ -4,31 +4,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import { Input, Button } from 'react-native-elements';
-import { connect } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import nodeApi from '../api/nodeApi';
 import GardenWithPlantsCard from '../components/GardenWithPlantsCard';
 /* import nodeApi from '../api/nodeApi'; */
 
-import {
-	inputChange,
-	getCsrf,
-	getGardens,
-	openGarden,
-	addButtonSwitch,
-	createGarden,
-	deleteGarden,
-	editGarden,
-	updateGarden,
-	getPlantsData,
-	clearState,
-	openPlants,
-	setPlantSwitcher,
-} from '../actions/GardenActions';
-
 const GardenScreen = (props) => {
 	const { navigation } = props;
+	console.log('GARDEN SCREEN', props);
 
 	const [loading, setLoading] = useState({
 		screenLoading: false,
@@ -42,16 +26,24 @@ const GardenScreen = (props) => {
 	const [buttonAction, setButtonAction] = useState(null);
 	const { control, handleSubmit } = useForm();
 
-	const getGardens = () => {
-		setLoading({ screenLoading: true });
+	const getGardens = (deleteGarden) => {
+		if (gardenData) {
+			setLoading({ itemLoading: true });
+		} else {
+			setLoading({ screenLoading: true });
+		}
+
+		console.log('DEL', deleteGarden);
+
 		nodeApi
 			.get('/garden')
 			.then((response) => {
 				setGardenData(response.data.data);
-				setLoading({ screenLoading: false });
+				setLoading({ screenLoading: false, itemLoading: false, buttonLoading: false });
 			})
 			.catch((error) => {
 				console.log(error.response);
+				setLoading({ screenLoading: false, itemLoading: false, buttonLoading: false });
 			});
 	};
 
@@ -60,18 +52,17 @@ const GardenScreen = (props) => {
 			.get('/garden/new')
 			.then((response) => {
 				setCsrf(response.data.csrfToken);
+				setLoading({ buttonLoading: false });
 			})
 			.catch((e) => console.log('ERR', e.response));
 	};
 
 	useEffect(() => {
-		const unsubscribe = navigation.addListener('focus', () => {
-			getGardens();
-		});
-		return unsubscribe;
-	}, [navigation]);
+		getGardens();
+	}, []);
 
 	const createGarden = (gardenName, gardenDescription) => {
+		setLoading({ itemLoading: true, buttonLoading: true });
 		nodeApi
 			.post('/garden', {
 				name: gardenName,
@@ -84,6 +75,7 @@ const GardenScreen = (props) => {
 			})
 			.catch((error) => {
 				console.log('CREATE ERROR', error.response);
+				setLoading({ itemLoading: false, buttonLoading: false });
 			});
 	};
 
@@ -106,7 +98,6 @@ const GardenScreen = (props) => {
 	};
 
 	const onSubmit = (data) => {
-		console.log('DATA', data);
 		if (buttonAction === 'create') {
 			createGarden(data.gardenName_input, data.gardenDescription_input);
 		} else if (buttonAction === 'edit') {
@@ -152,7 +143,7 @@ const GardenScreen = (props) => {
 							}
 						/>
 						{loadingButton()}
-						<View style={{ position: 'absolute', bottom: 0, right: 0, borderWidth: 1 }}>
+						<View style={{ position: 'absolute', bottom: 0, right: 0 }}>
 							<TouchableOpacity
 								style={styles.addGardenBtnPressed}
 								onPress={() => {
@@ -243,7 +234,7 @@ const GardenScreen = (props) => {
 					<GardenWithPlantsCard
 						data={item}
 						nav={navigation}
-						getGardens={() => getGardens()}
+						getGardens={(deleteGarden) => getGardens(deleteGarden)}
 						editGarden={(id) => {
 							editGarden(id);
 						}}
@@ -256,47 +247,13 @@ const GardenScreen = (props) => {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<ScrollView>{gardenRender()}</ScrollView>
+			<ScrollView>
+				{gardenRender()}
+				{loading.itemLoading ? <Indicator /> : null}
+			</ScrollView>
 			{addGarden()}
 		</View>
 	);
-};
-
-const mapStateToProps = ({ garden }) => {
-	const {
-		gardenName,
-		gardenDescription,
-		csrf,
-		screenLoading,
-
-		openGardenId,
-		addBtnSwitch,
-		buttonLoading,
-		itemLoading,
-		itemOpenIndex,
-		editButton,
-
-		plantsData,
-		plantsLoading,
-		plantItemOpenSwitcher,
-	} = garden;
-	return {
-		gardenName,
-		gardenDescription,
-		csrf,
-		screenLoading,
-
-		openGardenId,
-		addBtnSwitch,
-		buttonLoading,
-		itemLoading,
-		itemOpenIndex,
-		editButton,
-
-		plantsData,
-		plantsLoading,
-		plantItemOpenSwitcher,
-	};
 };
 
 const styles = StyleSheet.create({
@@ -435,19 +392,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default connect(mapStateToProps, {
-	inputChange,
-	getCsrf,
-	getGardens,
-	openGarden,
-	addButtonSwitch,
-	createGarden,
-	deleteGarden,
-
-	editGarden,
-	updateGarden,
-	getPlantsData,
-	clearState,
-	openPlants,
-	setPlantSwitcher,
-})(GardenScreen);
+export default GardenScreen;
