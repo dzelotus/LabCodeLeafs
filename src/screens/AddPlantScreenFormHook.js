@@ -125,7 +125,7 @@ const AddPlantScreenFormHook = (props) => {
 				})
 				.then(() => {
 					setLoading({ ...loading, buttonLoading: false });
-					navigation.goBack();
+					navigation.navigate('Garden', { reload: true });
 				})
 				.catch((error) => {
 					console.log('POST ERROR', error.response);
@@ -136,7 +136,7 @@ const AddPlantScreenFormHook = (props) => {
 				.post(`/garden-planting/${gardenId}`, { ...data, _csrf: csrf })
 				.then(() => {
 					setLoading({ ...loading, buttonLoading: false });
-					navigation.goBack();
+					navigation.navigate('Garden');
 				})
 				.catch((error) => {
 					console.log('POST ERROR', error.response);

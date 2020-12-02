@@ -26,14 +26,12 @@ const GardenScreen = (props) => {
 	const [buttonAction, setButtonAction] = useState(null);
 	const { control, handleSubmit } = useForm();
 
-	const getGardens = (deleteGarden) => {
+	const getGardens = () => {
 		if (gardenData) {
 			setLoading({ itemLoading: true });
 		} else {
 			setLoading({ screenLoading: true });
 		}
-
-		console.log('DEL', deleteGarden);
 
 		nodeApi
 			.get('/garden')
@@ -233,11 +231,11 @@ const GardenScreen = (props) => {
 				return (
 					<GardenWithPlantsCard
 						data={item}
-						nav={navigation}
 						getGardens={(deleteGarden) => getGardens(deleteGarden)}
 						editGarden={(id) => {
 							editGarden(id);
 						}}
+						nav={navigation}
 						key={item.id}
 					/>
 				);
@@ -305,90 +303,8 @@ const styles = StyleSheet.create({
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
-		margin: 15,
+		margin: 10,
 		padding: 10,
-	},
-
-	gardenContainerNormal: {
-		marginHorizontal: 10,
-		marginTop: 15,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 12,
-		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
-		elevation: 3,
-		borderRadius: 10,
-		borderColor: '#000',
-		backgroundColor: '#fff',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		flex: 1,
-	},
-	gardenContainerPressed: {
-		marginHorizontal: 10,
-		marginTop: 15,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 12,
-		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
-		elevation: 3,
-		borderRadius: 10,
-		borderColor: '#000',
-		backgroundColor: '#fff',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		flex: 1,
-		borderBottomLeftRadius: 0,
-		borderBottomRightRadius: 0,
-	},
-	gardenContainerOpened: {
-		marginHorizontal: 10,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 12,
-		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
-		elevation: 3,
-		borderRadius: 10,
-		borderColor: '#000',
-		backgroundColor: '#fff',
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		flex: 1,
-		borderTopLeftRadius: 0,
-		borderTopRightRadius: 0,
-		marginBottom: 5,
-	},
-	addPlantBtn: {
-		marginHorizontal: 15,
-		marginVertical: 10,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 12,
-		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
-
-		elevation: 3,
-		borderRadius: 10,
-		borderColor: '#8DC34A',
-		borderWidth: 1,
-		backgroundColor: '#fff',
-		alignItems: 'center',
-		height: 40,
-		justifyContent: 'center',
-	},
-	rowDirection: {
-		flexDirection: 'row',
 	},
 });
 

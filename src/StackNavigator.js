@@ -31,6 +31,7 @@ import AddPlantFormHook from './screens/AddPlantScreenFormHook';
 import nodeApi from './api/nodeApi';
 import { resolveAuth } from './actions/AuthActions';
 import NewsScreen from './screens/NewsScreen';
+import ArticleScreen from './screens/ArticleScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -97,8 +98,12 @@ const AuthFlow = () => (
 );
 
 const NewsFlow = () => (
-	<Stack.Navigator screenOptions={{ title: 'Статьи', headerTintColor: '#8DC34A' }}>
+	<Stack.Navigator
+		initialRouteName="News"
+		screenOptions={{ title: 'Статьи', headerTintColor: '#8DC34A' }}
+	>
 		<Stack.Screen name="News" component={NewsScreen} />
+		<Stack.Screen name="Article" component={ArticleScreen} />
 	</Stack.Navigator>
 );
 

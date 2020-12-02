@@ -1,16 +1,15 @@
 /* eslint-disable consistent-return */
 import React, { useState } from 'react';
-import { Text, TouchableOpacity, View, FlatList, Alert, ActivityIndicator } from 'react-native';
+import { Text, TouchableOpacity, View, Alert, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as RootNavigation from '../RootNavigation';
 import nodeApi from '../api/nodeApi';
 
-const PlantInGarden = ({ plantName, plantData, getGardenPlants, nav }) => {
+const PlantInGarden = ({ plantName, plantData, getGardenPlants }) => {
 	const [open, setOpen] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	const deletePlant = (plantId, gardenId) => {
-		console.log(plantId, gardenId);
-
 		Alert.alert('Предупреждение', 'Вы точно хотите удалить растение?', [
 			{ text: 'Отменить' },
 			{
@@ -19,10 +18,9 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants, nav }) => {
 					setLoading(true);
 					nodeApi
 						.delete(`/garden-planting/${gardenId}/planting/${plantId}`)
-						.then((response) => {
-							console.log('DEL RESP', response);
-							getGardenPlants();
+						.then(() => {
 							setLoading(false);
+							getGardenPlants();
 						})
 						.catch((error) => console.log(error.response));
 				},
@@ -36,9 +34,51 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants, nav }) => {
 		</View>
 	);
 
+	const plantItem = () => {
+		return plantData.map((item) => {
+			return (
+				<View
+					style={{
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+						borderBottomWidth: 2,
+						borderBottomColor: '#8DC34A',
+					}}
+					key={item.id}
+				>
+					<Text>{item.planting_date}</Text>
+					<Text>
+						{item.planting_size} {item.planting_unit_short_name}
+					</Text>
+					<View style={{ flexDirection: 'row' }}>
+						<TouchableOpacity
+							onPress={() => {
+								RootNavigation.navigate('AddPlant', {
+									gardenId: item.garden_id,
+									plantId: item.id,
+								});
+							}}
+						>
+							<Icon name="pencil-outline" size={25} color="orange" />
+						</TouchableOpacity>
+						<TouchableOpacity
+							onPress={() => {
+								console.log('ITEM', item);
+								const plantId = item.id;
+								const gardenId = item.garden_id;
+								deletePlant(plantId, gardenId);
+							}}
+						>
+							<Icon name="delete-outline" size={25} color="red" />
+						</TouchableOpacity>
+					</View>
+				</View>
+			);
+		});
+	};
+
 	const openedPlant = () => {
 		if (open) {
-			console.log(plantData);
 			return (
 				<View
 					style={{
@@ -60,50 +100,7 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants, nav }) => {
 						<Text>Объем посадки</Text>
 						<Text>Управление</Text>
 					</View>
-					<FlatList
-						data={plantData}
-						style={{ paddingVertical: 5 }}
-						renderItem={(item) => {
-							return (
-								<View
-									style={{
-										flexDirection: 'row',
-										justifyContent: 'space-between',
-										borderBottomWidth: 2,
-										borderBottomColor: '#8DC34A',
-									}}
-								>
-									<Text>{item.item.planting_date}</Text>
-									<Text>
-										{item.item.planting_size}{' '}
-										{item.item.planting_unit_short_name}
-									</Text>
-									<View style={{ flexDirection: 'row' }}>
-										<TouchableOpacity
-											onPress={() => {
-												nav.navigate('AddPlant', {
-													gardenId: item.item.garden_id,
-													plantId: item.item.id,
-												});
-											}}
-										>
-											<Icon name="pencil-outline" size={25} color="orange" />
-										</TouchableOpacity>
-										<TouchableOpacity
-											onPress={() => {
-												console.log('ITEM', item);
-												const plantId = item.item.id;
-												const gardenId = item.item.garden_id;
-												deletePlant(plantId, gardenId);
-											}}
-										>
-											<Icon name="delete-outline" size={25} color="red" />
-										</TouchableOpacity>
-									</View>
-								</View>
-							);
-						}}
-					/>
+					{plantItem()}
 				</View>
 			);
 		}

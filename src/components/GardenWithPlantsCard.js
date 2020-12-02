@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PlantInGarden from './PlantInGarden';
 import nodeApi from '../api/nodeApi';
 
-const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
+const GardenWithPlantsCard = ({ data, editGarden, getGardens, nav }) => {
 	const [open, setOpen] = useState(false);
 	const [gardenPlants, setGardenPlants] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -25,13 +25,16 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 			.catch((error) => console.log('ERR', error.response));
 	};
 
-	console.log('OPEN', open);
 	useEffect(() => {
-		getGardenPlants();
+		const unsubscribe = nav.addListener('focus', () => {
+			console.log('POCUS');
+			getGardenPlants();
+		});
+
+		return unsubscribe;
 	}, [nav]);
 
 	const deleteAlert = (gardenId) => {
-		console.log('ALERT', gardenId);
 		Alert.alert(
 			'Предупреждение',
 			'Вы точно хотите удалить огород? Отмена удаления невозможна!',
@@ -70,6 +73,8 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 		}, {});
 	};
 
+	console.log(gardenPlants);
+
 	const plantsNames = () => {
 		if (gardenPlants) {
 			return Object.keys(gardenPlants).map((item) => {
@@ -78,7 +83,6 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 						plantName={item}
 						plantData={gardenPlants[item]}
 						getGardenPlants={() => getGardenPlants()}
-						nav={nav}
 						key={item}
 					/>
 				);
@@ -129,7 +133,7 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 							<Text style={{ flex: 1, textAlign: 'center' }}>Количество записей</Text>
 							<View style={{ flex: 0.2 }} />
 						</View>
-						{loading ? <Indicator /> : plantsNames()}
+						{loading && gardenPlants === null ? <Indicator /> : plantsNames()}
 					</View>
 					<View>
 						<TouchableOpacity
@@ -188,7 +192,7 @@ const GardenWithPlantsCard = ({ data, nav, editGarden, getGardens }) => {
 
 const styles = StyleSheet.create({
 	gardenContainerNormal: {
-		marginHorizontal: 10,
+		marginHorizontal: 5,
 		marginTop: 15,
 		shadowColor: '#000',
 		shadowOffset: {
@@ -205,7 +209,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 	},
 	gardenContainerPressed: {
-		marginHorizontal: 10,
+		marginHorizontal: 5,
 		marginTop: 15,
 		shadowColor: '#000',
 		shadowOffset: {
@@ -224,7 +228,7 @@ const styles = StyleSheet.create({
 		borderBottomRightRadius: 0,
 	},
 	gardenContainerOpened: {
-		marginHorizontal: 10,
+		marginHorizontal: 5,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
