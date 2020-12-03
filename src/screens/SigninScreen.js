@@ -99,7 +99,7 @@ function SigninScreen(props) {
 		if (props.loading) {
 			return (
 				<View>
-					<ActivityIndicator size="large" color="#8DC34A" />
+					<ActivityIndicator size="large" color="#093E2B" />
 				</View>
 			);
 		} else if (hasBioScanner && isBioAuthActive) {
@@ -107,14 +107,14 @@ function SigninScreen(props) {
 				<View style={{ flexDirection: 'row' }}>
 					<Button
 						containerStyle={{ paddingHorizontal: 8, flex: 3 }}
-						buttonStyle={{ backgroundColor: '#8DC34A', height: 40 }}
+						buttonStyle={{ backgroundColor: '#093E2B', height: 40 }}
 						title="Войти"
 						onPress={() => onButtonPress({ username, password })}
 						disabled={activeButton.current}
 					/>
 					<Button
 						containerStyle={{ paddingHorizontal: 8, flex: 1, height: 60 }}
-						buttonStyle={{ backgroundColor: '#8DC34A', height: 40 }}
+						buttonStyle={{ backgroundColor: '#093E2B', height: 40 }}
 						icon={<Icon name="finger-print" size={20} color="black" />}
 						onPress={() => fingerprintLogin()}
 					/>
@@ -124,7 +124,7 @@ function SigninScreen(props) {
 			return (
 				<Button
 					containerStyle={{ paddingHorizontal: 8 }}
-					buttonStyle={{ backgroundColor: '#8DC34A' }}
+					buttonStyle={{ backgroundColor: '#093E2B' }}
 					title="Войти"
 					onPress={() => onButtonPress({ username, password })}
 					disabled={activeButton.current}
@@ -137,14 +137,14 @@ function SigninScreen(props) {
 		if (indicator) {
 			return (
 				<View>
-					<ActivityIndicator size="large" color="#8DC34A" />
+					<ActivityIndicator size="large" color="#093E2B" />
 				</View>
 			);
 		}
 		return (
 			<Button
 				title="Отправить запрос"
-				buttonStyle={{ backgroundColor: '#8DC34A' }}
+				buttonStyle={{ backgroundColor: '#093E2B' }}
 				onPress={() => {
 					setIndicator(true);
 					nodeApi

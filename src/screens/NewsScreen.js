@@ -17,7 +17,6 @@ const NewsScreen = (props) => {
 	return (
 		<View>
 			<FlatList
-				contentContainerStyle={styles.articleContainer}
 				data={newsData}
 				renderItem={(item) => {
 					console.log(item.item.insert_date);
@@ -40,7 +39,7 @@ const NewsScreen = (props) => {
 					const date = item.item.insert_date;
 
 					return (
-						<View>
+						<View style={styles.articleContainer}>
 							<View
 								style={{
 									borderBottomColor: '#8DC34A',
