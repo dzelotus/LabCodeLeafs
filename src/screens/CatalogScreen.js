@@ -24,7 +24,7 @@ const CatalogScreen = (props) => {
 	const { data, loading } = props;
 
 	if (loading) {
-		return <ActivityIndicator size="large" color="#8DC34A" />;
+		return <ActivityIndicator size="large" color="#379683" />;
 	}
 	return (
 		<View style={{ flex: 1 }}>

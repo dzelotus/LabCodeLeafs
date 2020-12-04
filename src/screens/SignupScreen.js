@@ -71,7 +71,7 @@ function SignupScreen(props) {
 
 	const activityIndicator = () => {
 		if (props.loading) {
-			return <ActivityIndicator size="large" color="#8DC34A" />;
+			return <ActivityIndicator size="large" color="#379683" />;
 		}
 		return (
 			<Button
@@ -79,7 +79,7 @@ function SignupScreen(props) {
 				onPress={onButtonPress}
 				disabled={activeButton.current}
 				containerStyle={{ paddingHorizontal: 8 }}
-				buttonStyle={{ backgroundColor: '#8DC34A' }}
+				buttonStyle={{ backgroundColor: '#379683' }}
 			/>
 		);
 	};
@@ -265,13 +265,13 @@ function SignupScreen(props) {
 							title="Нет"
 							onPress={() => props.signup({ username, email, password, _csrf })}
 							containerStyle={{ paddingHorizontal: 8, flex: 1 }}
-							buttonStyle={{ backgroundColor: '#8DC34A' }}
+							buttonStyle={{ backgroundColor: '#379683' }}
 						/>
 						<Button
 							title="Да"
 							onPress={() => changeBioAuthUser()}
 							containerStyle={{ paddingHorizontal: 8, flex: 1 }}
-							buttonStyle={{ backgroundColor: '#8DC34A' }}
+							buttonStyle={{ backgroundColor: '#379683' }}
 						/>
 					</View>
 				</View>

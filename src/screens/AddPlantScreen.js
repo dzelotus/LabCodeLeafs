@@ -59,7 +59,7 @@ const AddPlantScreen = () => {
 
 	const Indicator = () => (
 		<View>
-			<ActivityIndicator size="large" color="#8DC34A" />
+			<ActivityIndicator size="large" color="#379683" />
 		</View>
 	);
 	if (loading) {
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 
 		elevation: 3,
 		borderRadius: 10,
-		borderColor: '#8DC34A',
+		borderColor: '#379683',
 		borderWidth: 1,
 		backgroundColor: '#fff',
 		flex: 1,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
 	textInput: {
 		flex: 1,
 		borderWidth: 1,
-		borderColor: '#8DC34A',
+		borderColor: '#379683',
 		justifyContent: 'flex-end',
 		height: 44,
 		borderRadius: 65,

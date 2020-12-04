@@ -150,7 +150,7 @@ const GardenScreen = (props) => {
 									setGardenEditData(null);
 								}}
 							>
-								<Icon name="close" size={30} color="#8DC34A" />
+								<Icon name="close" size={30} color="#379683" />
 							</TouchableOpacity>
 						</View>
 					</View>
@@ -176,7 +176,7 @@ const GardenScreen = (props) => {
 					<Icon
 						name="close"
 						size={25}
-						color="#8DC34A"
+						color="#379683"
 						style={{ transform: [{ rotate: '45deg' }] }}
 					/>
 				</TouchableOpacity>
@@ -186,7 +186,7 @@ const GardenScreen = (props) => {
 
 	const Indicator = () => (
 		<View>
-			<ActivityIndicator size="large" color="#8DC34A" />
+			<ActivityIndicator size="large" color="#379683" />
 		</View>
 	);
 
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
 		width: 60,
 		height: 60,
 		justifyContent: 'center',
-		borderColor: '#8DC34A',
+		borderColor: '#379683',
 		borderWidth: 1,
 	},
 	addGardenBtnPressed: {

@@ -101,7 +101,7 @@ const GardenWithPlantsCard = ({ data, editGarden, getGardens, nav }) => {
 							borderTopWidth: 2,
 							borderTopColor: '#dedede',
 							borderBottomWidth: 2,
-							borderBottomColor: '#8DC34A',
+							borderBottomColor: '#379683',
 						}}
 					>
 						<TouchableOpacity
@@ -141,7 +141,7 @@ const GardenWithPlantsCard = ({ data, editGarden, getGardens, nav }) => {
 							onPress={() => nav.navigate('AddPlant', { gardenId })}
 						>
 							<View style={styles.rowDirection}>
-								<Icon name="plus" size={22} color="#8DC34A" />
+								<Icon name="plus" size={22} color="#379683" />
 								<Text style={{ fontSize: 15, marginLeft: 10, color: '#FF9800' }}>
 									Добавить растение
 								</Text>
@@ -156,7 +156,7 @@ const GardenWithPlantsCard = ({ data, editGarden, getGardens, nav }) => {
 	const Indicator = () => {
 		return (
 			<View>
-				<ActivityIndicator size="large" color="#8DC34A" />
+				<ActivityIndicator size="large" color="#379683" />
 			</View>
 		);
 	};
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
 
 		elevation: 3,
 		borderRadius: 10,
-		borderColor: '#8DC34A',
+		borderColor: '#379683',
 		borderWidth: 1,
 		backgroundColor: '#fff',
 		alignItems: 'center',

@@ -20,7 +20,7 @@ const AuthScreen = ({ navigation }) => {
 						onPress={() => navigation.navigate('Signin')}
 						raised
 						buttonStyle={{
-							backgroundColor: '#093E2B',
+							backgroundColor: '#379683',
 							paddingBottom: 15,
 						}}
 					/>
@@ -30,7 +30,7 @@ const AuthScreen = ({ navigation }) => {
 						title="Зарегистрироваться"
 						onPress={() => navigation.navigate('Signup')}
 						raised
-						buttonStyle={{ backgroundColor: '#093E2B' }}
+						buttonStyle={{ backgroundColor: '#379683' }}
 					/>
 				</View>
 			</View>

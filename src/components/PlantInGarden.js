@@ -30,7 +30,7 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants }) => {
 
 	const Indicator = () => (
 		<View>
-			<ActivityIndicator size="large" color="#8DC34A" />
+			<ActivityIndicator size="large" color="#379683" />
 		</View>
 	);
 
@@ -42,7 +42,7 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants }) => {
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 						borderBottomWidth: 2,
-						borderBottomColor: '#8DC34A',
+						borderBottomColor: '#379683',
 					}}
 					key={item.id}
 				>
@@ -84,7 +84,7 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants }) => {
 					style={{
 						margin: 10,
 						borderTopWidth: 2,
-						borderTopColor: '#8DC34A',
+						borderTopColor: '#379683',
 					}}
 				>
 					<View

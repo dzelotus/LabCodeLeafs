@@ -37,7 +37,7 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 					style={styles.rowDirection}
 					onPress={() => navigation.navigate(nav, { data })}
 				>
-					<Icon name={iconName} size={30} color="#8DC34A" />
+					<Icon name={iconName} size={30} color="#379683" />
 					<Text style={styles.cardHeaderText}>{headerText}</Text>
 				</TouchableOpacity>
 			</View>
@@ -46,7 +46,7 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 				onPress={() => navigation.navigate('CameraFlow')}
 			>
 				<View style={styles.rowDirection}>
-					<Icon name="camera" size={25} color="#8DC34A" />
+					<Icon name="camera" size={25} color="#379683" />
 					<Text style={{ fontSize: 18, marginLeft: 10, color: '#FF9800' }}>
 						Сканировать растение
 					</Text>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
 		textAlignVertical: 'center',
 		marginLeft: 20,
 		fontSize: 20,
-		color: '#8DC34A',
+		color: '#379683',
 	},
 	cardItem: {
 		flexDirection: 'row',

@@ -16,7 +16,7 @@ const NewsCard = ({ iconName, navigation, nav, headerText }) => (
 				}}
 			>
 				<View>
-					<FontAwesome name={iconName} size={30} color="#8DC34A" />
+					<FontAwesome name={iconName} size={30} color="#379683" />
 				</View>
 				<Text style={styles.cardHeaderText}>{headerText}</Text>
 			</View>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
 		textAlignVertical: 'center',
 		marginLeft: 20,
 		fontSize: 20,
-		color: '#8DC34A',
+		color: '#379683',
 	},
 	cardItem: {
 		flexDirection: 'row',

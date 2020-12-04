@@ -27,7 +27,7 @@ const NewsScreen = (props) => {
 							<Text
 								key={item.key}
 								style={{
-									borderBottomColor: '#8DC34A',
+									borderBottomColor: '#379683',
 									borderBottomWidth: 1,
 									paddingVertical: 10,
 								}}
@@ -42,7 +42,7 @@ const NewsScreen = (props) => {
 						<View style={styles.articleContainer}>
 							<View
 								style={{
-									borderBottomColor: '#8DC34A',
+									borderBottomColor: '#379683',
 									borderBottomWidth: 2,
 								}}
 							>

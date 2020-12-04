@@ -1,26 +1,26 @@
 import React from 'react';
-import { /* Text */ View, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import getRNDraftJSBlocks from 'react-native-draftjs-render';
-/* import data from '../check.json'; */
 
 const ArticleScreen = (props) => {
 	const { route } = props;
-	/* const { title } = route.params.data; */
-	/* 	const articleData = route.params.data.article_text.blocks; */
-	/* const articleImage = route.params.data.article_text.entityMap; */
-	/* const imageKey = articleImage[Object.keys(articleImage)]; */
-	/* const imageUri = imageKey.data.src; */
 
 	console.log('im', route.params.data.article_text);
 
-	const atomicHandler = (item) => {
-		switch (item.data.type) {
-			case 'image':
+	const atomicHandler = (item, imageData) => {
+		console.log('HAND IT', item);
+		const imageIndex = item.entityRanges[0].key;
+		const imageUri = imageData[imageIndex].data;
+		console.log('URI', imageUri.src);
+
+		switch (item.type) {
+			case 'atomic':
+				console.log('IM', imageUri);
 				return (
 					<View key={item.key}>
 						<Image
-							style={{ width: 288, height: 161 }}
-							source={{ uri: item.data.url }}
+							style={{ width: 288, height: 161, marginBottom: 5 }}
+							source={{ uri: imageUri.src }}
 						/>
 					</View>
 				);
@@ -30,7 +30,7 @@ const ArticleScreen = (props) => {
 	};
 
 	const draftState = route.params.data.article_text;
-	/* console.log(draftState.entityMap); */
+
 	const params = {
 		contentState: draftState,
 		customStyles,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 16,
-		marginTop: 32,
+		marginTop: 5,
 		backgroundColor: '#f4f4f4',
 	},
 });

@@ -77,10 +77,10 @@ const FirstLaunchScreen = (props) => {
 							}}
 							style={{
 								borderBottomWidth: 1,
-								borderBottomColor: '#8DC34A',
+								borderBottomColor: '#379683',
 							}}
 						>
-							<Text style={{ color: '#8DC34A' }}>
+							<Text style={{ color: '#379683' }}>
 								Перейти на экран входа и регистрации?
 							</Text>
 						</TouchableOpacity>

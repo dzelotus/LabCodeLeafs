@@ -38,13 +38,13 @@ const EditProfileScreen = (props) => {
 				title="Обновить профиль"
 				onPress={() => onButtonPress()}
 				containerStyle={{ paddingHorizontal: 10 }}
-				buttonStyle={{ backgroundColor: '#8DC34A' }}
+				buttonStyle={{ backgroundColor: '#379683' }}
 			/>
 		);
 	};
 
 	if (screenLoading) {
-		return <ActivityIndicator size="large" color="#8DC34A" />;
+		return <ActivityIndicator size="large" color="#379683" />;
 	}
 	return (
 		<View>
@@ -83,7 +83,7 @@ const EditProfileScreen = (props) => {
 				<View
 					style={{
 						marginHorizontal: 10,
-						borderBottomColor: '#8DC34A',
+						borderBottomColor: '#379683',
 						borderBottomWidth: 1,
 					}}
 				>
@@ -101,7 +101,7 @@ const EditProfileScreen = (props) => {
 				<View
 					style={{
 						marginHorizontal: 10,
-						borderBottomColor: '#8DC34A',
+						borderBottomColor: '#379683',
 						borderBottomWidth: 1,
 					}}
 				>

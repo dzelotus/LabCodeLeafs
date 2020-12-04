@@ -54,10 +54,10 @@ const LastScansCard = ({ weatherInfo }) => {
 							marginTop: 5,
 						}}
 					>
-						<Text style={{ fontSize: 15, color: '#8DC34A' }}>
+						<Text style={{ fontSize: 15, color: '#379683' }}>
 							{weatherInfo.location},
 						</Text>
-						<Text style={{ fontSize: 15, marginLeft: 5, color: '#8DC34A' }}>{now}</Text>
+						<Text style={{ fontSize: 15, marginLeft: 5, color: '#379683' }}>{now}</Text>
 					</View>
 					<View
 						style={{
@@ -90,7 +90,7 @@ const LastScansCard = ({ weatherInfo }) => {
 							alignSelf: 'flex-start',
 						}}
 					>
-						<Text style={{ marginBottom: 5, color: '#8DC34A' }}>
+						<Text style={{ marginBottom: 5, color: '#379683' }}>
 							{weatherInfo.description}
 						</Text>
 					</View>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
 		textAlignVertical: 'center',
 		marginLeft: 20,
 		fontSize: 20,
-		color: '#8DC34A',
+		color: '#379683',
 	},
 	cardItem: {
 		flexDirection: 'row',

@@ -90,7 +90,7 @@ const AddPlantScreenFormHook = (props) => {
 
 	const Indicator = () => (
 		<View>
-			<ActivityIndicator size="large" color="#8DC34A" />
+			<ActivityIndicator size="large" color="#379683" />
 		</View>
 	);
 
@@ -102,7 +102,7 @@ const AddPlantScreenFormHook = (props) => {
 			<View>
 				<TouchableOpacity style={styles.addPlantBtn} onPress={handleSubmit(onSubmit)}>
 					<View style={styles.rowDirection}>
-						<Icon name="plus" size={22} color="#8DC34A" />
+						<Icon name="plus" size={22} color="#379683" />
 						<Text style={{ fontSize: 15, marginLeft: 10, color: '#FF9800' }}>
 							{editData ? 'Редактировать растение' : 'Добавить растение'}
 						</Text>
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
 
 		elevation: 3,
 		borderRadius: 10,
-		borderColor: '#8DC34A',
+		borderColor: '#379683',
 		borderWidth: 1,
 		backgroundColor: '#fff',
 		flex: 1,
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
 
 		elevation: 3,
 		borderRadius: 10,
-		borderColor: '#8DC34A',
+		borderColor: '#379683',
 		borderWidth: 1,
 		backgroundColor: '#fff',
 		flex: 1,
@@ -367,7 +367,7 @@ const styles = StyleSheet.create({
 	textInput: {
 		flex: 1,
 		borderWidth: 1,
-		borderColor: '#8DC34A',
+		borderColor: '#379683',
 		justifyContent: 'flex-end',
 		height: 44,
 		borderRadius: 65,
@@ -393,7 +393,7 @@ const styles = StyleSheet.create({
 
 		elevation: 3,
 		borderRadius: 10,
-		borderColor: '#8DC34A',
+		borderColor: '#379683',
 		borderWidth: 1,
 		backgroundColor: '#fff',
 		alignItems: 'center',

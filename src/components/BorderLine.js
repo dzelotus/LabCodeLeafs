@@ -5,11 +5,11 @@ const BorderLine = ({ children }) => <View style={styles.borderLine}>{children}<
 
 const styles = StyleSheet.create({
 	borderLine: {
-		borderColor: '#8DC34A',
+		borderColor: '#379683',
 		borderWidth: 1,
 		borderRadius: 2,
 		marginHorizontal: 15,
-		backgroundColor: '#8DC34A',
+		backgroundColor: '#379683',
 		height: 3,
 	},
 });

@@ -51,7 +51,7 @@ const ProfileScreen = (route) => {
 					flexDirection: 'row',
 					paddingLeft: 10,
 					borderBottomWidth: 1,
-					borderBottomColor: '#8DC34A',
+					borderBottomColor: '#379683',
 				}}
 			>
 				<Image
@@ -131,7 +131,7 @@ const ProfileScreen = (route) => {
 						title="выход"
 						onPress={createTwoButtonAlert}
 						containerStyle={{ paddingHorizontal: 10 }}
-						buttonStyle={{ backgroundColor: '#8DC34A' }}
+						buttonStyle={{ backgroundColor: '#379683' }}
 					/>
 				</View>
 			</View>
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		paddingLeft: 10,
 		height: 35,
-		borderBottomColor: '#8DC34A',
+		borderBottomColor: '#379683',
 	},
 	buttonText: {
 		fontSize: 16,

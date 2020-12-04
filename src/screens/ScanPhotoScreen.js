@@ -93,7 +93,7 @@ const ScanPhotoScreen = (route) => {
 			return (
 				<Button
 					title="Сканировать"
-					buttonStyle={{ margin: 15, backgroundColor: '#8DC34A' }}
+					buttonStyle={{ margin: 15, backgroundColor: '#379683' }}
 					onPress={getCsrf}
 				/>
 			);
@@ -136,7 +136,7 @@ const ScanPhotoScreen = (route) => {
 									alignSelf: 'center',
 									justifyContent: 'center',
 								}}
-								color="#8DC34A"
+								color="#379683"
 							/>
 
 							<View

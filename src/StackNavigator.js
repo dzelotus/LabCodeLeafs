@@ -37,7 +37,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const CatalogFlow = () => (
-	<Stack.Navigator screenOptions={{ title: 'Каталог', headerTintColor: '#093E2B' }}>
+	<Stack.Navigator screenOptions={{ title: 'Каталог', headerTintColor: '#379683' }}>
 		<Stack.Screen name="Catalog" component={CatalogScreen} />
 		<Stack.Screen name="CatalogItem" component={CatalogItemScreen} />
 		<Stack.Screen name="Item" component={ItemScreen} />
@@ -49,7 +49,7 @@ const MainFlow = () => (
 		initialRouteName="Main"
 		screenOptions={{
 			title: 'Мои растения',
-			headerTintColor: '#093E2B',
+			headerTintColor: '#379683',
 			headerTitle: 'Мои растения',
 		}}
 	>
@@ -70,7 +70,7 @@ const MainFlow = () => (
 );
 
 const ProfileFlow = () => (
-	<Stack.Navigator screenOptions={{ title: 'Профиль', headerTintColor: '#093E2B' }}>
+	<Stack.Navigator screenOptions={{ title: 'Профиль', headerTintColor: '#379683' }}>
 		<Stack.Screen name="Profile" component={ProfileScreen} />
 		<Stack.Screen name="Help" component={HelpScreen} options={{ title: 'Помощь' }} />
 		<Stack.Screen
@@ -100,7 +100,7 @@ const AuthFlow = () => (
 const NewsFlow = () => (
 	<Stack.Navigator
 		initialRouteName="News"
-		screenOptions={{ title: 'Статьи', headerTintColor: '#093E2B' }}
+		screenOptions={{ title: 'Статьи', headerTintColor: '#379683' }}
 	>
 		<Stack.Screen name="News" component={NewsScreen} />
 		<Stack.Screen name="Article" component={ArticleScreen} />
@@ -112,12 +112,12 @@ const GardenFlow = () => (
 		<Stack.Screen
 			name="Garden"
 			component={GardenScreen}
-			options={{ headerTitle: 'Мой Огород', headerTintColor: '#093E2B' }}
+			options={{ headerTitle: 'Мой Огород', headerTintColor: '#379683' }}
 		/>
 		<Stack.Screen
 			name="AddPlant"
 			component={AddPlantFormHook}
-			options={{ headerTitle: 'Добавить Растение', headerTintColor: '#093E2B' }}
+			options={{ headerTitle: 'Добавить Растение', headerTintColor: '#379683' }}
 		/>
 	</Stack.Navigator>
 );
@@ -126,7 +126,7 @@ const TabNavigator = () => (
 	<Tab.Navigator
 		tabBarOptions={{
 			activeTintColor: 'red',
-			inactiveTintColor: '#093E2B',
+			inactiveTintColor: '#379683',
 			labelStyle: { fontSize: 10 },
 			keyboardHidesTabBar: true,
 		}}
@@ -136,9 +136,9 @@ const TabNavigator = () => (
 			component={MainFlow}
 			options={{
 				tabBarLabel: 'Мои растения',
-				tabBarIcon: () => <Icon name="leaf" size={27} color="#093E2B" />,
+				tabBarIcon: () => <Icon name="leaf" size={27} color="#379683" />,
 				tabBarButton: (props) => (
-					<Pressable android_ripple={{ color: '#093E2B', borderless: true }} {...props} />
+					<Pressable android_ripple={{ color: '#379683', borderless: true }} {...props} />
 				),
 			}}
 			initialParams={{ data: 'suck' }}
@@ -149,9 +149,9 @@ const TabNavigator = () => (
 			component={CatalogFlow}
 			options={{
 				tabBarLabel: 'Каталог',
-				tabBarIcon: () => <Icon name="folder" size={27} color="#093E2B" />,
+				tabBarIcon: () => <Icon name="folder" size={27} color="#379683" />,
 				tabBarButton: (props) => (
-					<Pressable android_ripple={{ color: '#093E2B', borderless: true }} {...props} />
+					<Pressable android_ripple={{ color: '#379683', borderless: true }} {...props} />
 				),
 			}}
 		/>
@@ -160,9 +160,9 @@ const TabNavigator = () => (
 			component={GardenFlow}
 			options={{
 				tabBarLabel: 'Дневник садовода',
-				tabBarIcon: () => <Icon name="tasks" size={27} color="#093E2B" />,
+				tabBarIcon: () => <Icon name="tasks" size={27} color="#379683" />,
 				tabBarButton: (props) => (
-					<Pressable android_ripple={{ color: '#093E2B', borderless: true }} {...props} />
+					<Pressable android_ripple={{ color: '#379683', borderless: true }} {...props} />
 				),
 			}}
 		/>
@@ -171,9 +171,9 @@ const TabNavigator = () => (
 			component={ProfileFlow}
 			options={{
 				tabBarLabel: 'Профиль',
-				tabBarIcon: () => <Icon name="user" size={27} color="#093E2B" />,
+				tabBarIcon: () => <Icon name="user" size={27} color="#379683" />,
 				tabBarButton: (props) => (
-					<Pressable android_ripple={{ color: '#093E2B', borderless: true }} {...props} />
+					<Pressable android_ripple={{ color: '#379683', borderless: true }} {...props} />
 				),
 			}}
 		/>
