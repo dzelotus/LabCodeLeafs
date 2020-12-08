@@ -144,7 +144,14 @@ function SigninScreen(props) {
 		return (
 			<Button
 				title="Отправить запрос"
-				buttonStyle={{ backgroundColor: '#379683' }}
+				raised="true"
+				buttonStyle={{
+					borderColor: '#379683',
+					height: 48,
+					borderWidth: 2,
+					backgroundColor: '#fff',
+				}}
+				titleStyle={{ color: '#EB9156' }}
 				onPress={() => {
 					setIndicator(true);
 					nodeApi
@@ -212,14 +219,18 @@ function SigninScreen(props) {
 		>
 			<ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
 				<Spacer>
-					<Text h3 style={{ alignSelf: 'center', marginTop: 10 }}>
+					<Text h3 style={{ alignSelf: 'center', marginTop: 10, color: '#EB9156' }}>
 						Вход в Листочки
 					</Text>
 				</Spacer>
 				<Spacer>
 					<View style={styles.inputsContainer}>
 						<Input
+							accessibilityLabel="E-mail for login"
+							accessibilityHint="Login E-mail"
+							inputStyle={{ height: 50 }}
 							label="Имя пользователя"
+							labelStyle={{ color: '#379683' }}
 							autoCapitalize="none"
 							autoCorrect={false}
 							value={username}
@@ -241,8 +252,12 @@ function SigninScreen(props) {
 						/>
 
 						<Input
+							accessibilityLabel="Password for login"
+							accessibilityHint="Login Password"
+							inputStyle={{ height: 50 }}
 							secureTextEntry
 							label="Пароль"
+							labelStyle={{ color: '#379683' }}
 							autoCapitalize="none"
 							autoCorrect={false}
 							value={password}
@@ -268,11 +283,12 @@ function SigninScreen(props) {
 							style={{
 								alignSelf: 'center',
 								marginTop: 20,
-								borderBottomWidth: 1,
+								borderBottomWidth: 2,
+								borderBottomColor: '#379683',
 							}}
 							onPress={toggleModal}
 						>
-							<Text>Забыл пароль?</Text>
+							<Text style={{ fontSize: 18, color: '#379683' }}>Забыл пароль?</Text>
 						</TouchableOpacity>
 					</View>
 				</Spacer>
@@ -283,7 +299,7 @@ function SigninScreen(props) {
 						onPress={toggleModal}
 						style={{ alignSelf: 'flex-end', marginBottom: 10 }}
 					>
-						<MaterialCommunityIcons name="close" size={35} />
+						<MaterialCommunityIcons name="close" size={48} />
 					</TouchableOpacity>
 					<Text
 						style={{
@@ -295,6 +311,10 @@ function SigninScreen(props) {
 						Для восстановления пароля введите адрес электронной почты!
 					</Text>
 					<Input
+						inputStyle={{ height: 50 }}
+						labelStyle={{ color: '#379683' }}
+						accessibilityLabel="Reset Password"
+						accessibilityHint="Pass email to restore password"
 						label="E-mail"
 						autoCapitalize="none"
 						autoCorrect={false}
@@ -306,7 +326,6 @@ function SigninScreen(props) {
 							});
 						}}
 						onBlur={() => {
-							console.log('BLUR');
 							if (validateEmail(email)) {
 								setRegexEmail();
 							} else {

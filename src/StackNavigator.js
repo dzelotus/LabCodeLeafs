@@ -37,7 +37,7 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const CatalogFlow = () => (
-	<Stack.Navigator screenOptions={{ title: 'Каталог', headerTintColor: '#379683' }}>
+	<Stack.Navigator screenOptions={{ title: 'Справочник', headerTintColor: '#379683' }}>
 		<Stack.Screen name="Catalog" component={CatalogScreen} />
 		<Stack.Screen name="CatalogItem" component={CatalogItemScreen} />
 		<Stack.Screen name="Item" component={ItemScreen} />
@@ -54,7 +54,7 @@ const MainFlow = () => (
 		}}
 	>
 		<Stack.Screen name="Main" component={MainScreen} />
-		<Stack.Screen name="News" component={NewsFlow} options={{ headerTitle: 'Новости' }} />
+		<Stack.Screen name="News" component={NewsFlow} />
 		<Stack.Screen name="Wishlist" component={WishlistScreen} />
 		<Stack.Screen
 			name="LastScan"
@@ -102,7 +102,7 @@ const NewsFlow = () => (
 		initialRouteName="News"
 		screenOptions={{ title: 'Статьи', headerTintColor: '#379683' }}
 	>
-		<Stack.Screen name="News" component={NewsScreen} />
+		<Stack.Screen name="News" component={NewsScreen} options={() => ({ title: 'UP' })} />
 		<Stack.Screen name="Article" component={ArticleScreen} />
 	</Stack.Navigator>
 );
@@ -125,7 +125,7 @@ const GardenFlow = () => (
 const TabNavigator = () => (
 	<Tab.Navigator
 		tabBarOptions={{
-			activeTintColor: 'red',
+			activeTintColor: '#EB9156',
 			inactiveTintColor: '#379683',
 			labelStyle: { fontSize: 10 },
 			keyboardHidesTabBar: true,
@@ -148,7 +148,7 @@ const TabNavigator = () => (
 			name="Catalog"
 			component={CatalogFlow}
 			options={{
-				tabBarLabel: 'Каталог',
+				tabBarLabel: 'Справочник',
 				tabBarIcon: () => <Icon name="folder" size={27} color="#379683" />,
 				tabBarButton: (props) => (
 					<Pressable android_ripple={{ color: '#379683', borderless: true }} {...props} />

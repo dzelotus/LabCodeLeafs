@@ -47,7 +47,7 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 			>
 				<View style={styles.rowDirection}>
 					<Icon name="camera" size={25} color="#379683" />
-					<Text style={{ fontSize: 18, marginLeft: 10, color: '#FF9800' }}>
+					<Text style={{ fontSize: 18, marginLeft: 10, color: '#EB9156' }}>
 						Сканировать растение
 					</Text>
 				</View>
@@ -66,8 +66,8 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 
 const styles = StyleSheet.create({
 	containerStyle: {
-		marginHorizontal: 15,
-		marginBottom: 15,
+		marginHorizontal: 5,
+		marginBottom: 10,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.58,
 		shadowRadius: 16.0,
 
-		elevation: 3,
+		elevation: 7,
 		borderRadius: 10,
 		borderColor: '#000',
 		backgroundColor: '#fff',
@@ -92,9 +92,10 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.58,
 		shadowRadius: 16.0,
 
-		elevation: 3,
+		elevation: 7,
 		borderRadius: 10,
-		borderColor: '#000',
+		borderColor: '#379683',
+		borderWidth: 1,
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		height: 40,

@@ -142,7 +142,7 @@ const GardenWithPlantsCard = ({ data, editGarden, getGardens, nav }) => {
 						>
 							<View style={styles.rowDirection}>
 								<Icon name="plus" size={22} color="#379683" />
-								<Text style={{ fontSize: 15, marginLeft: 10, color: '#FF9800' }}>
+								<Text style={{ fontSize: 15, marginLeft: 10, color: '#EB9156' }}>
 									Добавить растение
 								</Text>
 							</View>
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.58,
 		shadowRadius: 16.0,
 
-		elevation: 3,
+		elevation: 7,
 		borderRadius: 10,
 		borderColor: '#379683',
 		borderWidth: 1,

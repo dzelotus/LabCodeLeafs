@@ -196,6 +196,7 @@ const GardenScreen = (props) => {
 		}
 		return (
 			<Button
+				buttonStyle={{ backgroundColor: '#379683', height: 40 }}
 				title={buttonAction === 'edit' ? 'Редактировать Огород' : 'Создать Огород'}
 				onPress={handleSubmit(onSubmit)}
 			/>
@@ -263,7 +264,7 @@ const styles = StyleSheet.create({
 		},
 		shadowOpacity: 0.58,
 		shadowRadius: 16.0,
-		elevation: 3,
+		elevation: 7,
 		borderRadius: 50,
 		backgroundColor: '#fff',
 		alignItems: 'center',
@@ -297,13 +298,14 @@ const styles = StyleSheet.create({
 		},
 		shadowOpacity: 0.58,
 		shadowRadius: 16.0,
-		elevation: 3,
+		elevation: 7,
 		borderRadius: 10,
 		borderColor: '#000',
 		backgroundColor: '#fff',
 		alignItems: 'center',
 		justifyContent: 'center',
-		margin: 10,
+		margin: 5,
+		marginBottom: 10,
 		padding: 10,
 	},
 });

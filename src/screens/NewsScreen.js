@@ -7,19 +7,24 @@ const NewsScreen = (props) => {
 	const [newsData, setNewsData] = useState();
 
 	useEffect(() => {
+		const stackNavigator = props.navigation.dangerouslyGetParent();
+		if (stackNavigator) {
+			stackNavigator.setOptions({
+				headerTitle: 'Статьи',
+			});
+		}
+
 		nodeApi
 			.get('/articles')
 			.then((response) => setNewsData(response.data.data))
 			.catch((error) => console.log(error));
 	}, []);
-	console.log('NEWS', newsData);
 
 	return (
-		<View>
+		<View style={{ flex: 1 }}>
 			<FlatList
 				data={newsData}
 				renderItem={(item) => {
-					console.log(item.item.insert_date);
 					const { title } = item.item;
 					const previewData = item.item.article_preview.blocks;
 					const previewItem = previewData.map((item) => {
@@ -89,14 +94,15 @@ const styles = StyleSheet.create({
 		},
 		shadowOpacity: 0.58,
 		shadowRadius: 16.0,
-		elevation: 7,
+		elevation: 5,
 		borderRadius: 3,
 		borderColor: '#000',
 		backgroundColor: '#fff',
 
 		justifyContent: 'center',
 		marginTop: 10,
-		margin: 5,
+		marginHorizontal: 5,
+		marginBottom: 10,
 		padding: 5,
 	},
 });

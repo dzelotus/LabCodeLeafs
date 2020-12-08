@@ -69,17 +69,17 @@ const LastScansCard = ({ weatherInfo }) => {
 							style={{
 								textAlignVertical: 'center',
 								fontSize: 40,
-								color: '#FF9800',
+								color: '#EB9156',
 							}}
 						>
 							{weatherInfo.temp}
 						</Text>
-						<Icon name="circle-o" size={12} style={{ marginTop: 7 }} color="#FF9800" />
+						<Icon name="circle-o" size={12} style={{ marginTop: 7 }} color="#EB9156" />
 						<Text
 							style={{
 								textAlignVertical: 'center',
 								fontSize: 40,
-								color: '#FF9800',
+								color: '#EB9156',
 							}}
 						>
 							С
@@ -102,7 +102,7 @@ const LastScansCard = ({ weatherInfo }) => {
 
 const styles = StyleSheet.create({
 	containerStyle: {
-		marginHorizontal: 15,
+		marginHorizontal: 5,
 		marginBottom: 15,
 		shadowColor: '#000',
 		shadowOffset: {
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
 	},
 	textItem: {
 		flex: 1,
-		color: '#FF9800',
+		color: '#EB9156',
 		fontSize: 15,
 	},
 

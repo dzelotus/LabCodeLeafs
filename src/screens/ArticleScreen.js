@@ -1,21 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import getRNDraftJSBlocks from 'react-native-draftjs-render';
 
 const ArticleScreen = (props) => {
 	const { route } = props;
+	const articleTitle = route.params.data.title;
+	console.log('route', route);
+	useEffect(() => {
+		const stackNavigator = props.navigation.dangerouslyGetParent();
 
-	console.log('im', route.params.data.article_text);
+		if (stackNavigator) {
+			stackNavigator.setOptions({
+				headerTitle: articleTitle,
+			});
+		}
+	});
 
 	const atomicHandler = (item, imageData) => {
-		console.log('HAND IT', item);
 		const imageIndex = item.entityRanges[0].key;
 		const imageUri = imageData[imageIndex].data;
-		console.log('URI', imageUri.src);
 
 		switch (item.type) {
 			case 'atomic':
-				console.log('IM', imageUri);
 				return (
 					<View key={item.key}>
 						<Image
@@ -42,12 +48,7 @@ const ArticleScreen = (props) => {
 
 	const blocks = getRNDraftJSBlocks(params);
 
-	return (
-		<ScrollView style={styles.container}>
-			{/* <Text>{title}</Text> */}
-			{blocks}
-		</ScrollView>
-	);
+	return <ScrollView style={styles.container}>{blocks}</ScrollView>;
 };
 
 /* const styles = StyleSheet.create({

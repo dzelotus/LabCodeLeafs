@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { /* useState, */ useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
 	View,
@@ -6,14 +6,14 @@ import {
 	Text,
 	FlatList,
 	TouchableOpacity,
-	TextInput,
+	/* TextInput, */
 	Image,
 	ActivityIndicator,
 } from 'react-native';
 import { fetchCatalog } from '../actions/CatalogActions';
 
 const CatalogScreen = (props) => {
-	const [term, setTerm] = useState('');
+	/* const [term, setTerm] = useState(''); */
 
 	useEffect(() => {
 		props.navigation.addListener('focus', () => {
@@ -28,7 +28,7 @@ const CatalogScreen = (props) => {
 	}
 	return (
 		<View style={{ flex: 1 }}>
-			<View style={styles.inputContainer}>
+			{/* <View style={styles.inputContainer}>
 				<TextInput
 					autoCapitalize="none"
 					placeholder="Поиск по каталогу"
@@ -37,8 +37,8 @@ const CatalogScreen = (props) => {
 					onChangeText={(newTerm) => setTerm(newTerm)}
 					onEndEditing={() => console.log('submitted')}
 				/>
-			</View>
-			<View style={{ marginBottom: 60 }}>
+			</View> */}
+			<View>
 				<FlatList
 					data={data}
 					keyExtractor={(item) => item.name}

@@ -136,6 +136,7 @@ function SignupScreen(props) {
 							style={{
 								alignSelf: 'center',
 								textAlign: 'center',
+								color: '#EB9156',
 							}}
 						>
 							Регистрация в Листочках
@@ -144,6 +145,10 @@ function SignupScreen(props) {
 					<Spacer>
 						<View style={styles.inputsContainer}>
 							<Input
+								inputStyle={{ height: 50 }}
+								labelStyle={{ color: '#379683' }}
+								accessibilityLabel="Name for registration"
+								accessibilityHint="Registration Name"
 								label="Имя пользователя"
 								autoCapitalize="none"
 								autoCorrect={false}
@@ -170,6 +175,10 @@ function SignupScreen(props) {
 							/>
 
 							<Input
+								inputStyle={{ height: 50 }}
+								labelStyle={{ color: '#379683' }}
+								accessibilityLabel="E-mail for registration"
+								accessibilityHint="Registration E-mail"
 								label="E-mail"
 								autoCapitalize="none"
 								autoCorrect={false}
@@ -193,6 +202,10 @@ function SignupScreen(props) {
 							/>
 
 							<Input
+								inputStyle={{ height: 50 }}
+								labelStyle={{ color: '#379683' }}
+								accessibilityLabel="Password for registration"
+								accessibilityHint="Registration Password"
 								secureTextEntry
 								label="Пароль"
 								autoCapitalize="none"
@@ -219,6 +232,10 @@ function SignupScreen(props) {
 								errorMessage={regexPassword.current}
 							/>
 							<Input
+								inputStyle={{ height: 50 }}
+								labelStyle={{ color: '#379683' }}
+								accessibilityLabel="Password for registration"
+								accessibilityHint="Repeate registration password"
 								secureTextEntry
 								label="Повторите пароль"
 								autoCapitalize="none"

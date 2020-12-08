@@ -80,7 +80,7 @@ const FirstLaunchScreen = (props) => {
 								borderBottomColor: '#379683',
 							}}
 						>
-							<Text style={{ color: '#379683' }}>
+							<Text style={{ color: '#379683', fontSize: 18 }}>
 								Перейти на экран входа и регистрации?
 							</Text>
 						</TouchableOpacity>
@@ -100,7 +100,7 @@ const FirstLaunchScreen = (props) => {
 						viewPager.current.setPage(0);
 					}}
 				>
-					<FontAwesome name={page1} size={15} />
+					<FontAwesome name={page1} size={20} />
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={{ marginHorizontal: 10 }}
@@ -108,7 +108,7 @@ const FirstLaunchScreen = (props) => {
 						viewPager.current.setPage(1);
 					}}
 				>
-					<FontAwesome name={page2} size={15} />
+					<FontAwesome name={page2} size={20} />
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={{ marginHorizontal: 10 }}
@@ -116,7 +116,7 @@ const FirstLaunchScreen = (props) => {
 						viewPager.current.setPage(2);
 					}}
 				>
-					<FontAwesome name={page3} size={15} />
+					<FontAwesome name={page3} size={20} />
 				</TouchableOpacity>
 				<TouchableOpacity
 					style={{ marginHorizontal: 10 }}
@@ -124,7 +124,7 @@ const FirstLaunchScreen = (props) => {
 						viewPager.current.setPage(3);
 					}}
 				>
-					<FontAwesome name={page4} size={15} />
+					<FontAwesome name={page4} size={20} />
 				</TouchableOpacity>
 			</View>
 		</>

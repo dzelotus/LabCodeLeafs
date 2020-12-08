@@ -18,11 +18,12 @@ const MainScreen = ({ navigation }) => {
 	const [scans, setScans] = useState();
 	const [verifyToken, setVerifyToken] = useState(true);
 	const [weather, setWeather] = useState();
+	const [newsData, setNewsData] = useState(null);
 
 	const isHermes = () => !!global.HermesInternal;
 
-	const getLastScans = async () => {
-		await nodeApi
+	const getLastScans = () => {
+		nodeApi
 			.get('/scans')
 			.then((response) => {
 				console.log(response.data.data);
@@ -32,6 +33,13 @@ const MainScreen = ({ navigation }) => {
 			})
 			.catch((error) => console.log(error.response));
 		RNBootSplash.hide();
+	};
+
+	const getArticles = () => {
+		nodeApi
+			.get('/articles')
+			.then((response) => setNewsData(response.data.data))
+			.catch((error) => console.log(error));
 	};
 
 	const getCoords = () =>
@@ -80,6 +88,7 @@ const MainScreen = ({ navigation }) => {
 			getLastScans();
 			checkVerify();
 			getCoords();
+			getArticles();
 			isHermes();
 		});
 
@@ -120,8 +129,8 @@ const MainScreen = ({ navigation }) => {
 
 	return (
 		<View>
-			<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: 15 }}>
-				<NewsCard iconName="star-o" nav="News" headerText="Новости" />
+			<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: 10 }}>
+				<NewsCard iconName="star-o" nav="News" headerText="Новости" newsData={newsData} />
 				<LastScansCard
 					headerText="Мои сканирования"
 					nav="LastScan"
