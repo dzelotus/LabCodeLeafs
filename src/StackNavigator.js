@@ -10,7 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AboutUsScreen from './screens/AboutUsScreen';
 import AuthScreen from './screens/AuthScreen';
 import CatalogItemScreen from './screens/CatalogItemScreen';
-import CatalogScreen from './screens/CatalogScreen';
+/* import CatalogScreen from './screens/CatalogScreen'; */
 import EditProfileScreen from './screens/EditProfileScreen';
 import GardenScreen from './screens/GardenScreen';
 import FirstLaunchScreen from './screens/FirstLaunchScreen';
@@ -32,13 +32,14 @@ import nodeApi from './api/nodeApi';
 import { resolveAuth } from './actions/AuthActions';
 import NewsScreen from './screens/NewsScreen';
 import ArticleScreen from './screens/ArticleScreen';
+import CatalogJsonScreen from './screens/CatalogJsonScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const CatalogFlow = () => (
 	<Stack.Navigator screenOptions={{ title: 'Справочник', headerTintColor: '#379683' }}>
-		<Stack.Screen name="Catalog" component={CatalogScreen} />
+		<Stack.Screen name="Catalog" component={CatalogJsonScreen} />
 		<Stack.Screen name="CatalogItem" component={CatalogItemScreen} />
 		<Stack.Screen name="Item" component={ItemScreen} />
 	</Stack.Navigator>
