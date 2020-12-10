@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AboutUsScreen from './screens/AboutUsScreen';
-import AuthScreen from './screens/AuthScreen';
 import CatalogItemScreen from './screens/CatalogItemScreen';
 /* import CatalogScreen from './screens/CatalogScreen'; */
 import EditProfileScreen from './screens/EditProfileScreen';
@@ -90,13 +89,19 @@ const CameraFlow = () => (
 	</Stack.Navigator>
 );
 
-const AuthFlow = () => (
-	<Stack.Navigator screenOptions={{ headerShown: false }}>
-		<Stack.Screen name="Auth" component={AuthScreen} />
-		<Stack.Screen name="Signup" component={SignupScreen} />
-		<Stack.Screen name="Signin" component={SigninScreen} />
-	</Stack.Navigator>
-);
+const AuthFlow = (props) => {
+	console.log('SCREEN PROP', props);
+	const { route } = props;
+	return (
+		<Stack.Navigator
+			initialRouteName={route.params.data ? 'Signup' : 'Signin'}
+			screenOptions={{ headerShown: false }}
+		>
+			<Stack.Screen name="Signup" component={SignupScreen} />
+			<Stack.Screen name="Signin" component={SigninScreen} />
+		</Stack.Navigator>
+	);
+};
 
 const NewsFlow = () => (
 	<Stack.Navigator
@@ -183,6 +188,7 @@ const TabNavigator = () => (
 
 const StackNavigator = (route) => {
 	const [load, setLoad] = useState(false);
+	console.log('STACK ROUTE', route);
 
 	// Проверка авторизации пользователя
 	const checkAuth = async () => {
@@ -199,6 +205,7 @@ const StackNavigator = (route) => {
 				nodeApi
 					.get('user_authentication')
 					.then((response) => {
+						console.log('UA', response);
 						if (response.data.data) {
 							route.resolveAuth({ prop: 'loadStart', value: true });
 							setLoad(true);
@@ -245,6 +252,7 @@ const StackNavigator = (route) => {
 				<Stack.Screen
 					name="AuthFlow"
 					component={AuthFlow}
+					initialParams={{ data: route.toSignupScreen }}
 					options={{ headerShown: false }}
 				/>
 			)}
@@ -258,9 +266,9 @@ const StackNavigator = (route) => {
 };
 
 const mapStateToProps = ({ auth }) => {
-	const { fistLaunchToken, isSigned, loadStart } = auth;
+	const { fistLaunchToken, isSigned, loadStart, toSignupScreen } = auth;
 
-	return { fistLaunchToken, isSigned, loadStart };
+	return { fistLaunchToken, isSigned, loadStart, toSignupScreen };
 };
 
 export default connect(mapStateToProps, { resolveAuth })(StackNavigator);

@@ -16,7 +16,7 @@ import { Text, Button, Input } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import AsyncStorage from '@react-native-community/async-storage';
-import Spacer from '../components/Spacer';
+
 import {
 	inputChange,
 	signup,
@@ -130,141 +130,153 @@ function SignupScreen(props) {
 		<View>
 			<ScrollView keyboardShouldPersistTaps="always">
 				<KeyboardAvoidingView behavior="padding">
-					<Spacer>
-						<Text
-							h3
-							style={{
-								alignSelf: 'center',
-								textAlign: 'center',
-								color: '#EB9156',
+					<Text
+						h1
+						style={{
+							fontWeight: 'bold',
+							color: '#379683',
+							textAlign: 'center',
+						}}
+					>
+						LEAFS
+					</Text>
+					<Text
+						h3
+						style={{
+							alignSelf: 'center',
+							textAlign: 'center',
+							color: '#EB9156',
+						}}
+					>
+						Регистрация
+					</Text>
+
+					<View style={styles.inputsContainer}>
+						<Input
+							inputStyle={{ height: 50 }}
+							labelStyle={{ color: '#379683' }}
+							accessibilityLabel="Name for registration"
+							accessibilityHint="Registration Name"
+							label="Имя пользователя"
+							autoCapitalize="none"
+							autoCorrect={false}
+							value={username}
+							onChangeText={(text) => {
+								props.inputChange({
+									prop: 'username',
+									value: text,
+								});
+
+								if (validateUsername(text) && text.length > 2 && text.length < 51) {
+									regexUsername.current = '';
+								} else {
+									regexUsername.current =
+										'Логин может содержать только буквы латинского алфавита и цифры';
+								}
 							}}
-						>
-							Регистрация в Листочках
-						</Text>
-					</Spacer>
-					<Spacer>
-						<View style={styles.inputsContainer}>
-							<Input
-								inputStyle={{ height: 50 }}
-								labelStyle={{ color: '#379683' }}
-								accessibilityLabel="Name for registration"
-								accessibilityHint="Registration Name"
-								label="Имя пользователя"
-								autoCapitalize="none"
-								autoCorrect={false}
-								value={username}
-								onChangeText={(text) => {
-									props.inputChange({
-										prop: 'username',
-										value: text,
-									});
+							errorStyle={{ color: 'red' }}
+							errorMessage={regexUsername.current}
+						/>
 
-									if (
-										validateUsername(text) &&
-										text.length > 2 &&
-										text.length < 51
-									) {
-										regexUsername.current = '';
-									} else {
-										regexUsername.current =
-											'Логин может содержать только буквы латинского алфавита и цифры';
-									}
-								}}
-								errorStyle={{ color: 'red' }}
-								errorMessage={regexUsername.current}
-							/>
+						<Input
+							inputStyle={{ height: 50 }}
+							labelStyle={{ color: '#379683' }}
+							accessibilityLabel="E-mail for registration"
+							accessibilityHint="Registration E-mail"
+							label="E-mail"
+							autoCapitalize="none"
+							autoCorrect={false}
+							value={email}
+							onChangeText={(text) => {
+								props.inputChange({
+									prop: 'email',
+									value: text,
+								});
+							}}
+							onBlur={() => {
+								console.log('BLUR');
+								if (validateEmail(props.email)) {
+									setRegexEmail();
+								} else {
+									setRegexEmail('Некорректный емейл');
+								}
+							}}
+							errorStyle={{ color: 'red' }}
+							errorMessage={regexEmail}
+						/>
 
-							<Input
-								inputStyle={{ height: 50 }}
-								labelStyle={{ color: '#379683' }}
-								accessibilityLabel="E-mail for registration"
-								accessibilityHint="Registration E-mail"
-								label="E-mail"
-								autoCapitalize="none"
-								autoCorrect={false}
-								value={email}
-								onChangeText={(text) => {
-									props.inputChange({
-										prop: 'email',
-										value: text,
-									});
-								}}
-								onBlur={() => {
-									console.log('BLUR');
-									if (validateEmail(props.email)) {
-										setRegexEmail();
-									} else {
-										setRegexEmail('Некорректный емейл');
-									}
-								}}
-								errorStyle={{ color: 'red' }}
-								errorMessage={regexEmail}
-							/>
+						<Input
+							inputStyle={{ height: 50 }}
+							labelStyle={{ color: '#379683' }}
+							accessibilityLabel="Password for registration"
+							accessibilityHint="Registration Password"
+							secureTextEntry
+							label="Пароль"
+							autoCapitalize="none"
+							autoCorrect={false}
+							value={password}
+							onChangeText={(text) => {
+								props.inputChange({
+									prop: 'password',
+									value: text,
+								});
+								console.log(password);
+								if (validatePassword(text) && text.length > 7 && text.length < 51) {
+									regexPassword.current = '';
+								} else {
+									regexPassword.current =
+										'Пароль должен содержать цифры и хотя бы одну букву латинского алфавита';
+								}
+							}}
+							errorStyle={{ color: 'red' }}
+							errorMessage={regexPassword.current}
+						/>
+						<Input
+							inputStyle={{ height: 50 }}
+							labelStyle={{ color: '#379683' }}
+							accessibilityLabel="Password for registration"
+							accessibilityHint="Repeate registration password"
+							secureTextEntry
+							label="Повторите пароль"
+							autoCapitalize="none"
+							autoCorrect={false}
+							value={password2}
+							onChangeText={(text) => {
+								props.inputChange({
+									prop: 'password2',
+									value: text,
+								});
+								console.log(password2);
+								if (
+									validatePassword(text) &&
+									props.password.toString === props.password2.toString
+								) {
+									regexPassword2.current = '';
+								} else {
+									regexPassword2.current = 'Пароли не совпадают';
+								}
+							}}
+							errorStyle={{ color: 'red' }}
+							errorMessage={regexPassword2.current}
+						/>
 
-							<Input
-								inputStyle={{ height: 50 }}
-								labelStyle={{ color: '#379683' }}
-								accessibilityLabel="Password for registration"
-								accessibilityHint="Registration Password"
-								secureTextEntry
-								label="Пароль"
-								autoCapitalize="none"
-								autoCorrect={false}
-								value={password}
-								onChangeText={(text) => {
-									props.inputChange({
-										prop: 'password',
-										value: text,
-									});
-									console.log(password);
-									if (
-										validatePassword(text) &&
-										text.length > 7 &&
-										text.length < 51
-									) {
-										regexPassword.current = '';
-									} else {
-										regexPassword.current =
-											'Пароль должен содержать цифры и хотя бы одну букву латинского алфавита';
-									}
-								}}
-								errorStyle={{ color: 'red' }}
-								errorMessage={regexPassword.current}
-							/>
-							<Input
-								inputStyle={{ height: 50 }}
-								labelStyle={{ color: '#379683' }}
-								accessibilityLabel="Password for registration"
-								accessibilityHint="Repeate registration password"
-								secureTextEntry
-								label="Повторите пароль"
-								autoCapitalize="none"
-								autoCorrect={false}
-								value={password2}
-								onChangeText={(text) => {
-									props.inputChange({
-										prop: 'password2',
-										value: text,
-									});
-									console.log(password2);
-									if (
-										validatePassword(text) &&
-										props.password.toString === props.password2.toString
-									) {
-										regexPassword2.current = '';
-									} else {
-										regexPassword2.current = 'Пароли не совпадают';
-									}
-								}}
-								errorStyle={{ color: 'red' }}
-								errorMessage={regexPassword2.current}
-							/>
-
-							{activityIndicator()}
-							{error()}
-						</View>
-					</Spacer>
+						{activityIndicator()}
+						{error()}
+					</View>
 				</KeyboardAvoidingView>
+				<TouchableOpacity
+					style={{
+						alignSelf: 'center',
+						marginTop: 20,
+						borderBottomWidth: 2,
+						borderBottomColor: '#379683',
+					}}
+					onPress={() => {
+						navigation.navigate('Signin');
+					}}
+				>
+					<Text style={{ fontSize: 15, color: '#379683' }}>Перейти на экран входа</Text>
+				</TouchableOpacity>
 			</ScrollView>
 			<Modal visible={isModalVisible} animationType="slide" transparent>
 				<View style={styles.modalContainer}>

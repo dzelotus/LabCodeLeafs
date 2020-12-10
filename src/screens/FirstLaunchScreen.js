@@ -1,6 +1,7 @@
+/* eslint-disable global-require */
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,6 +9,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ViewPager from '@react-native-community/viewpager';
 import { connect } from 'react-redux';
+import { Button } from 'react-native-elements';
 import { resolveAuth } from '../actions/AuthActions';
 
 const FirstLaunchScreen = (props) => {
@@ -30,6 +32,9 @@ const FirstLaunchScreen = (props) => {
 	let page4 = 'circle';
 	page === 3 ? (page4 = 'circle') : (page4 = 'circle-o');
 
+	let page5 = 'circle';
+	page === 4 ? (page5 = 'circle') : (page5 = 'circle-o');
+
 	return (
 		<>
 			<ViewPager
@@ -42,56 +47,85 @@ const FirstLaunchScreen = (props) => {
 				}}
 			>
 				<View key="1" style={styles.textContainer}>
-					<Text style={{ fontSize: 20 }}>Добро пожаловать в Листочки</Text>
+					<Image
+						source={require('../../assets/firstLaunchScreenImages/position1.png')}
+						style={{ width: 200, height: 200, marginBottom: 15 }}
+					/>
+					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
+						LEAFS
+					</Text>
+					<Text style={{ fontSize: 20 }}>Приложение для каждого садовода</Text>
 				</View>
 				<View key="2" style={styles.textContainer}>
-					<Text style={{ fontSize: 20 }}>В Листочках вы сможете</Text>
-					<Text>Определить растения при помощи камеры</Text>
-					<Text style={{ textAlign: 'center' }}>
-						Воспользоваться каталогом растений и заболеваний от ведущих специалистов в
-						области ботаники
+					<Image
+						source={require('../../assets/firstLaunchScreenImages/position2.png')}
+						style={{ width: 250, height: 250, marginBottom: 15 }}
+					/>
+					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
+						LEAFS
+					</Text>
+					<Text style={{ fontSize: 20, textAlign: 'center' }}>
+						Мнгновенное определние растений и заболеваний
 					</Text>
 				</View>
 				<View key="3" style={styles.textContainer}>
-					<Text style={{ textAlign: 'center', fontSize: 20 }}>
-						Чтобы просканировать растение, сделайте такое фото, чтобы в область
-						видимости попадал листок или цветок целиком
+					<Image
+						source={require('../../assets/firstLaunchScreenImages/position3.png')}
+						style={{ width: 250, height: 250, marginBottom: 15 }}
+					/>
+					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
+						LEAFS
+					</Text>
+					<Text style={{ fontSize: 20, textAlign: 'center' }}>
+						Удобный и функциональный дневник садовода
 					</Text>
 				</View>
 				<View key="4" style={styles.textContainer}>
-					<Text style={{ textAlign: 'center', fontSize: 20 }}>
-						Для использования приложение требуется пройти регистрацию
+					<Image
+						source={require('../../assets/firstLaunchScreenImages/position4.png')}
+						style={{ width: 250, height: 250, marginBottom: 15 }}
+					/>
+					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
+						LEAFS
 					</Text>
-
-					<View
-						style={{
-							flex: 0.1,
-							justifyContent: 'flex-end',
+					<Text style={{ fontSize: 20, textAlign: 'center' }}>
+						Личный доктор Ваших растений
+					</Text>
+				</View>
+				<View key="5" style={styles.textContainer}>
+					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
+						LEAFS
+					</Text>
+					<Text style={{ fontSize: 18, textAlign: 'center', marginBottom: 20 }}>
+						Для доступа ко всем функциям приложения требуется регистрация
+					</Text>
+					<Button
+						containerStyle={{ paddingHorizontal: 8, width: '100%', paddingBottom: 15 }}
+						buttonStyle={{ backgroundColor: '#379683', height: 48 }}
+						title="Регистрация"
+						onPress={() => {
+							AsyncStorage.setItem('alreadyLaunched', 'true');
+							props.resolveAuth({ prop: 'fistLaunchToken', value: true });
+							props.resolveAuth({ prop: 'toSignupScreen', value: true });
 						}}
-					>
-						<TouchableOpacity
-							onPress={() => {
-								console.log('TAP', console.log(props));
-								AsyncStorage.setItem('alreadyLaunched', 'true');
-								props.resolveAuth({ prop: 'fistLaunchToken', value: true });
-							}}
-							style={{
-								borderBottomWidth: 1,
-								borderBottomColor: '#379683',
-							}}
-						>
-							<Text style={{ color: '#379683', fontSize: 18 }}>
-								Перейти на экран входа и регистрации?
-							</Text>
-						</TouchableOpacity>
-					</View>
+					/>
+					<Button
+						containerStyle={{ paddingHorizontal: 8, width: '100%' }}
+						buttonStyle={{ backgroundColor: '#379683', height: 48 }}
+						title="Вход"
+						onPress={() => {
+							AsyncStorage.setItem('alreadyLaunched', 'true');
+							props.resolveAuth({ prop: 'fistLaunchToken', value: true });
+						}}
+					/>
 				</View>
 			</ViewPager>
 			<View
 				style={{
 					flexDirection: 'row',
 					justifyContent: 'center',
-					marginBottom: 20,
+					paddingBottom: 20,
+					backgroundColor: 'white',
 				}}
 			>
 				<TouchableOpacity
@@ -126,6 +160,14 @@ const FirstLaunchScreen = (props) => {
 				>
 					<FontAwesome name={page4} size={20} />
 				</TouchableOpacity>
+				<TouchableOpacity
+					style={{ marginHorizontal: 10 }}
+					onPress={() => {
+						viewPager.current.setPage(4);
+					}}
+				>
+					<FontAwesome name={page5} size={20} />
+				</TouchableOpacity>
 			</View>
 		</>
 	);
@@ -134,7 +176,10 @@ const FirstLaunchScreen = (props) => {
 const styles = StyleSheet.create({
 	viewPager: {
 		flex: 1,
-		marginTop: 26,
+
+		backgroundColor: 'white',
+		borderWidth: 1,
+		borderColor: 'red',
 	},
 
 	textContainer: {
@@ -145,9 +190,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ auth }) => {
-	const { fistLaunchToken, isLoading } = auth;
+	const { fistLaunchToken, isLoading, toSignupScreen } = auth;
 
-	return { fistLaunchToken, isLoading };
+	return { fistLaunchToken, isLoading, toSignupScreen };
 };
 
 export default connect(mapStateToProps, { resolveAuth })(FirstLaunchScreen);

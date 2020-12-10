@@ -24,6 +24,7 @@ const INITIAL_STATE = {
 	screenOptions: {},
 	hasBioScanner: false,
 	isBioAuthActive: false,
+	toSignupScreen: false,
 };
 
 export default (state = INITIAL_STATE, action) => {

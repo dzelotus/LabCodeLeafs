@@ -26,7 +26,6 @@ import {
 	checkBioScanner,
 } from '../actions/AuthActions';
 
-import Spacer from '../components/Spacer';
 import nodeApi from '../api/nodeApi';
 
 function SigninScreen(props) {
@@ -218,80 +217,103 @@ function SigninScreen(props) {
 			}}
 		>
 			<ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
-				<Spacer>
-					<Text h3 style={{ alignSelf: 'center', marginTop: 10, color: '#EB9156' }}>
-						Вход в Листочки
+				<Text
+					h1
+					style={{
+						fontWeight: 'bold',
+						color: '#379683',
+						textAlign: 'center',
+					}}
+				>
+					LEAFS
+				</Text>
+				<Text h3 style={{ alignSelf: 'center', marginTop: 10, color: '#EB9156' }}>
+					Вход
+				</Text>
+
+				<View style={styles.inputsContainer}>
+					<Input
+						accessibilityLabel="E-mail for login"
+						accessibilityHint="Login E-mail"
+						inputStyle={{ height: 50 }}
+						label="Имя пользователя"
+						labelStyle={{ color: '#379683' }}
+						autoCapitalize="none"
+						autoCorrect={false}
+						value={username}
+						onChangeText={(text) => {
+							props.inputChange({
+								prop: 'username',
+								value: text,
+							});
+
+							if (validateUsername(text) && text.length > 2 && text.length < 51) {
+								regexUsername.current = '';
+							} else {
+								regexUsername.current =
+									'Логин может содержать только буквы латинского алфавита и цифры';
+							}
+						}}
+						errorStyle={{ color: 'red' }}
+						errorMessage={regexUsername.current}
+					/>
+
+					<Input
+						accessibilityLabel="Password for login"
+						accessibilityHint="Login Password"
+						inputStyle={{ height: 50 }}
+						secureTextEntry
+						label="Пароль"
+						labelStyle={{ color: '#379683' }}
+						autoCapitalize="none"
+						autoCorrect={false}
+						value={password}
+						onChangeText={(text) => {
+							props.inputChange({
+								prop: 'password',
+								value: text,
+							});
+							if (validatePassword(text) && text.length > 7 && text.length < 51) {
+								regexPassword.current = '';
+							} else {
+								regexPassword.current =
+									'Пароль должен содержать цифры и хотя бы одну букву латинского алфавита';
+							}
+						}}
+						errorStyle={{ color: 'red' }}
+						errorMessage={regexPassword.current}
+					/>
+
+					{activityIndicator()}
+					{errorMessage()}
+					<TouchableOpacity
+						style={{
+							alignSelf: 'center',
+							marginTop: 20,
+							borderBottomWidth: 2,
+							borderBottomColor: '#379683',
+						}}
+						onPress={toggleModal}
+					>
+						<Text style={{ fontSize: 18, color: '#379683' }}>Забыл пароль?</Text>
+					</TouchableOpacity>
+				</View>
+
+				<TouchableOpacity
+					style={{
+						alignSelf: 'center',
+						marginTop: 20,
+						borderBottomWidth: 2,
+						borderBottomColor: '#379683',
+					}}
+					onPress={() => {
+						navigation.navigate('Signup');
+					}}
+				>
+					<Text style={{ fontSize: 15, color: '#379683' }}>
+						Перейти на экран регистрации
 					</Text>
-				</Spacer>
-				<Spacer>
-					<View style={styles.inputsContainer}>
-						<Input
-							accessibilityLabel="E-mail for login"
-							accessibilityHint="Login E-mail"
-							inputStyle={{ height: 50 }}
-							label="Имя пользователя"
-							labelStyle={{ color: '#379683' }}
-							autoCapitalize="none"
-							autoCorrect={false}
-							value={username}
-							onChangeText={(text) => {
-								props.inputChange({
-									prop: 'username',
-									value: text,
-								});
-
-								if (validateUsername(text) && text.length > 2 && text.length < 51) {
-									regexUsername.current = '';
-								} else {
-									regexUsername.current =
-										'Логин может содержать только буквы латинского алфавита и цифры';
-								}
-							}}
-							errorStyle={{ color: 'red' }}
-							errorMessage={regexUsername.current}
-						/>
-
-						<Input
-							accessibilityLabel="Password for login"
-							accessibilityHint="Login Password"
-							inputStyle={{ height: 50 }}
-							secureTextEntry
-							label="Пароль"
-							labelStyle={{ color: '#379683' }}
-							autoCapitalize="none"
-							autoCorrect={false}
-							value={password}
-							onChangeText={(text) => {
-								props.inputChange({
-									prop: 'password',
-									value: text,
-								});
-								if (validatePassword(text) && text.length > 7 && text.length < 51) {
-									regexPassword.current = '';
-								} else {
-									regexPassword.current =
-										'Пароль должен содержать цифры и хотя бы одну букву латинского алфавита';
-								}
-							}}
-							errorStyle={{ color: 'red' }}
-							errorMessage={regexPassword.current}
-						/>
-
-						{activityIndicator()}
-						{errorMessage()}
-						<TouchableOpacity
-							style={{
-								alignSelf: 'center',
-								marginTop: 20,
-								borderBottomWidth: 2,
-								borderBottomColor: '#379683',
-							}}
-							onPress={toggleModal}
-						>
-							<Text style={{ fontSize: 18, color: '#379683' }}>Забыл пароль?</Text>
-						</TouchableOpacity>
-					</View>
-				</Spacer>
+				</TouchableOpacity>
 			</ScrollView>
 			<Modal visible={isModalVisible} animationType="slide" transparent>
 				<View style={styles.modalContainer}>
