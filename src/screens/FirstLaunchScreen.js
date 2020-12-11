@@ -54,7 +54,9 @@ const FirstLaunchScreen = (props) => {
 					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
 						LEAFS
 					</Text>
-					<Text style={{ fontSize: 20 }}>Приложение для каждого садовода</Text>
+					<Text style={{ fontSize: 20, textAlign: 'center' }}>
+						Приложение для каждого садовода
+					</Text>
 				</View>
 				<View key="2" style={styles.textContainer}>
 					<Image

@@ -47,7 +47,6 @@ function SigninScreen(props) {
 		hasBioScanner,
 		isBioAuthActive,
 	} = props;
-	console.log('ITS PROPS', props);
 
 	const toggleModal = () => {
 		setModalVisible(!isModalVisible);

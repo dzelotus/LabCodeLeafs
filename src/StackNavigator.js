@@ -205,15 +205,15 @@ const StackNavigator = (route) => {
 				nodeApi
 					.get('user_authentication')
 					.then((response) => {
-						console.log('UA', response);
+						console.log('UA', response.data.data);
 						if (response.data.data) {
-							route.resolveAuth({ prop: 'loadStart', value: true });
-							setLoad(true);
 							route.resolveAuth({ prop: 'isSigned', value: true });
-						} else {
 							route.resolveAuth({ prop: 'loadStart', value: true });
 							setLoad(true);
+						} else {
 							route.resolveAuth({ prop: 'isSigned', value: false });
+							route.resolveAuth({ prop: 'loadStart', value: true });
+							setLoad(true);
 						}
 					})
 					.catch((error) => {
