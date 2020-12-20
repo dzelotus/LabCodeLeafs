@@ -186,7 +186,18 @@ export const checkBioScanner = () => (dispatch) => {
 						dispatch({ type: IS_BIO_AUTH_ACTIVE, isBioAuthActive: true });
 					}
 				})
-				.catch((error) => console.log('ERROR', error));
+				.catch((error) => {
+					console.log('ERROR', error);
+
+					dispatch({ type: IS_BIO_AUTH_ACTIVE, isBioAuthActive: false });
+				});
 		})
-		.catch((error) => console.log('ERROR', error));
+		.catch((error) => {
+			dispatch({
+				type: HAS_BIO_SCANNER,
+				hasBioPayload: false,
+			});
+			dispatch({ type: IS_BIO_AUTH_ACTIVE, isBioAuthActive: false });
+			console.log('ERROR HERE', error);
+		});
 };

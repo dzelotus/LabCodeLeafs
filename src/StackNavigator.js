@@ -90,8 +90,8 @@ const CameraFlow = () => (
 );
 
 const AuthFlow = (props) => {
-	console.log('SCREEN PROP', props);
 	const { route } = props;
+	console.log('ROUTE', route);
 	return (
 		<Stack.Navigator
 			initialRouteName={route.params.data ? 'Signup' : 'Signin'}
@@ -205,12 +205,14 @@ const StackNavigator = (route) => {
 				nodeApi
 					.get('user_authentication')
 					.then((response) => {
-						console.log('UA', response.data.data);
+						console.log('UA', response.data);
 						if (response.data.data) {
+							console.log('SIGNED');
 							route.resolveAuth({ prop: 'isSigned', value: true });
 							route.resolveAuth({ prop: 'loadStart', value: true });
 							setLoad(true);
 						} else {
+							console.log('NOT SIGNED');
 							route.resolveAuth({ prop: 'isSigned', value: false });
 							route.resolveAuth({ prop: 'loadStart', value: true });
 							setLoad(true);

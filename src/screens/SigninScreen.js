@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable no-else-return */
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-no-bind */
@@ -18,6 +19,7 @@ import { connect } from 'react-redux';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
+import RNBootSplash from 'react-native-bootsplash';
 import {
 	clearErrorMessage,
 	getCsrf,
@@ -54,8 +56,9 @@ function SigninScreen(props) {
 
 	useEffect(() => {
 		props.getCsrf();
+		RNBootSplash.hide();
 		props.checkBioScanner();
-		fingerprintLogin();
+		isBioAuthActive ? fingerprintLogin() : null;
 		/* AsyncStorage.removeItem('BioAuth'); */
 	}, []);
 

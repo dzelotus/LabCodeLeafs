@@ -16,6 +16,7 @@ import { Text, Button, Input } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import AsyncStorage from '@react-native-community/async-storage';
+import RNBootSplash from 'react-native-bootsplash';
 
 import {
 	inputChange,
@@ -23,6 +24,7 @@ import {
 	clearErrorMessage,
 	getCsrf,
 	activateBioAuth,
+	checkBioScanner,
 } from '../actions/AuthActions';
 
 function SignupScreen(props) {
@@ -36,7 +38,10 @@ function SignupScreen(props) {
 	const { username, password, password2, email, navigation, _csrf } = props;
 
 	useEffect(() => {
+		console.log('THIS SIGNUP SCREEN');
 		props.getCsrf();
+		RNBootSplash.hide();
+		props.checkBioScanner();
 	}, []);
 
 	const onButtonPress = () => {
@@ -362,4 +367,5 @@ export default connect(mapStateToProps, {
 	clearErrorMessage,
 	getCsrf,
 	activateBioAuth,
+	checkBioScanner,
 })(SignupScreen);
