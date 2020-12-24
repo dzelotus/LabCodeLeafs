@@ -112,7 +112,7 @@ const AddPlantScreenFormHook = (props) => {
 		);
 	};
 
-	const { control, handleSubmit } = useForm();
+	const { control, handleSubmit, errors } = useForm();
 	const onSubmit = (data) => {
 		setLoading({ ...loading, buttonLoading: true });
 		console.log('DATA', data);
@@ -145,7 +145,15 @@ const AddPlantScreenFormHook = (props) => {
 		}
 	};
 
-	console.log('DATA', editData);
+	console.log('ERRORS', errors);
+
+	const InputError = () => {
+		return (
+			<View style={{ justifyContent: 'flex-end', alignSelf: 'flex-end' }}>
+				<Text style={{ color: 'red' }}>Check</Text>
+			</View>
+		);
+	};
 
 	if (loading.screenLoading) {
 		return <Indicator />;
@@ -158,6 +166,14 @@ const AddPlantScreenFormHook = (props) => {
 			<View style={styles.container}>
 				<Controller
 					control={control}
+					rules={{
+						required: true,
+						pattern: {
+							value: 1,
+							message: 'FAIL',
+						},
+						validate: {},
+					}}
 					render={({ onChange, value }) => (
 						<View>
 							<View style={styles.containerHeader}>
@@ -189,7 +205,9 @@ const AddPlantScreenFormHook = (props) => {
 					defaultValue={editData ? Number.parseInt(editData.garden_plant_id) : '0'}
 					key={editData ? 'plantLoaded' : 'plantLoading'}
 				/>
+				{errors.garden_plant_id && <Text style={{ color: 'red', zIndex: 100 }}>ChECK</Text>}
 			</View>
+
 			<View style={styles.container}>
 				<Controller
 					control={control}
@@ -269,13 +287,13 @@ const AddPlantScreenFormHook = (props) => {
 			<View style={styles.container}>
 				<Controller
 					control={control}
+					rules={{ required: 'WHAT' }}
 					render={({ onChange, onBlur, value }) => (
 						<View>
 							<View style={styles.containerHeader}>
 								<Text>Размер посадки</Text>
 							</View>
 							<TextInput
-								placeholder="Размер посадки"
 								onChangeText={onChange}
 								onBlur={onBlur}
 								textValue={value}
@@ -288,6 +306,7 @@ const AddPlantScreenFormHook = (props) => {
 					defaultValue={editData ? editData.planting_size : ''}
 					key={editData ? 'sizeLoaded' : 'plantLoading'}
 				/>
+				{errors.planting_size && <InputError />}
 			</View>
 
 			<View style={styles.notesContainer}>
