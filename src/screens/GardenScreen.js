@@ -8,7 +8,6 @@ import { useForm, Controller } from 'react-hook-form';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import nodeApi from '../api/nodeApi';
 import GardenWithPlantsCard from '../components/GardenWithPlantsCard';
-/* import nodeApi from '../api/nodeApi'; */
 
 const GardenScreen = (props) => {
 	const { navigation } = props;
