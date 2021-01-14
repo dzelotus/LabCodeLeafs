@@ -31,14 +31,14 @@ import nodeApi from './api/nodeApi';
 import { resolveAuth } from './actions/AuthActions';
 import NewsScreen from './screens/NewsScreen';
 import ArticleScreen from './screens/ArticleScreen';
-import CatalogJsonScreen from './screens/CatalogJsonScreen';
+import CatalogScreen from './screens/CatalogScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const CatalogFlow = () => (
 	<Stack.Navigator screenOptions={{ title: 'Справочник', headerTintColor: '#379683' }}>
-		<Stack.Screen name="Catalog" component={CatalogJsonScreen} />
+		<Stack.Screen name="Catalog" component={CatalogScreen} />
 		<Stack.Screen name="CatalogItem" component={CatalogItemScreen} />
 		<Stack.Screen name="Item" component={ItemScreen} />
 	</Stack.Navigator>

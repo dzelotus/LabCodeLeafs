@@ -145,6 +145,10 @@ const AddPlantScreenFormHook = (props) => {
 		}
 	};
 
+	let obj;
+
+	console.log(obj);
+
 	console.log('ERRORS', errors);
 
 	const InputError = () => {
@@ -343,12 +347,11 @@ const styles = StyleSheet.create({
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
-			height: 12,
+			height: 2,
 		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
-
-		elevation: 3,
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
 		borderRadius: 10,
 		borderColor: '#379683',
 		borderWidth: 1,
@@ -362,12 +365,11 @@ const styles = StyleSheet.create({
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
-			height: 12,
+			height: 2,
 		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
-
-		elevation: 3,
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
 		borderRadius: 10,
 		borderColor: '#379683',
 		borderWidth: 1,
@@ -405,12 +407,11 @@ const styles = StyleSheet.create({
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
-			height: 12,
+			height: 2,
 		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
-
-		elevation: 3,
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
 		borderRadius: 10,
 		borderColor: '#379683',
 		borderWidth: 1,

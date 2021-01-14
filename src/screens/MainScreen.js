@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Geolocation from '@react-native-community/geolocation';
 import RNBootSplash from 'react-native-bootsplash';
-import messaging from '@react-native-firebase/messaging';
+
 import LastScansCard from '../components/LastScansCard';
 import NewsCard from '../components/NewsCard';
 import WeatherCard from '../components/WeatherCard';
@@ -92,11 +92,7 @@ const MainScreen = ({ navigation }) => {
 			isHermes();
 		});
 
-		const unsubscribe = messaging().onMessage(async (remoteMessage) => {
-			Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-		});
-
-		return getFocus, unsubscribe;
+		return getFocus;
 	}, []);
 
 	const EmailVerify = () => {
@@ -128,7 +124,7 @@ const MainScreen = ({ navigation }) => {
 	};
 
 	return (
-		<View>
+		<View style={{ backgroundColor: 'white', flex: 1 }}>
 			<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: 10 }}>
 				<NewsCard iconName="star-o" nav="News" headerText="Новости" newsData={newsData} />
 				<LastScansCard

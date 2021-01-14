@@ -10,10 +10,7 @@ export const CLEAR_ERROR_MESSAGE = 'clear_error_message';
 export const RESOLVE_AUTH = 'resolve_auth';
 export const HAS_BIO_SCANNER = 'has_bio_scanner';
 export const IS_BIO_AUTH_ACTIVE = 'is_bio_auth_active';
-// Catalog fetch action types
-export const FETCH_CATALOG = 'fetch_catalog';
-export const FETCH_SUCCESS = 'fetch_success';
-export const FETCH_FAIL = 'fetch_fail';
+
 // Edit profile action types
 export const GET_PROFILE_INFO = 'get_profile_info';
 export const GET_PROFILE_INFO_SUCCESS = 'get_profile_info_success';

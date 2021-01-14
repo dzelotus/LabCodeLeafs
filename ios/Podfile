@@ -1,14 +1,29 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 
 platform :ios, '10.0'
 
 target 'Leafs' do
+  use_unimodules!
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
+  permissions_path = '../node_modules/react-native-permissions/ios'
 
-  pod 'react-native-fingerprint-scanner', :path => '../node_modules/react-native-fingerprint-scanner'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
+  pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID.podspec"
+  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways.podspec"
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse.podspec"
+  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary.podspec"
+  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone.podspec"
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec" 
+  pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders.podspec"
+
+  
+  
+
 
   target 'LeafsTests' do
     inherit! :complete

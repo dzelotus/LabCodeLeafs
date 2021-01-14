@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView, Image } from 'react-native';
 import getRNDraftJSBlocks from 'react-native-draftjs-render';
 
 const ArticleScreen = (props) => {
+	console.log(props);
 	const { route } = props;
 	const articleTitle = route.params.data.title;
 	console.log('route', route);

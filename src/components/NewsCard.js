@@ -62,12 +62,12 @@ const styles = StyleSheet.create({
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
-			height: 12,
+			height: 2,
 		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
 
-		elevation: 7,
+		elevation: 5,
 		borderRadius: 10,
 		borderColor: '#000',
 		backgroundColor: '#fff',

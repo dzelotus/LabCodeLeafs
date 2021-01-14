@@ -42,6 +42,8 @@
 		"react/jsx-curly-newline": "off",
 		"operator-linebreak": ["error", "after"],
 		"react/jsx-props-no-spreading": "off",
-		"no-unused-expressions": ["error", { "allowTernary": true }]
+		"no-unused-expressions": ["error", { "allowTernary": true }],
+		"react-hooks/exhaustive-deps": "off"
 	}
 }
+

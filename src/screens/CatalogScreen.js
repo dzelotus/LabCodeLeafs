@@ -1,5 +1,4 @@
-import React, { /* useState, */ useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import {
 	View,
 	StyleSheet,
@@ -10,21 +9,36 @@ import {
 	Image,
 	ActivityIndicator,
 } from 'react-native';
-import { fetchCatalog } from '../actions/CatalogActions';
+import nodeApi from '../api/nodeApi';
 
 const CatalogScreen = (props) => {
-	/* const [term, setTerm] = useState(''); */
+	const [loading, setLoading] = useState(true);
+	const [fetchedData, setFetchedData] = useState(null);
+	const [activeButton, setActiveButton] = useState('plant');
 
 	useEffect(() => {
-		props.navigation.addListener('focus', () => {
-			props.fetchCatalog();
-		});
+		fetchCatalog({ item: 'plant' });
 	}, []);
 
-	const { data, loading } = props;
+	const fetchCatalog = (item) => {
+		setLoading(true);
+		nodeApi
+			.get(`/plant-protection/${item.item}`)
+			.then((response) => {
+				console.log('RESP', JSON.stringify(response, null, 2));
+				setFetchedData(response.data.data);
+				setLoading(false);
+			})
+			.catch((error) => {
+				console.log('ERROR', error.response);
+				setLoading(false);
+			});
+	};
+
+	console.log(activeButton);
 
 	if (loading) {
-		return <ActivityIndicator size="large" color="#379683" />;
+		return <ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />;
 	}
 	return (
 		<View style={{ flex: 1 }}>
@@ -38,9 +52,53 @@ const CatalogScreen = (props) => {
 					onEndEditing={() => console.log('submitted')}
 				/>
 			</View> */}
+			<View style={styles.mainButtons}>
+				<TouchableOpacity
+					style={{
+						flex: 1,
+						alignContent: 'center',
+						alignItems: 'center',
+						justifyContent: 'center',
+					}}
+					onPress={() => {
+						setActiveButton('plant');
+						fetchCatalog({ item: 'plant' });
+					}}
+				>
+					<Text
+						style={activeButton === 'plant' ? styles.activeButton : styles.itemButton}
+					>
+						Растения
+					</Text>
+				</TouchableOpacity>
+				<TouchableOpacity
+					style={{ flex: 1 }}
+					onPress={() => {
+						setActiveButton('disease');
+						fetchCatalog({ item: 'disease' });
+					}}
+				>
+					<Text
+						style={activeButton === 'disease' ? styles.activeButton : styles.itemButton}
+					>
+						Болезни
+					</Text>
+				</TouchableOpacity>
+				<TouchableOpacity
+					style={{ flex: 1 }}
+					onPress={() => {
+						setActiveButton('heal');
+						fetchCatalog({ item: 'heal' });
+					}}
+				>
+					<Text style={activeButton === 'heal' ? styles.activeButton : styles.itemButton}>
+						Лечение
+					</Text>
+				</TouchableOpacity>
+			</View>
 			<View>
 				<FlatList
-					data={data}
+					data={fetchedData}
 					keyExtractor={(item) => item.name}
 					renderItem={({ item }) => (
 						<TouchableOpacity
@@ -109,11 +167,37 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 	},
 	alternativeNameStyle: { color: 'green' },
+	mainButtons: {
+		marginHorizontal: 10,
+		marginVertical: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		borderRadius: 10,
+		borderColor: '#379683',
+		borderWidth: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		height: 40,
+		justifyContent: 'center',
+		alignContent: 'center',
+
+		flexDirection: 'row',
+	},
+	itemButton: {
+		textAlign: 'center',
+		color: 'black',
+	},
+	activeButton: {
+		color: '#EB9156',
+		textAlign: 'center',
+		textDecorationLine: 'underline',
+	},
 });
 
-const mapStateToProps = ({ catalog }) => {
-	const { data, loading } = catalog;
-	return { data, loading };
-};
-
-export default connect(mapStateToProps, { fetchCatalog })(CatalogScreen);
+export default CatalogScreen;
