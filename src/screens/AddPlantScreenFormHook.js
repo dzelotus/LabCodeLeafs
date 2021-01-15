@@ -149,7 +149,7 @@ const AddPlantScreenFormHook = (props) => {
 
 	console.log(obj);
 
-	console.log('ERRORS', errors);
+	console.log('ERRORS', plants);
 
 	const InputError = () => {
 		return (
@@ -179,7 +179,7 @@ const AddPlantScreenFormHook = (props) => {
 						validate: {},
 					}}
 					render={({ onChange, value }) => (
-						<View>
+						<View style={{ flex: 1 }}>
 							<View style={styles.containerHeader}>
 								<Text>Растение</Text>
 							</View>
@@ -209,7 +209,7 @@ const AddPlantScreenFormHook = (props) => {
 					defaultValue={editData ? Number.parseInt(editData.garden_plant_id) : '0'}
 					key={editData ? 'plantLoaded' : 'plantLoading'}
 				/>
-				{errors.garden_plant_id && <Text style={{ color: 'red', zIndex: 100 }}>ChECK</Text>}
+				{errors.garden_plant_id && <Text style={{ color: 'red' }}>ChECK</Text>}
 			</View>
 
 			<View style={styles.container}>
@@ -383,7 +383,6 @@ const styles = StyleSheet.create({
 		top: -15,
 		left: 25,
 		padding: 5,
-		zIndex: 50,
 	},
 	textInput: {
 		flex: 1,
