@@ -4,7 +4,7 @@ const instance = axios.create({
 	baseURL: 'https://leafs-app.lab-code.com/',
 });
 
-// Никита ip 172.16.10.125
+// Никита ip 172.16.10.106
 // Сервак ip 172.16.0.6, https://leafs-app.lab-code.com/
 // Мой ip http://172.16.10.122:8080
 

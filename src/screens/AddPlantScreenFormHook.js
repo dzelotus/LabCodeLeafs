@@ -12,13 +12,13 @@ import {
 	TextInput,
 	StyleSheet,
 	ScrollView,
+	Platform,
 } from 'react-native';
 import moment from 'moment';
-import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useForm, Controller } from 'react-hook-form';
-
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import PickerModal from '../components/PickerModal';
 import nodeApi from '../api/nodeApi';
 
 const AddPlantScreenFormHook = (props) => {
@@ -55,7 +55,11 @@ const AddPlantScreenFormHook = (props) => {
 		nodeApi
 			.get('/garden-plant')
 			.then((response) => {
-				setPlants(response.data.data);
+				const plantsForMap = response.data.data;
+				const plantsData = plantsForMap.map((item) => {
+					return { id: item.id, value: item.general_russian_name };
+				});
+				setPlants(plantsData);
 			})
 			.catch((error) => console.log('PLANT ERROR', error));
 	};
@@ -64,7 +68,12 @@ const AddPlantScreenFormHook = (props) => {
 		nodeApi
 			.get('/garden-plant-unit')
 			.then((response) => {
-				setUnit(response.data.data);
+				console.log('resp', response.data.data);
+				const unitsForMap = response.data.data;
+				const unitsData = unitsForMap.map((item) => {
+					return { id: item.id, value: item.short_name };
+				});
+				setUnit(unitsData);
 				setLoading({ ...loading, screenLoading: false });
 			})
 			.catch((error) => console.log(error.response));
@@ -145,12 +154,6 @@ const AddPlantScreenFormHook = (props) => {
 		}
 	};
 
-	let obj;
-
-	console.log(obj);
-
-	console.log('ERRORS', plants);
-
 	const InputError = () => {
 		return (
 			<View style={{ justifyContent: 'flex-end', alignSelf: 'flex-end' }}>
@@ -183,26 +186,14 @@ const AddPlantScreenFormHook = (props) => {
 							<View style={styles.containerHeader}>
 								<Text>Растение</Text>
 							</View>
-							<Picker
-								selectedValue={value}
+							<PickerModal
+								plantsData={plants}
+								value={value}
 								onValueChange={(value) => {
 									onChange(value);
 								}}
-								mode="dropdown"
-							>
-								<Picker.Item label="Выберите растение" value={0} />
-								{plants
-									? plants.map((item, index) => {
-											return (
-												<Picker.Item
-													label={item.general_russian_name.toString()}
-													value={index + 1}
-													key={index}
-												/>
-											);
-									  })
-									: null}
-							</Picker>
+								placeholder="Выберите растение"
+							/>
 						</View>
 					)}
 					name="garden_plant_id"
@@ -242,8 +233,8 @@ const AddPlantScreenFormHook = (props) => {
 									testID="datePicker"
 									value={value}
 									mode="date"
-									display="default"
-									onChange={(event, value) => {
+									display={Platform.OS === 'ios' ? 'compact' : 'default'}
+									onChange={(value) => {
 										const currentDate = value;
 										setShow(false);
 										onChange(currentDate);
@@ -262,25 +253,14 @@ const AddPlantScreenFormHook = (props) => {
 					control={control}
 					render={({ onChange, value }) => (
 						<View>
-							<View style={styles.containerHeader}>
-								<Text>Единицы измерения посадки</Text>
-							</View>
-							<Picker
-								selectedValue={value}
+							<PickerModal
+								plantsData={unit}
+								value={value}
 								onValueChange={(value) => {
 									onChange(value);
 								}}
-								mode="dropdown"
-							>
-								<Picker.Item label="Выберите единицу измерения" value={0} />
-								{unit.map((item, index) => (
-									<Picker.Item
-										label={item.name.toString()}
-										value={index + 1}
-										key={index}
-									/>
-								))}
-							</Picker>
+								placeholder="Выберите ед. изм."
+							/>
 						</View>
 					)}
 					name="planting_unit"
