@@ -180,8 +180,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 
 		backgroundColor: 'white',
-		borderWidth: 1,
-		borderColor: 'red',
 	},
 
 	textContainer: {

@@ -12,11 +12,10 @@ import {
 	TextInput,
 	StyleSheet,
 	ScrollView,
-	Platform,
 } from 'react-native';
 import moment from 'moment';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { useForm, Controller } from 'react-hook-form';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PickerModal from '../components/PickerModal';
 import nodeApi from '../api/nodeApi';
@@ -71,7 +70,7 @@ const AddPlantScreenFormHook = (props) => {
 				console.log('resp', response.data.data);
 				const unitsForMap = response.data.data;
 				const unitsData = unitsForMap.map((item) => {
-					return { id: item.id, value: item.short_name };
+					return { id: item.id, value: item.name };
 				});
 				setUnit(unitsData);
 				setLoading({ ...loading, screenLoading: false });
@@ -207,9 +206,9 @@ const AddPlantScreenFormHook = (props) => {
 				<Controller
 					control={control}
 					render={({ onChange, value }) => (
-						<View>
+						<View style={{ flex: 1 }}>
 							<View style={styles.containerHeader}>
-								<Text style={{ textAlign: 'center' }}>Дата посадки</Text>
+								<Text>Дата посадки</Text>
 							</View>
 							<View
 								style={{
@@ -217,6 +216,7 @@ const AddPlantScreenFormHook = (props) => {
 									justifyContent: 'space-between',
 									paddingHorizontal: 10,
 									paddingVertical: 10,
+									alignItems: 'center',
 								}}
 							>
 								<Text style={{ textAlignVertical: 'center' }}>
@@ -226,21 +226,16 @@ const AddPlantScreenFormHook = (props) => {
 									<Icon name="calendar" size={30} />
 								</TouchableOpacity>
 							</View>
-							{show && (
-								<DateTimePicker
-									minimumDate={new Date(1901, 0, 1)}
-									maximumDate={new Date()}
-									testID="datePicker"
-									value={value}
-									mode="date"
-									display={Platform.OS === 'ios' ? 'compact' : 'default'}
-									onChange={(value) => {
-										const currentDate = value;
-										setShow(false);
-										onChange(currentDate);
-									}}
-								/>
-							)}
+							<DateTimePickerModal
+								isVisible={show}
+								mode="date"
+								onConfirm={(value) => {
+									const currentDate = value;
+									setShow(false);
+									onChange(currentDate);
+								}}
+								onCancel={() => setShow(false)}
+							/>
 						</View>
 					)}
 					name="planting_date"
@@ -252,7 +247,10 @@ const AddPlantScreenFormHook = (props) => {
 				<Controller
 					control={control}
 					render={({ onChange, value }) => (
-						<View>
+						<View style={{ flex: 1 }}>
+							<View style={styles.containerHeader}>
+								<Text>Единицы измерения</Text>
+							</View>
 							<PickerModal
 								plantsData={unit}
 								value={value}
@@ -273,7 +271,7 @@ const AddPlantScreenFormHook = (props) => {
 					control={control}
 					rules={{ required: 'WHAT' }}
 					render={({ onChange, onBlur, value }) => (
-						<View>
+						<View style={{ flex: 1 }}>
 							<View style={styles.containerHeader}>
 								<Text>Размер посадки</Text>
 							</View>
@@ -281,7 +279,10 @@ const AddPlantScreenFormHook = (props) => {
 								onChangeText={onChange}
 								onBlur={onBlur}
 								textValue={value}
-								style={{ paddingHorizontal: 10 }}
+								style={{
+									flex: 1,
+									paddingLeft: 10,
+								}}
 								defaultValue={value.toString()}
 							/>
 						</View>
@@ -297,7 +298,7 @@ const AddPlantScreenFormHook = (props) => {
 				<Controller
 					control={control}
 					render={({ onChange, onBlur, value }) => (
-						<View>
+						<View style={{ flex: 1 }}>
 							<View style={styles.containerHeader}>
 								<Text>Заметки</Text>
 							</View>
@@ -306,7 +307,11 @@ const AddPlantScreenFormHook = (props) => {
 								onChangeText={onChange}
 								onBlur={onBlur}
 								textValue={value}
-								style={{ paddingHorizontal: 10, height: 150 }}
+								style={{
+									flex: 1,
+									paddingLeft: 10,
+									paddingTop: 10,
+								}}
 							/>
 						</View>
 					)}
@@ -336,7 +341,6 @@ const styles = StyleSheet.create({
 		borderColor: '#379683',
 		borderWidth: 1,
 		backgroundColor: '#fff',
-		flex: 1,
 		height: 50,
 	},
 	notesContainer: {

@@ -10,9 +10,9 @@ import {
 	StyleSheet,
 	Modal,
 	TouchableOpacity,
+	Platform,
 } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
-
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -132,7 +132,7 @@ function SignupScreen(props) {
 	};
 
 	return (
-		<View>
+		<View style={Platform.OS === 'ios' ? { paddingTop: 50 } : null}>
 			<ScrollView keyboardShouldPersistTaps="always">
 				<KeyboardAvoidingView behavior="padding">
 					<Text
@@ -319,12 +319,11 @@ const styles = StyleSheet.create({
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
-			height: 12,
+			height: 2,
 		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
-
-		elevation: 3,
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
 		borderRadius: 5,
 		borderColor: '#000',
 		backgroundColor: '#fff',

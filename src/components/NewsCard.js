@@ -22,10 +22,22 @@ const NewsCard = ({ iconName, navigation, nav, headerText, newsData }) => {
 							})
 						}
 					>
-						<Text style={{ color: '#EB9156', marginBottom: 5, fontSize: 18 }}>
+						<Text
+							style={{
+								color: '#EB9156',
+								marginBottom: 5,
+								fontSize: 18,
+								flex: 30,
+							}}
+						>
 							{item.title}
 						</Text>
-						<FontAwesome name="chevron-right" size={20} color="#379683" />
+						<FontAwesome
+							name="chevron-right"
+							size={20}
+							color="#379683"
+							style={{ flex: 1, paddingRight: 5 }}
+						/>
 					</TouchableOpacity>
 				);
 			});

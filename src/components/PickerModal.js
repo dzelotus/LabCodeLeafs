@@ -1,36 +1,43 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Modal, FlatList, TextInput } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, FlatList, TextInput } from 'react-native';
+import Modal from 'react-native-modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useHeaderHeight } from '@react-navigation/stack';
 
 const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [term, setTerm] = useState('');
 
-	console.log('Value', value);
+	console.log('Value', term);
 	const result = plantsData
 		? plantsData.find((obj) => {
 				return obj.id === value;
 		  })
 		: null;
-	console.log('Obj', result);
+
+	const search = plantsData
+		? plantsData.filter((item) => {
+				return item.value === 'К';
+		  })
+		: null;
+	console.log('Search', search);
 	const headerHeight = useHeaderHeight();
 
 	return (
-		<View>
-			<View style={{ flexDirection: 'row' }}>
+		<View style={{ justifyContent: 'center', flex: 1, paddingLeft: 10 }}>
+			<View>
 				<TouchableOpacity onPress={() => setIsModalVisible(true)}>
 					<Text>{result ? `${result.value}` : `${placeholder}`}</Text>
 				</TouchableOpacity>
 			</View>
-			<View
-				style={{
-					justifyContent: 'center',
-					alignItems: 'center',
-					flex: 1,
-				}}
-			>
-				<Modal visible={isModalVisible} transparent>
+			<View>
+				<Modal
+					visible={isModalVisible}
+					onBackdropPress={() => setIsModalVisible(false)}
+					backdropColor="transparent"
+					hasBackdrop
+				>
 					<View style={{ marginTop: headerHeight }}>
 						<View style={styles.modalContainer}>
 							<TouchableOpacity
@@ -61,6 +68,7 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 									width: '99%',
 								}}
 								placeholder="Поиск растения"
+								onChangeText={(txt) => setTerm(txt)}
 							/>
 							<View
 								style={{
