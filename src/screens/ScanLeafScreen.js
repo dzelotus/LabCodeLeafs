@@ -1,7 +1,15 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable operator-linebreak */
-import { PermissionsAndroid, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import {
+	PermissionsAndroid,
+	StatusBar,
+	Text,
+	TouchableOpacity,
+	View,
+	Platform,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
-
+import { checkMultiple, PERMISSIONS } from 'react-native-permissions';
 import { Camera } from 'expo-camera';
 import CameraRoll from '@react-native-community/cameraroll';
 import { withNavigationFocus } from '@react-navigation/compat';
@@ -59,7 +67,11 @@ const ScanLeafScreen = (route) => {
 	useEffect(() => {
 		route.navigation.addListener('focus', () => {
 			console.log('ASK');
-			askPerms();
+			Platform.OS === 'android'
+				? askPerms()
+				: checkMultiple([PERMISSIONS.IOS.PHOTO_LIBRARY, PERMISSIONS.IOS.MEDIA_LIBRARY])
+						.then(console.log('GRANTED'))
+						.catch(console.log('DENIED'));
 		});
 	}, []);
 

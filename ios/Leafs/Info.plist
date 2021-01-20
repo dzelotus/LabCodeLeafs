@@ -71,5 +71,13 @@
 			<string>Octicons.ttf</string>
 			<string>Zocial.ttf</string>
   		</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Give $(PRODUCT_NAME) permission to save photos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Give $(PRODUCT_NAME) permission to access your camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Give $(PRODUCT_NAME) permission to use your microphone</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Give $(PRODUCT_NAME) permission to use your music</string>
 </dict>
 </plist>

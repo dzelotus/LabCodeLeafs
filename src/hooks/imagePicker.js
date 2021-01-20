@@ -1,10 +1,10 @@
 import * as ImagePicker from 'expo-image-picker';
 
-const imagePicker = async ({ nav }) => {
-	await ImagePicker.launchImageLibraryAsync({
+const imagePicker = ({ nav }) => {
+	ImagePicker.launchImageLibraryAsync({
 		mediaTypes: ImagePicker.MediaTypeOptions.All,
+		aspect: [4, 3],
 		allowsEditing: true,
-		quality: 1,
 	})
 		.then((result) => {
 			if (!result.cancelled) {

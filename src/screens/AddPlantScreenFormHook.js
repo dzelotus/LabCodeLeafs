@@ -185,14 +185,22 @@ const AddPlantScreenFormHook = (props) => {
 							<View style={styles.containerHeader}>
 								<Text>Растение</Text>
 							</View>
-							<PickerModal
-								plantsData={plants}
-								value={value}
-								onValueChange={(value) => {
-									onChange(value);
+							<View
+								style={{
+									flex: 1,
+									justifyContent: 'center',
+									paddingLeft: 10,
 								}}
-								placeholder="Выберите растение"
-							/>
+							>
+								<PickerModal
+									plantsData={plants}
+									value={value}
+									onValueChange={(value) => {
+										onChange(value);
+									}}
+									placeholder="Выберите растение"
+								/>
+							</View>
 						</View>
 					)}
 					name="garden_plant_id"
@@ -251,14 +259,22 @@ const AddPlantScreenFormHook = (props) => {
 							<View style={styles.containerHeader}>
 								<Text>Единицы измерения</Text>
 							</View>
-							<PickerModal
-								plantsData={unit}
-								value={value}
-								onValueChange={(value) => {
-									onChange(value);
+							<View
+								style={{
+									flex: 1,
+									justifyContent: 'center',
+									paddingLeft: 10,
 								}}
-								placeholder="Выберите ед. изм."
-							/>
+							>
+								<PickerModal
+									plantsData={unit}
+									value={value}
+									onValueChange={(value) => {
+										onChange(value);
+									}}
+									placeholder="Выберите ед. изм."
+								/>
+							</View>
 						</View>
 					)}
 					name="planting_unit"

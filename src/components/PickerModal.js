@@ -1,50 +1,54 @@
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useHeaderHeight } from '@react-navigation/stack';
 
 const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	const [term, setTerm] = useState('');
+	const [data, setData] = useState('');
 
-	console.log('Value', term);
+	console.log('Value', plantsData);
+	useEffect(() => {
+		setData(plantsData);
+	}, []);
+
 	const result = plantsData
 		? plantsData.find((obj) => {
 				return obj.id === value;
 		  })
 		: null;
 
-	const search = plantsData
-		? plantsData.filter((item) => {
-				return item.value === 'К';
-		  })
-		: null;
-	console.log('Search', search);
-	const headerHeight = useHeaderHeight();
+	const searchFunc = (text) => {
+		const search = plantsData.filter((item) => {
+			const valueToLowercase = item.value.toLowerCase();
+			const searchTermToLowercase = text.toLowerCase();
+
+			return valueToLowercase.indexOf(searchTermToLowercase) > -1;
+		});
+		setData(search);
+	};
 
 	return (
-		<View style={{ justifyContent: 'center', flex: 1, paddingLeft: 10 }}>
+		<View>
 			<View>
-				<TouchableOpacity onPress={() => setIsModalVisible(true)}>
+				<TouchableOpacity
+					onPress={() => {
+						setIsModalVisible(true);
+					}}
+				>
 					<Text>{result ? `${result.value}` : `${placeholder}`}</Text>
 				</TouchableOpacity>
 			</View>
 			<View>
-				<Modal
-					visible={isModalVisible}
-					onBackdropPress={() => setIsModalVisible(false)}
-					backdropColor="transparent"
-					hasBackdrop
-				>
-					<View style={{ marginTop: headerHeight }}>
+				<Modal isVisible={isModalVisible} onBackdropPress={() => setIsModalVisible(false)}>
+					<View>
 						<View style={styles.modalContainer}>
 							<TouchableOpacity
 								onPress={() => setIsModalVisible(false)}
 								style={{
 									alignSelf: 'flex-end',
-									marginBottom: 10,
+									marginTop: 10,
 									marginRight: 10,
 								}}
 							>
@@ -55,21 +59,22 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 									style={{
 										textAlign: 'center',
 										textAlignVertical: 'center',
-										fontSize: 18,
+										fontSize: 22,
 									}}
 								>
 									{placeholder}
 								</Text>
 							</View>
-							<TextInput
-								style={{
-									borderBottomColor: 'gray',
-									borderBottomWidth: 1,
-									width: '99%',
-								}}
-								placeholder="Поиск растения"
-								onChangeText={(txt) => setTerm(txt)}
-							/>
+							<View style={{ width: '99%', paddingHorizontal: 10 }}>
+								<TextInput
+									style={{
+										borderBottomColor: 'gray',
+										borderBottomWidth: 1,
+									}}
+									placeholder="Поиск растения"
+									onChangeText={(txt) => searchFunc(txt)}
+								/>
+							</View>
 							<View
 								style={{
 									height: 300,
@@ -78,7 +83,7 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 								}}
 							>
 								<FlatList
-									data={plantsData}
+									data={data}
 									renderItem={(item) => {
 										const plantName = item.item.value;
 
@@ -89,7 +94,9 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 													setIsModalVisible(false);
 												}}
 											>
-												<Text>{plantName}</Text>
+												<Text style={{ fontSize: 18, marginBottom: 10 }}>
+													{plantName}
+												</Text>
 											</TouchableOpacity>
 										);
 									}}
