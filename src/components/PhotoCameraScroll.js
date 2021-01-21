@@ -12,8 +12,8 @@ const PhotoCameraScroll = ({ data, navigation, moreLoading }) => (
 			justifyContent: 'space-between',
 			alignItems: 'flex-end',
 			marginBottom: 15,
-
 			height: 100,
+			zIndex: 100,
 		}}
 	>
 		<FlatList

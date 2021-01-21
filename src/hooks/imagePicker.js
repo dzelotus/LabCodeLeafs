@@ -1,4 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
+/* import { launchImageLibrary } from 'react-native-image-picker'; */
 
 const imagePicker = ({ nav }) => {
 	ImagePicker.launchImageLibraryAsync({
@@ -14,5 +15,15 @@ const imagePicker = ({ nav }) => {
 		})
 		.catch((error) => console.log(error));
 };
+
+/* const imagePicker = ({ nav }) => {
+	const options = {
+		mediaType: 'photo',
+	};
+	launchImageLibrary(options, (res) => {
+		console.log('RES', res);
+		nav('ScanPhoto', { img: res });
+	});
+}; */
 
 export default imagePicker;

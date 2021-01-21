@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-	baseURL: 'https://leafs-app.lab-code.com/',
+	baseURL: 'http://172.16.10.106:8080',
 });
 
 // Никита ip 172.16.10.106

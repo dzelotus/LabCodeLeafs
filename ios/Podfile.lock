@@ -20,7 +20,7 @@ PODS:
     - React-Core
     - UMCore
     - UMImageLoaderInterface
-  - EXImagePicker (8.4.0):
+  - EXImagePicker (9.2.1):
     - UMCore
     - UMFileSystemInterface
     - UMPermissionsInterface
@@ -33,7 +33,7 @@ PODS:
     - UMCore
     - UMFileSystemInterface
     - UMPermissionsInterface
-  - EXPermissions (9.1.0):
+  - EXPermissions (10.0.0):
     - UMCore
     - UMPermissionsInterface
   - FBLazyVector (0.63.2)
@@ -365,8 +365,8 @@ PODS:
   - react-native-image-editor (2.3.0):
     - React
     - React-RCTImage
-  - react-native-image-picker (2.3.3):
-    - React
+  - react-native-image-picker (3.1.4):
+    - React-Core
   - react-native-safe-area-context (3.1.4):
     - React
   - react-native-sqlite-storage (5.0.0):
@@ -793,10 +793,10 @@ SPEC CHECKSUMS:
   EXConstants: c2c6d5805520a34f274e09b778404310c52b118f
   EXFileSystem: 8d1dc2924d62046275c84d70b88fa3aa7daeb116
   EXImageLoader: 8366cb1a7d207a241a1bfaa4c5ab4859cf72d507
-  EXImagePicker: 0ddacf50173316ecb1770725a831401ea17f36dc
+  EXImagePicker: 82fb929fb57b38de8d0a2d7fc3ca49726b9b8f78
   EXLocation: 894f762c697a2d91d270ccf1e4b78f2b15d407e3
   EXMediaLibrary: ec1333a64018a83a0285643d133cb7adff43f7f1
-  EXPermissions: 9804d7ec7399e7b24e3d9dea2b3db976a7f6b5de
+  EXPermissions: 17d4846ad1880f6891c74ae58ca1acb43e47ed47
   FBLazyVector: 3ef4a7f62e7db01092f9d517d2ebc0d0677c4a37
   FBReactNativeSpec: dc7fa9088f0f2a998503a352b0554d69a4391c5a
   Firebase: 210f41ca352067d83b1ba4fd2e7fb49a0c017397
@@ -845,7 +845,7 @@ SPEC CHECKSUMS:
   react-native-fingerprint-scanner: c68136ca57e3704d7bdf5faa554ea535ce15b1d0
   react-native-geolocation: cbd9d6bd06bac411eed2671810f454d4908484a8
   react-native-image-editor: bd67912f38a8e7a895bf6eb8f445acdcefd8fd0c
-  react-native-image-picker: a6c3d644751a388b0fc8b56822ff7cbd398a3008
+  react-native-image-picker: 28d8d1f5a643119876b8b2c7d4d1dcfb2b232dd4
   react-native-safe-area-context: 0ed9288ed4409beabb0817b54efc047286fc84da
   react-native-sqlite-storage: 418ef4afc5e6df6ce3574c4617e5f0b65cffde55
   react-native-viewpager: da0a7f2b33f1d8d46f1967f4d3e7680c89a86854
@@ -891,6 +891,6 @@ SPEC CHECKSUMS:
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: bb49130ae582a274552cac70be35bf41be8c880f
+PODFILE CHECKSUM: 56a69be4ff2a1a526d6196e9ebd46aa77da529c1
 
 COCOAPODS: 1.10.1

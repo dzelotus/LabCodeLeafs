@@ -44,6 +44,7 @@ const ScanPhotoScreen = (route) => {
 	};
 
 	const postPhoto = ({ _csrf }) => {
+		console.log('POST START');
 		const image = new FormData();
 		image.append('image', {
 			uri: cleanURL,
@@ -51,7 +52,7 @@ const ScanPhotoScreen = (route) => {
 			type: 'image/jpg',
 		});
 		image.append('_csrf', _csrf);
-
+		console.log('SENDED');
 		nodeApi
 			.post('/scans', image, {
 				headers: {

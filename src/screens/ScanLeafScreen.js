@@ -9,7 +9,7 @@ import {
 	Platform,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { checkMultiple, PERMISSIONS } from 'react-native-permissions';
+import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import { Camera } from 'expo-camera';
 import CameraRoll from '@react-native-community/cameraroll';
 import { withNavigationFocus } from '@react-navigation/compat';
@@ -35,13 +35,14 @@ const ScanLeafScreen = (route) => {
 			include: ['imageSize', 'filename', 'fileSize', 'location', 'playableDuration'],
 			groupTypes: 'All',
 		}).then((img) => {
-			console.log(img);
+			console.log('IMG', img);
 			setData(img.edges);
 			setNextPage(img.page_info);
 		});
 	};
 
 	const dataMoreLoading = async () => {
+		console.log('ML START');
 		if (nextPage.has_next_page) {
 			await CameraRoll.getPhotos({
 				first: 20,
@@ -50,6 +51,7 @@ const ScanLeafScreen = (route) => {
 				include: ['imageSize', 'filename', 'fileSize', 'location', 'playableDuration'],
 				groupTypes: 'All',
 			}).then((response) => {
+				console.log('MR');
 				setData([...data, ...response.edges]);
 				setNextPage(response.page_info);
 			});
@@ -66,12 +68,19 @@ const ScanLeafScreen = (route) => {
 
 	useEffect(() => {
 		route.navigation.addListener('focus', () => {
-			console.log('ASK');
 			Platform.OS === 'android'
 				? askPerms()
-				: checkMultiple([PERMISSIONS.IOS.PHOTO_LIBRARY, PERMISSIONS.IOS.MEDIA_LIBRARY])
-						.then(console.log('GRANTED'))
-						.catch(console.log('DENIED'));
+				: requestMultiple([
+						PERMISSIONS.IOS.MEDIA_LIBRARY,
+						PERMISSIONS.IOS.PHOTO_LIBRARY,
+						PERMISSIONS.IOS.CAMERA,
+						PERMISSIONS.IOS.MICROPHONE,
+				  ]).then((statuses) => {
+						console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+						console.log('PL', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
+						console.log('ML', statuses[PERMISSIONS.IOS.MEDIA_LIBRARY]);
+						console.log('ML', statuses[PERMISSIONS.IOS.MICROPHONE]);
+				  });
 		});
 	}, []);
 

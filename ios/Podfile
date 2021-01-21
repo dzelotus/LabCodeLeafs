@@ -10,7 +10,6 @@ target 'Leafs' do
 
   use_react_native!(:path => config["reactNativePath"])
   permissions_path = '../node_modules/react-native-permissions/ios'
-
   pod 'Permission-Camera', :path => "#{permissions_path}/Camera.podspec"
   pod 'Permission-FaceID', :path => "#{permissions_path}/FaceID.podspec"
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways.podspec"
@@ -20,10 +19,6 @@ target 'Leafs' do
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec" 
   pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders.podspec"
-
-  
-  
-
 
   target 'LeafsTests' do
     inherit! :complete
