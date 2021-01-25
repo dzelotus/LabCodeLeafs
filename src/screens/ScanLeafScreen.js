@@ -29,6 +29,7 @@ const ScanLeafScreen = (route) => {
 	let camera;
 
 	const getImages = async () => {
+		console.log('CAMERA ROLL');
 		await CameraRoll.getPhotos({
 			first: 20,
 			assetType: 'Photos',
@@ -62,11 +63,12 @@ const ScanLeafScreen = (route) => {
 		await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
 		await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
 		await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
-		getImages();
+
 		/* checkCameraPermissions(); */
 	};
 
 	useEffect(() => {
+		getImages();
 		route.navigation.addListener('focus', () => {
 			Platform.OS === 'android'
 				? askPerms()
@@ -79,7 +81,7 @@ const ScanLeafScreen = (route) => {
 						console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
 						console.log('PL', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
 						console.log('ML', statuses[PERMISSIONS.IOS.MEDIA_LIBRARY]);
-						console.log('ML', statuses[PERMISSIONS.IOS.MICROPHONE]);
+						console.log('MP', statuses[PERMISSIONS.IOS.MICROPHONE]);
 				  });
 		});
 	}, []);

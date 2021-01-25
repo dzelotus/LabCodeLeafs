@@ -10,13 +10,13 @@ PODS:
     - UMFileSystemInterface
     - UMImageLoaderInterface
     - UMPermissionsInterface
-  - EXConstants (9.1.1):
+  - EXConstants (9.3.5):
     - UMConstantsInterface
     - UMCore
-  - EXFileSystem (9.0.1):
+  - EXFileSystem (9.3.0):
     - UMCore
     - UMFileSystemInterface
-  - EXImageLoader (1.1.1):
+  - EXImageLoader (1.3.0):
     - React-Core
     - UMCore
     - UMImageLoaderInterface
@@ -472,23 +472,23 @@ PODS:
   - SDWebImageWebPCoder (0.6.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.7)
-  - UMAppLoader (1.2.0)
-  - UMBarCodeScannerInterface (5.2.1)
-  - UMCameraInterface (5.2.1)
-  - UMConstantsInterface (5.2.1)
-  - UMCore (5.3.0)
-  - UMFaceDetectorInterface (5.2.1)
-  - UMFileSystemInterface (5.2.1)
-  - UMFontInterface (5.2.1)
-  - UMImageLoaderInterface (5.2.1)
-  - UMPermissionsInterface (5.2.1):
+  - UMAppLoader (1.4.0)
+  - UMBarCodeScannerInterface (5.4.0)
+  - UMCameraInterface (5.4.0)
+  - UMConstantsInterface (5.4.0)
+  - UMCore (6.0.0)
+  - UMFaceDetectorInterface (5.4.0)
+  - UMFileSystemInterface (5.4.0)
+  - UMFontInterface (5.4.0)
+  - UMImageLoaderInterface (5.4.0)
+  - UMPermissionsInterface (5.4.0):
     - UMCore
-  - UMReactNativeAdapter (5.4.0):
+  - UMReactNativeAdapter (5.7.0):
     - React-Core
     - UMCore
     - UMFontInterface
-  - UMSensorsInterface (5.2.1)
-  - UMTaskManagerInterface (5.2.1)
+  - UMSensorsInterface (5.4.0)
+  - UMTaskManagerInterface (5.4.0)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -790,9 +790,9 @@ SPEC CHECKSUMS:
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EXCamera: d2caf6bdc821a316d070fe979a255dd5b32d2daf
-  EXConstants: c2c6d5805520a34f274e09b778404310c52b118f
-  EXFileSystem: 8d1dc2924d62046275c84d70b88fa3aa7daeb116
-  EXImageLoader: 8366cb1a7d207a241a1bfaa4c5ab4859cf72d507
+  EXConstants: 54d0bf04319d1692c6c7bc03ca151ef7a71705a4
+  EXFileSystem: 0e4974ab77bff04cda68d2886d070cbe64b93a6b
+  EXImageLoader: f96ec9992733a4224418bbd9382e5485c8948944
   EXImagePicker: 82fb929fb57b38de8d0a2d7fc3ca49726b9b8f78
   EXLocation: 894f762c697a2d91d270ccf1e4b78f2b15d407e3
   EXMediaLibrary: ec1333a64018a83a0285643d133cb7adff43f7f1
@@ -875,19 +875,19 @@ SPEC CHECKSUMS:
   RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
   SDWebImage: b969dcfc02c40a5da71eac0b03b8f1a0c794a86f
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
-  UMAppLoader: 98b77b58fac12abab963f79f762ceef008c50505
-  UMBarCodeScannerInterface: e1299aafa3bede8ba674e84199e9f319a0195cad
-  UMCameraInterface: 68da359d6fe7423d7b114b96ea0df268a84da39f
-  UMConstantsInterface: 2569e83b7f70a0844737e1f6c2dfd1bc0c8a34d6
-  UMCore: ef0c10289950b51d0c1dae75c37fba116f2327ac
-  UMFaceDetectorInterface: b0f3be22a524053f29d71c50bfdf51dc9553f7aa
-  UMFileSystemInterface: 29a555288008c9fa9be7d781c84f58ef51d41de6
-  UMFontInterface: 5ece8ea0e3c5753a87a558dcd7e79dcf38a6cab6
-  UMImageLoaderInterface: c440e3cd54c060cb2f9a278a923e28c6fe0ec116
-  UMPermissionsInterface: d6be0aea537754c92648e3d7100c58dd72c01142
-  UMReactNativeAdapter: 5973dd1e4374cd1db4549b6bc714ccbbde9615c0
-  UMSensorsInterface: 7bc27058e00af99695e16f74c092582698be964d
-  UMTaskManagerInterface: 8b337c26b828b3e50d26776966981f4cb2ee76e4
+  UMAppLoader: 92d044af52626af3d81a69796ad666fc7a9a7d78
+  UMBarCodeScannerInterface: 3f6c1b09ef4b867ce752b8c0b3893bcf9cd85f32
+  UMCameraInterface: d516032121192fee9a6c93bdfff0bb2cc7282796
+  UMConstantsInterface: 6825ea3832d26ed392ca6eff2df84edd69968fd0
+  UMCore: 97ba5041c9c92317ce61739f6d126a692c8ef4a8
+  UMFaceDetectorInterface: 60b36b07faa539205efce30b20c192e058b31c23
+  UMFileSystemInterface: ab01294ce58a3c773aefb4a5b131ce589c199559
+  UMFontInterface: 85fe1b845fb7caab45e04d9ce47e1677a5ce90a5
+  UMImageLoaderInterface: 18f37df089b7e6d301e3acac025a8264d26b66d6
+  UMPermissionsInterface: 807e5733b4c6607f35757b1dd128f370718d2f94
+  UMReactNativeAdapter: 172def7895b2cb44a7dd021336e316d5fa8ea958
+  UMSensorsInterface: 4df9ec662134de5614ae61acc249d6912db87ca5
+  UMTaskManagerInterface: 4c60b43eaf3cb05a164bc9113258a171c18b7bf7
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

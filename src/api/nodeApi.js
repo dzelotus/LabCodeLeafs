@@ -1,11 +1,12 @@
 import axios from 'axios';
 
 const instance = axios.create({
-	baseURL: 'http://172.16.10.106:8080',
+	baseURL: 'https://api.leafs.pro',
 });
 
 // Никита ip 172.16.10.106
-// Сервак ip 172.16.0.6, https://leafs-app.lab-code.com/
+// https://api.leafs.pro Прод
+// Сервак ip 172.16.0.6, https://api.dev.lab-code.com
 // Мой ip http://172.16.10.122:8080
 
 instance.interceptors.request.use(
