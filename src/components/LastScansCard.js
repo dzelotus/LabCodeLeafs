@@ -27,7 +27,8 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 	];
 
 	const renderItem = ({ item }) => {
-		const imageUrl = item.image_url;
+		console.log('ITEM', item);
+		const imageUrl = item.thumbnail_url ? item.thumbnail_url : item.image_url;
 		const imageUrlReady = imageUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
 			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
@@ -44,7 +45,7 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 				<FastImage
 					style={styles.image}
 					source={{ uri: imageUrlReady }}
-					resizeMode="contain"
+					resizeMode="cover"
 				/>
 			</TouchableOpacity>
 		);

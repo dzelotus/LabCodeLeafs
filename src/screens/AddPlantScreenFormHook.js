@@ -30,9 +30,6 @@ const AddPlantScreenFormHook = (props) => {
 	// eslint-disable-next-line react/destructuring-assignment
 	const { gardenId } = props.route.params;
 	const { navigation } = props;
-	console.log(props);
-
-	const screenTitle = () => navigation.setOptions({ title: 'ТАЙТЛ' });
 
 	const editP = () => {
 		if (props.route.params.plantId) {
@@ -40,7 +37,6 @@ const AddPlantScreenFormHook = (props) => {
 			nodeApi
 				.get(`/garden-planting/${gardenId}/planting/${plantId}/edit`)
 				.then((response) => {
-					console.log(response.data);
 					setEditData(response.data.data);
 					setCsrf(response.data.csrfToken);
 				})
@@ -93,7 +89,6 @@ const AddPlantScreenFormHook = (props) => {
 		getPlantsName();
 		getPlantsUnits();
 		getCsrf();
-		screenTitle();
 	}, []);
 
 	const Indicator = () => (

@@ -5,12 +5,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from '@react-navigation/compat';
 
 const NewsCard = ({ iconName, navigation, nav, headerText, newsData }) => {
-	console.log('ART TIT', newsData);
-
 	const rendTitles = () => {
 		if (newsData) {
 			return newsData.map((item) => {
-				console.log('ND', item);
 				return (
 					<TouchableOpacity
 						key={item.id}

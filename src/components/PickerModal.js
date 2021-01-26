@@ -8,14 +8,14 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [data, setData] = useState('');
 
-	console.log('Value', plantsData);
 	useEffect(() => {
 		setData(plantsData);
 	}, []);
 
 	const result = plantsData
 		? plantsData.find((obj) => {
-				return obj.id === value;
+				const toComapare = value.toString();
+				return obj.id === toComapare;
 		  })
 		: null;
 

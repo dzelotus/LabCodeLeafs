@@ -1,6 +1,6 @@
 /* eslint-disable no-sequences */
 /* eslint-disable consistent-return */
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -26,7 +26,7 @@ const MainScreen = ({ navigation }) => {
 		nodeApi
 			.get('/scans')
 			.then((response) => {
-				console.log(response.data.data);
+				console.log('SCANS', response.data.data);
 				const startArray = response.data.data;
 				const data = startArray.slice(0, 9);
 				setScans(data);
@@ -114,7 +114,7 @@ const MainScreen = ({ navigation }) => {
 				</TouchableOpacity>
 			);
 		}
-		return <Text />;
+		return null;
 	};
 
 	const WeatherCardShow = () => {
@@ -125,7 +125,11 @@ const MainScreen = ({ navigation }) => {
 
 	return (
 		<View style={{ backgroundColor: 'white', flex: 1 }}>
-			<ScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: 10 }}>
+			<ScrollView
+				contentContainerStyle={{
+					paddingTop: 10,
+				}}
+			>
 				<NewsCard iconName="star-o" nav="News" headerText="Новости" newsData={newsData} />
 				<LastScansCard
 					headerText="Мои сканирования"
@@ -135,8 +139,7 @@ const MainScreen = ({ navigation }) => {
 				/>
 				{WeatherCardShow()}
 			</ScrollView>
-
-			{EmailVerify()}
+			<EmailVerify />
 		</View>
 	);
 };
