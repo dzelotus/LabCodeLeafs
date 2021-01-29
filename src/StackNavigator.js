@@ -61,10 +61,15 @@ const MainFlow = () => (
 			component={LastScanScreen}
 			options={{ headerTitle: 'Мои сканирования' }}
 		/>
+	</Stack.Navigator>
+);
+
+const LastScanFullscreen = () => (
+	<Stack.Navigator>
 		<Stack.Screen
 			name="LastScanFullscreenPhoto"
 			component={LastScanFullscreenPhotoScreen}
-			options={{ headerTitle: 'Последние сканирования' }}
+			options={{ headerShown: false }}
 		/>
 	</Stack.Navigator>
 );
@@ -261,6 +266,11 @@ const StackNavigator = (route) => {
 			<Stack.Screen
 				name="CameraFlow"
 				component={CameraFlow}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="LastScanFullscreen"
+				component={LastScanFullscreen}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

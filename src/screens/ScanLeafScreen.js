@@ -7,6 +7,7 @@ import {
 	TouchableOpacity,
 	View,
 	Platform,
+	StyleSheet,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
@@ -17,6 +18,7 @@ import CameraButtons from '../components/CameraButtons';
 import PhotoCameraScroll from '../components/PhotoCameraScroll';
 import imagePicker from '../hooks/imagePicker';
 import makePhoto from '../hooks/makePhoto';
+import GoBackButton from '../components/GoBackButton';
 
 /* import makePhoto from '../hooks/makePhoto'; */
 
@@ -107,6 +109,9 @@ const ScanLeafScreen = (route) => {
 			{route.isFocused && (
 				<>
 					<StatusBar hidden />
+					<View style={styles.backButtonContainer}>
+						<GoBackButton nav="Main" />
+					</View>
 					<Camera
 						style={{
 							flex: 1,
@@ -117,13 +122,12 @@ const ScanLeafScreen = (route) => {
 						ratio="16:9"
 						ref={(ref) => (camera = ref)}
 					>
-						<Text style={{}} />
 						<View
 							style={{
 								height: '100%',
 								width: '100%',
 								position: 'absolute',
-								zIndex: 1,
+
 								justifyContent: 'space-between',
 							}}
 						>
@@ -186,7 +190,6 @@ const ScanLeafScreen = (route) => {
 								}}
 							/>
 						</View>
-
 						<TouchableOpacity
 							style={{
 								alignItems: 'center',
@@ -231,5 +234,17 @@ const ScanLeafScreen = (route) => {
 		</View>
 	);
 };
+
+const padding = Platform.OS === 'ios' ? 50 : 0;
+
+const styles = StyleSheet.create({
+	backButtonContainer: {
+		position: 'absolute',
+		top: 0,
+		left: 0,
+		paddingTop: padding,
+		zIndex: 100,
+	},
+});
 
 export default withNavigationFocus(ScanLeafScreen);

@@ -5,6 +5,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from '@react-navigation/compat';
 
 const NewsCard = ({ iconName, navigation, nav, headerText, newsData }) => {
+	console.log('NEWS CARD', newsData);
 	const rendTitles = () => {
 		if (newsData) {
 			return newsData.map((item) => {

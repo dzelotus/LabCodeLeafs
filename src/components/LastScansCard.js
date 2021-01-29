@@ -27,7 +27,6 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 	];
 
 	const renderItem = ({ item }) => {
-		console.log('ITEM', item);
 		const imageUrl = item.thumbnail_url ? item.thumbnail_url : item.image_url;
 		const imageUrlReady = imageUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
@@ -36,9 +35,9 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 		return (
 			<TouchableOpacity
 				onPress={() =>
-					navigation.navigate('LastScanFullscreenPhoto', {
-						uri: imageUrlReady,
-						route: 'Main',
+					navigation.navigate('LastScanFullscreen', {
+						screen: 'LastScanFullscreenPhoto',
+						params: { uri: imageUrlReady, route: 'Main', show: true },
 					})
 				}
 			>
@@ -93,7 +92,12 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 					Что мы умеем?
 				</Text>
 			</TouchableOpacity>
-			<Modal isVisible={showModal} onBackdropPress={() => setShowModal(false)}>
+			<Modal
+				isVisible={showModal}
+				onBackButtonPress={() => setShowModal(false)}
+				onSwipeComplete={() => setShowModal(false)}
+				swipeDirection="down"
+			>
 				<View style={styles.modalContainer}>
 					<Text style={{ textAlign: 'center', fontSize: 16 }}>
 						На текущий момент наша нейросеть может распозновать следующие растения:

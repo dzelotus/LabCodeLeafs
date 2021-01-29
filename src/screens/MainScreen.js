@@ -38,7 +38,10 @@ const MainScreen = ({ navigation }) => {
 	const getArticles = () => {
 		nodeApi
 			.get('/articles')
-			.then((response) => setNewsData(response.data.data))
+			.then((response) => {
+				console.log('NEWS FROM MAIN', response.data.data);
+				setNewsData(response.data.data);
+			})
 			.catch((error) => console.log(error));
 	};
 

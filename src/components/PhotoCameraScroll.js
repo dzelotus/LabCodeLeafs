@@ -1,8 +1,6 @@
 import React from 'react';
-import { FlatList, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { FlatList, TouchableOpacity, StyleSheet, View, Image } from 'react-native';
 import { withNavigation } from '@react-navigation/compat';
-
-import FastImage from 'react-native-fast-image';
 
 const PhotoCameraScroll = ({ data, navigation, moreLoading }) => (
 	<View
@@ -13,7 +11,6 @@ const PhotoCameraScroll = ({ data, navigation, moreLoading }) => (
 			alignItems: 'flex-end',
 			marginBottom: 15,
 			height: 100,
-			zIndex: 100,
 		}}
 	>
 		<FlatList
@@ -33,7 +30,7 @@ const PhotoCameraScroll = ({ data, navigation, moreLoading }) => (
 							})
 						}
 					>
-						<FastImage style={styles.image} source={{ uri: imageUrl }} key={imageUrl} />
+						<Image style={styles.image} source={{ uri: imageUrl }} key={imageUrl} />
 					</TouchableOpacity>
 				);
 			}}

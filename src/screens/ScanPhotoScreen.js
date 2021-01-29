@@ -7,6 +7,7 @@ import {
 	ActivityIndicator,
 	Text,
 	Alert,
+	Platform,
 } from 'react-native';
 import { withNavigationFocus } from '@react-navigation/compat';
 import { Button } from 'react-native-elements';
@@ -173,6 +174,8 @@ const mapStateToProps = ({ auth }) => {
 	return { _csrf };
 };
 
+const padding = Platform.OS === 'ios' ? 50 : 0;
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -188,6 +191,7 @@ const styles = StyleSheet.create({
 	backButtonContainer: {
 		alignSelf: 'flex-start',
 		justifyContent: 'center',
+		paddingTop: padding,
 	},
 
 	image: {

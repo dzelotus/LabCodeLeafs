@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useEffect } from 'react';
+import { Text, View } from 'react-native';
+
 import nodeApi from '../api/nodeApi';
 
 const NewsScreen = (props) => {
-	const [newsData, setNewsData] = useState();
-
 	useEffect(() => {
 		const stackNavigator = props.navigation.dangerouslyGetParent();
 		if (stackNavigator) {
@@ -16,12 +14,17 @@ const NewsScreen = (props) => {
 
 		nodeApi
 			.get('/articles')
-			.then((response) => setNewsData(response.data.data))
+			.then((response) => {
+				console.log('NEWS FROM NEWS', response.data.data);
+			})
 			.catch((error) => console.log(error));
 	}, []);
 
 	return (
-		<View style={{ flex: 1 }}>
+		<View>
+			<Text>Test</Text>
+		</View>
+		/* <View style={{ flex: 1 }}>
 			<FlatList
 				data={newsData}
 				renderItem={(item) => {
@@ -81,11 +84,11 @@ const NewsScreen = (props) => {
 					);
 				}}
 			/>
-		</View>
+		</View> */
 	);
 };
 
-const styles = StyleSheet.create({
+/* const styles = StyleSheet.create({
 	articleContainer: {
 		shadowColor: '#000',
 		shadowOffset: {
@@ -105,6 +108,6 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		padding: 5,
 	},
-});
+}); */
 
 export default NewsScreen;

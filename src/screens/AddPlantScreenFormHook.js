@@ -148,10 +148,10 @@ const AddPlantScreenFormHook = (props) => {
 		}
 	};
 
-	const InputError = () => {
+	const InputError = ({ errorMessage }) => {
 		return (
 			<View style={{ justifyContent: 'flex-end', alignSelf: 'flex-end' }}>
-				<Text style={{ color: 'red' }}>Check</Text>
+				<Text style={{ color: 'red' }}>{errorMessage}</Text>
 			</View>
 		);
 	};
@@ -168,12 +168,10 @@ const AddPlantScreenFormHook = (props) => {
 				<Controller
 					control={control}
 					rules={{
-						required: true,
-						pattern: {
-							value: 1,
+						required: {
+							value: true,
 							message: 'FAIL',
 						},
-						validate: {},
 					}}
 					render={({ onChange, value }) => (
 						<View style={{ flex: 1 }}>
@@ -199,10 +197,10 @@ const AddPlantScreenFormHook = (props) => {
 						</View>
 					)}
 					name="garden_plant_id"
-					defaultValue={editData ? Number.parseInt(editData.garden_plant_id) : '0'}
+					defaultValue={editData ? Number.parseInt(editData.garden_plant_id) : ''}
 					key={editData ? 'plantLoaded' : 'plantLoading'}
 				/>
-				{errors.garden_plant_id && <Text style={{ color: 'red' }}>ChECK</Text>}
+				<Text>{errors.garden_plant_id?.message}</Text>
 			</View>
 
 			<View style={styles.container}>
@@ -280,7 +278,7 @@ const AddPlantScreenFormHook = (props) => {
 			<View style={styles.container}>
 				<Controller
 					control={control}
-					rules={{ required: 'WHAT' }}
+					rules={{ required: true }}
 					render={({ onChange, onBlur, value }) => (
 						<View style={{ flex: 1 }}>
 							<View style={styles.containerHeader}>
@@ -302,7 +300,9 @@ const AddPlantScreenFormHook = (props) => {
 					defaultValue={editData ? editData.planting_size : ''}
 					key={editData ? 'sizeLoaded' : 'plantLoading'}
 				/>
-				{errors.planting_size && <InputError />}
+				{errors.planting_size && (
+					<InputError errorMessage="Необходимо указать объем посадки" />
+				)}
 			</View>
 
 			<View style={styles.notesContainer}>
