@@ -4,8 +4,8 @@ import { StyleSheet, ScrollView } from 'react-native';
 import HTML from 'react-native-render-html';
 
 const ArticleScreen = (props) => {
-	console.log(props);
 	const { route } = props;
+	console.log(route.params.data);
 	const article = route.params.data.article_preview;
 
 	return (

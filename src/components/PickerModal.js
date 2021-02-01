@@ -6,7 +6,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
-	const [data, setData] = useState('');
+	const [data, setData] = useState(plantsData);
+
+	console.log('DATA', data);
 
 	useEffect(() => {
 		setData(plantsData);

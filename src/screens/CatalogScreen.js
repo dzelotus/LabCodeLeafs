@@ -96,7 +96,7 @@ const CatalogScreen = (props) => {
 					</Text>
 				</TouchableOpacity>
 			</View>
-			<View>
+			<View style={{ paddingBottom: 60 }}>
 				<FlatList
 					data={fetchedData}
 					keyExtractor={(item) => item.name}

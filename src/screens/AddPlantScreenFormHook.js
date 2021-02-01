@@ -92,8 +92,8 @@ const AddPlantScreenFormHook = (props) => {
 	}, []);
 
 	const Indicator = () => (
-		<View>
-			<ActivityIndicator size="large" color="#379683" />
+		<View style={{ alignSelf: 'center', flex: 1 }}>
+			<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
 		</View>
 	);
 
@@ -148,14 +148,6 @@ const AddPlantScreenFormHook = (props) => {
 		}
 	};
 
-	const InputError = ({ errorMessage }) => {
-		return (
-			<View style={{ justifyContent: 'flex-end', alignSelf: 'flex-end' }}>
-				<Text style={{ color: 'red' }}>{errorMessage}</Text>
-			</View>
-		);
-	};
-
 	if (loading.screenLoading) {
 		return <Indicator />;
 	}
@@ -170,7 +162,7 @@ const AddPlantScreenFormHook = (props) => {
 					rules={{
 						required: {
 							value: true,
-							message: 'FAIL',
+							message: 'Необходимо выбрать растение',
 						},
 					}}
 					render={({ onChange, value }) => (
@@ -181,8 +173,10 @@ const AddPlantScreenFormHook = (props) => {
 							<View
 								style={{
 									flex: 1,
-									justifyContent: 'center',
-									paddingLeft: 10,
+									paddingHorizontal: 10,
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
 								}}
 							>
 								<PickerModal
@@ -193,6 +187,11 @@ const AddPlantScreenFormHook = (props) => {
 									}}
 									placeholder="Выберите растение"
 								/>
+								{errors.garden_plant_id?.message && (
+									<Text style={{ color: 'red' }}>
+										{errors.garden_plant_id.message}
+									</Text>
+								)}
 							</View>
 						</View>
 					)}
@@ -200,9 +199,7 @@ const AddPlantScreenFormHook = (props) => {
 					defaultValue={editData ? Number.parseInt(editData.garden_plant_id) : ''}
 					key={editData ? 'plantLoaded' : 'plantLoading'}
 				/>
-				<Text>{errors.garden_plant_id?.message}</Text>
 			</View>
-
 			<View style={styles.container}>
 				<Controller
 					control={control}
@@ -247,6 +244,12 @@ const AddPlantScreenFormHook = (props) => {
 			<View style={styles.container}>
 				<Controller
 					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Не выбрана единица измерения',
+						},
+					}}
 					render={({ onChange, value }) => (
 						<View style={{ flex: 1 }}>
 							<View style={styles.containerHeader}>
@@ -255,8 +258,10 @@ const AddPlantScreenFormHook = (props) => {
 							<View
 								style={{
 									flex: 1,
-									justifyContent: 'center',
-									paddingLeft: 10,
+									paddingHorizontal: 10,
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
 								}}
 							>
 								<PickerModal
@@ -267,42 +272,62 @@ const AddPlantScreenFormHook = (props) => {
 									}}
 									placeholder="Выберите ед. изм."
 								/>
+								{errors.planting_unit?.message && (
+									<Text style={{ color: 'red' }}>
+										{errors.planting_unit.message}
+									</Text>
+								)}
 							</View>
 						</View>
 					)}
 					name="planting_unit"
-					defaultValue={editData ? Number.parseInt(editData.planting_unit) : '0'}
+					defaultValue={editData ? Number.parseInt(editData.planting_unit) : ''}
 					key={editData ? 'unitLoaded' : 'unitLoading'}
 				/>
 			</View>
 			<View style={styles.container}>
 				<Controller
 					control={control}
-					rules={{ required: true }}
+					rules={{
+						required: {
+							value: true,
+							message: 'Необходимо указать размер посдаки посадки',
+							pattern: /^[0-9.,]+$/,
+						},
+					}}
 					render={({ onChange, onBlur, value }) => (
 						<View style={{ flex: 1 }}>
 							<View style={styles.containerHeader}>
 								<Text>Размер посадки</Text>
 							</View>
-							<TextInput
-								onChangeText={onChange}
-								onBlur={onBlur}
-								textValue={value}
+							<View
 								style={{
 									flex: 1,
-									paddingLeft: 10,
+									paddingHorizontal: 10,
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
 								}}
-								defaultValue={value.toString()}
-							/>
+							>
+								<TextInput
+									onChangeText={onChange}
+									onBlur={onBlur}
+									textValue={value}
+									defaultValue={value.toString()}
+									keyboardType="number-pad"
+								/>
+								{errors.planting_size?.message && (
+									<Text style={{ color: 'red' }}>
+										{errors.planting_size.message}
+									</Text>
+								)}
+							</View>
 						</View>
 					)}
 					name="planting_size"
 					defaultValue={editData ? editData.planting_size : ''}
 					key={editData ? 'sizeLoaded' : 'plantLoading'}
 				/>
-				{errors.planting_size && (
-					<InputError errorMessage="Необходимо указать объем посадки" />
-				)}
 			</View>
 
 			<View style={styles.notesContainer}>

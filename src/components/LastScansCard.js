@@ -27,8 +27,14 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 	];
 
 	const renderItem = ({ item }) => {
+		console.log('ITEM', item);
 		const imageUrl = item.thumbnail_url ? item.thumbnail_url : item.image_url;
 		const imageUrlReady = imageUrl
+			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
+			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
+
+		const compressedUrl = item.compressed_url ? item.compressed_url : item.image_url;
+		const compressedUrlReady = compressedUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
 			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
 
@@ -37,7 +43,7 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 				onPress={() =>
 					navigation.navigate('LastScanFullscreen', {
 						screen: 'LastScanFullscreenPhoto',
-						params: { uri: imageUrlReady, route: 'Main', show: true },
+						params: { uri: compressedUrlReady, route: 'Main', show: true },
 					})
 				}
 			>

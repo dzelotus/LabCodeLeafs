@@ -3,8 +3,8 @@ import { Image, View, Platform, StyleSheet } from 'react-native';
 
 import GoBackButton from '../components/GoBackButton';
 
-const LastScanFullscreenPhotoScreen = ({ route, navigation }) => {
-	console.log(navigation);
+const LastScanFullscreenPhotoScreen = ({ route }) => {
+	console.log('ROUTE', route);
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -12,10 +12,8 @@ const LastScanFullscreenPhotoScreen = ({ route, navigation }) => {
 				source={{ uri: route.params.uri }}
 				style={{
 					flex: 1,
-					resizeMode: 'stretch',
-					justifyContent: 'space-between',
+					resizeMode: 'contain',
 				}}
-				imageStyle={{ resizeMode: 'contain' }}
 			/>
 
 			<View style={styles.backButtonContainer}>

@@ -12,7 +12,7 @@ const LastScanScreen = (route) => {
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
 			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
 
-		console.log('STATUS', item.result);
+		console.log('STATUS', item);
 
 		if (item.result === null) {
 			status = 'Ошибка сканирования фотографии';
