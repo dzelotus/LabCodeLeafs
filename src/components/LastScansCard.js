@@ -27,7 +27,6 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 	];
 
 	const renderItem = ({ item }) => {
-		console.log('ITEM', item);
 		const imageUrl = item.thumbnail_url ? item.thumbnail_url : item.image_url;
 		const imageUrlReady = imageUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')

@@ -1,9 +1,19 @@
-import React, { useEffect } from 'react';
-import { Text, View } from 'react-native';
-
+import React, { useEffect, useState } from 'react';
+import {
+	Text,
+	View,
+	FlatList,
+	TouchableOpacity,
+	StyleSheet,
+	ActivityIndicator,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import nodeApi from '../api/nodeApi';
 
 const NewsScreen = (props) => {
+	console.log('PROP', props);
+	const [newsData, setNewsData] = useState('');
+	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		const stackNavigator = props.navigation.dangerouslyGetParent();
 		if (stackNavigator) {
@@ -12,91 +22,93 @@ const NewsScreen = (props) => {
 			});
 		}
 
+		getNews();
+	}, []);
+
+	const getNews = () => {
 		nodeApi
 			.get('/articles')
 			.then((response) => {
 				console.log('NEWS FROM NEWS', response.data.data);
+				setNewsData(response.data.data);
+				setLoading(false);
 			})
-			.catch((error) => console.log(error));
-	}, []);
+			.catch((error) => {
+				console.log(error);
+				setLoading(false);
+			});
+	};
 
-	return (
-		<View>
-			<Text>Test</Text>
+	const Indicator = () => (
+		<View style={{ alignSelf: 'center', flex: 1 }}>
+			<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
 		</View>
-		/* <View style={{ flex: 1 }}>
+	);
+
+	if (loading) {
+		return <Indicator />;
+	}
+	return (
+		<View style={{ flex: 1 }}>
 			<FlatList
 				data={newsData}
 				renderItem={(item) => {
+					console.log('ITTTTT', item);
 					const { title } = item.item;
-					const previewData = item.item.article_preview.blocks;
-					const previewItem = previewData.map((item) => {
-						return (
-							<Text
-								key={item.key}
-								style={{
-									borderBottomColor: '#379683',
-									borderBottomWidth: 1,
-									paddingVertical: 10,
-								}}
-							>
-								{item.text}
-							</Text>
-						);
-					});
+					const previewData = item.item.article_preview;
 					const date = item.item.insert_date;
 
 					return (
 						<View style={styles.articleContainer}>
-							<View
-								style={{
-									borderBottomColor: '#379683',
-									borderBottomWidth: 2,
-								}}
-							>
+							<View>
 								<TouchableOpacity
-									style={{
-										flexDirection: 'row',
-										justifyContent: 'space-between',
-									}}
 									onPress={() =>
 										props.navigation.navigate('Article', { data: item.item })
 									}
 								>
-									<Text
+									<View
 										style={{
-											fontSize: 25,
-											fontWeight: 'bold',
+											flexDirection: 'row',
+											justifyContent: 'space-between',
+											borderBottomColor: '#379683',
+											borderBottomWidth: 2,
 										}}
 									>
-										{title}
-									</Text>
-									<Icon
-										name="chevron-right"
-										size={20}
-										style={{ alignSelf: 'center' }}
-									/>
+										<Text
+											style={{
+												fontSize: 25,
+												fontWeight: 'bold',
+											}}
+										>
+											{title}
+										</Text>
+										<Icon
+											name="chevron-right"
+											size={20}
+											style={{ alignSelf: 'center' }}
+										/>
+									</View>
+									<Text style={{ textAlign: 'left' }}>{previewData}</Text>
+									<Text style={{ textAlign: 'right' }}>{date}</Text>
 								</TouchableOpacity>
 							</View>
-							{previewItem}
-							<Text style={{ textAlign: 'right' }}>{date}</Text>
 						</View>
 					);
 				}}
 			/>
-		</View> */
+		</View>
 	);
 };
 
-/* const styles = StyleSheet.create({
+const styles = StyleSheet.create({
 	articleContainer: {
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
-			height: 12,
+			height: 2,
 		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
 		elevation: 5,
 		borderRadius: 3,
 		borderColor: '#000',
@@ -108,6 +120,6 @@ const NewsScreen = (props) => {
 		marginBottom: 10,
 		padding: 5,
 	},
-}); */
+});
 
 export default NewsScreen;

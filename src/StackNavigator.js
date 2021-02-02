@@ -8,13 +8,12 @@ import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import AboutUsScreen from './screens/AboutUsScreen';
-import CatalogItemScreen from './screens/CatalogItemScreen';
-/* import CatalogScreen from './screens/CatalogScreen'; */
+
 import EditProfileScreen from './screens/EditProfileScreen';
 import GardenScreen from './screens/GardenScreen';
 import FirstLaunchScreen from './screens/FirstLaunchScreen';
 import HelpScreen from './screens/HelpScreen';
-import ItemScreen from './screens/ItemScreen';
+
 import LastScanFullscreenPhotoScreen from './screens/LastScanFullscreenPhotoScreen';
 import LastScanScreen from './screens/LastScanScreen';
 import MainScreen from './screens/MainScreen';
@@ -32,6 +31,9 @@ import { resolveAuth } from './actions/AuthActions';
 import NewsScreen from './screens/NewsScreen';
 import ArticleScreen from './screens/ArticleScreen';
 import CatalogScreen from './screens/CatalogScreen';
+import CatalogPlantScreen from './screens/CatalogPlantScreen';
+import CatalogDiseaseScreen from './screens/CatalogDiseaseScreen';
+import CatalogHealScreen from './screens/CatalogHealScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,8 +41,9 @@ const Tab = createBottomTabNavigator();
 const CatalogFlow = () => (
 	<Stack.Navigator screenOptions={{ title: 'Справочник', headerTintColor: '#379683' }}>
 		<Stack.Screen name="Catalog" component={CatalogScreen} />
-		<Stack.Screen name="CatalogItem" component={CatalogItemScreen} />
-		<Stack.Screen name="Item" component={ItemScreen} />
+		<Stack.Screen name="CatalogPlant" component={CatalogPlantScreen} />
+		<Stack.Screen name="CatalogDisease" component={CatalogDiseaseScreen} />
+		<Stack.Screen name="CatalogHeal" component={CatalogHealScreen} />
 	</Stack.Navigator>
 );
 

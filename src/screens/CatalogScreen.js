@@ -6,7 +6,6 @@ import {
 	FlatList,
 	TouchableOpacity,
 	/* TextInput, */
-	Image,
 	ActivityIndicator,
 } from 'react-native';
 import nodeApi from '../api/nodeApi';
@@ -15,6 +14,7 @@ const CatalogScreen = (props) => {
 	const [loading, setLoading] = useState(true);
 	const [fetchedData, setFetchedData] = useState(null);
 	const [activeButton, setActiveButton] = useState('plant');
+	const [navScreen, setNavScreen] = useState('CatalogPlant');
 
 	useEffect(() => {
 		fetchCatalog({ item: 'plant' });
@@ -63,6 +63,7 @@ const CatalogScreen = (props) => {
 					onPress={() => {
 						setActiveButton('plant');
 						fetchCatalog({ item: 'plant' });
+						setNavScreen('CatalogPlant');
 					}}
 				>
 					<Text
@@ -76,6 +77,7 @@ const CatalogScreen = (props) => {
 					onPress={() => {
 						setActiveButton('disease');
 						fetchCatalog({ item: 'disease' });
+						setNavScreen('CatalogDisease');
 					}}
 				>
 					<Text
@@ -89,6 +91,7 @@ const CatalogScreen = (props) => {
 					onPress={() => {
 						setActiveButton('heal');
 						fetchCatalog({ item: 'heal' });
+						setNavScreen('CatalogHeal');
 					}}
 				>
 					<Text style={activeButton === 'heal' ? styles.activeButton : styles.itemButton}>
@@ -102,23 +105,19 @@ const CatalogScreen = (props) => {
 					keyExtractor={(item) => item.name}
 					renderItem={({ item }) => (
 						<TouchableOpacity
-							onPress={() =>
-								props.navigation.navigate('CatalogItem', {
-									item,
-								})
-							}
+							onPress={() => props.navigation.navigate(navScreen, { item })}
 							style={{
 								flex: 1,
 								flexDirection: 'row',
 								margin: 10,
 							}}
 						>
-							<Image
+							{/* <Image
 								style={styles.imageStyle}
 								source={{
 									uri: 'https://2ch.hk/test/src/22583/14918417781080.png',
 								}}
-							/>
+							/> */}
 							<View
 								style={{
 									flexDirection: 'column',

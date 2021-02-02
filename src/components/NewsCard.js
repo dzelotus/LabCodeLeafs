@@ -6,9 +6,11 @@ import { withNavigation } from '@react-navigation/compat';
 
 const NewsCard = ({ iconName, navigation, nav, headerText, newsData }) => {
 	console.log('NEWS CARD', newsData);
+
 	const rendTitles = () => {
 		if (newsData) {
-			return newsData.map((item) => {
+			const slicedData = newsData.slice(0, 3);
+			return slicedData.map((item) => {
 				return (
 					<TouchableOpacity
 						key={item.id}
@@ -45,7 +47,7 @@ const NewsCard = ({ iconName, navigation, nav, headerText, newsData }) => {
 	return (
 		<View style={styles.containerStyle}>
 			<TouchableOpacity
-				onPress={() => navigation.navigate(nav)}
+				onPress={() => navigation.navigate(nav, { data: newsData })}
 				style={styles.cardStyle}
 				activeOpacity={0.5}
 			>

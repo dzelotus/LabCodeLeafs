@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 
 import HTML from 'react-native-render-html';
@@ -6,7 +6,15 @@ import HTML from 'react-native-render-html';
 const ArticleScreen = (props) => {
 	const { route } = props;
 	console.log(route.params.data);
-	const article = route.params.data.article_preview;
+	const article = route.params.data.article_text;
+	useEffect(() => {
+		const stackNavigator = props.navigation.dangerouslyGetParent();
+		if (stackNavigator) {
+			stackNavigator.setOptions({
+				headerTitle: route.params.data.title,
+			});
+		}
+	});
 
 	return (
 		<ScrollView style={styles.container}>
