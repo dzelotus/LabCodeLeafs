@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Platform } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -48,7 +48,7 @@ const FirstLaunchScreen = (props) => {
 			>
 				<View key="1" style={styles.textContainer}>
 					<Image
-						source={require('../../assets/firstLaunchScreenImages/position1.png')}
+						source={require('../../ios/assets/assets/firstLaunchScreenImages/position1.png')}
 						style={{ width: 200, height: 200, marginBottom: 15 }}
 					/>
 					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
@@ -60,7 +60,7 @@ const FirstLaunchScreen = (props) => {
 				</View>
 				<View key="2" style={styles.textContainer}>
 					<Image
-						source={require('../../assets/firstLaunchScreenImages/position2.png')}
+						source={require('../../ios/assets/assets/firstLaunchScreenImages/position2.png')}
 						style={{ width: 250, height: 250, marginBottom: 15 }}
 					/>
 					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
@@ -72,7 +72,7 @@ const FirstLaunchScreen = (props) => {
 				</View>
 				<View key="3" style={styles.textContainer}>
 					<Image
-						source={require('../../assets/firstLaunchScreenImages/position3.png')}
+						source={require('../../ios/assets/assets/firstLaunchScreenImages/position3.png')}
 						style={{ width: 250, height: 250, marginBottom: 15 }}
 					/>
 					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
@@ -84,7 +84,7 @@ const FirstLaunchScreen = (props) => {
 				</View>
 				<View key="4" style={styles.textContainer}>
 					<Image
-						source={require('../../assets/firstLaunchScreenImages/position4.png')}
+						source={require('../../ios/assets/assets/firstLaunchScreenImages/position4.png')}
 						style={{ width: 250, height: 250, marginBottom: 15 }}
 					/>
 					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
@@ -122,14 +122,7 @@ const FirstLaunchScreen = (props) => {
 					/>
 				</View>
 			</ViewPager>
-			<View
-				style={{
-					flexDirection: 'row',
-					justifyContent: 'center',
-					paddingBottom: 20,
-					backgroundColor: 'white',
-				}}
-			>
+			<View style={styles.dotContainer}>
 				<TouchableOpacity
 					style={{ marginHorizontal: 10 }}
 					onPress={() => {
@@ -175,17 +168,25 @@ const FirstLaunchScreen = (props) => {
 	);
 };
 
+const padding = Platform.OS === 'ios' ? 40 : 20;
+
 const styles = StyleSheet.create({
 	viewPager: {
 		flex: 1,
-
 		backgroundColor: 'white',
+		paddingBottom: padding,
 	},
 
 	textContainer: {
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 10,
+	},
+	dotContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		paddingBottom: padding,
+		backgroundColor: 'white',
 	},
 });
 

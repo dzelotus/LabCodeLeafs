@@ -9,7 +9,7 @@
 		"test": "jest",
 		"lint": "eslint .",
 		"devtools": "react-devtools",
-		"build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'"
+		"build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='ios'"
 	},
 	"dependencies": {
 		"@react-native-community/async-storage": "^1.11.0",
