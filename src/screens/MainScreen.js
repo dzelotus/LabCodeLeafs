@@ -1,17 +1,19 @@
 /* eslint-disable no-sequences */
 /* eslint-disable consistent-return */
+// *** NPM ***
 import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Geolocation from '@react-native-community/geolocation';
 import RNBootSplash from 'react-native-bootsplash';
 
+// *** OTHER ***
 import LastScansCard from '../components/LastScansCard';
 import NewsCard from '../components/NewsCard';
 import WeatherCard from '../components/WeatherCard';
 import nodeApi from '../api/nodeApi';
 import weatherApi from '../api/weatherApi';
+import FeedBack from '../components/FeedBack';
 
 const MainScreen = ({ navigation }) => {
 	const [errorButton, setErrorButton] = useState(true);
@@ -133,7 +135,9 @@ const MainScreen = ({ navigation }) => {
 					paddingTop: 10,
 				}}
 			>
+				{/* NEWS */}
 				<NewsCard iconName="star-o" nav="News" headerText="Новости" newsData={newsData} />
+				{/* SCANS CARD */}
 				<LastScansCard
 					headerText="Мои сканирования"
 					nav="LastScan"
@@ -141,12 +145,16 @@ const MainScreen = ({ navigation }) => {
 					data={scans}
 				/>
 				{WeatherCardShow()}
+
+				{/* FEEDBACK */}
+				<FeedBack headerText="Отзывы" nav="LastScan" />
 			</ScrollView>
 			<EmailVerify />
 		</View>
 	);
 };
 
+// *** STYLES ***
 const styles = StyleSheet.create({
 	errorButton: {
 		position: 'absolute',
