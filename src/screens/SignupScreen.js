@@ -133,8 +133,8 @@ function SignupScreen(props) {
 
 	return (
 		<View style={Platform.OS === 'ios' ? { paddingTop: 50 } : null}>
-			<ScrollView keyboardShouldPersistTaps="always">
-				<KeyboardAvoidingView behavior="padding">
+			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>
+				<ScrollView keyboardShouldPersistTaps="always">
 					<Text
 						h1
 						style={{
@@ -268,21 +268,24 @@ function SignupScreen(props) {
 						{activityIndicator()}
 						{error()}
 					</View>
-				</KeyboardAvoidingView>
-				<TouchableOpacity
-					style={{
-						alignSelf: 'center',
-						marginTop: 20,
-						borderBottomWidth: 2,
-						borderBottomColor: '#379683',
-					}}
-					onPress={() => {
-						navigation.navigate('Signin');
-					}}
-				>
-					<Text style={{ fontSize: 15, color: '#379683' }}>Перейти на экран входа</Text>
-				</TouchableOpacity>
-			</ScrollView>
+
+					<TouchableOpacity
+						style={{
+							alignSelf: 'center',
+							marginTop: 20,
+							borderBottomWidth: 2,
+							borderBottomColor: '#379683',
+						}}
+						onPress={() => {
+							navigation.navigate('Signin');
+						}}
+					>
+						<Text style={{ fontSize: 15, color: '#379683' }}>
+							Перейти на экран входа
+						</Text>
+					</TouchableOpacity>
+				</ScrollView>
+			</KeyboardAvoidingView>
 			<Modal visible={isModalVisible} animationType="slide" transparent>
 				<View style={styles.modalContainer}>
 					<TouchableOpacity

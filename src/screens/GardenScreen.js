@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { useForm, Controller } from 'react-hook-form';
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import nodeApi from '../api/nodeApi';
 import GardenWithPlantsCard from '../components/GardenWithPlantsCard';
@@ -160,8 +161,8 @@ const GardenScreen = (props) => {
 			<View
 				style={{
 					position: 'absolute',
-					bottom: 15,
-					right: 15,
+					bottom: 5,
+					right: 5,
 				}}
 			>
 				<TouchableOpacity
@@ -244,7 +245,11 @@ const GardenScreen = (props) => {
 	};
 
 	return (
-		<View style={{ flex: 1 }}>
+		<View
+			style={{
+				flex: 1,
+			}}
+		>
 			<ScrollView>
 				{gardenRender()}
 				{loading.itemLoading ? <Indicator /> : null}

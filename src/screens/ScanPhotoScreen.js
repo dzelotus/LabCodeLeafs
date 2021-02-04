@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
 	buttonContainer: {
 		alignSelf: 'flex-end',
 		justifyContent: 'center',
+		paddingBottom: padding,
 	},
 
 	backButtonContainer: {

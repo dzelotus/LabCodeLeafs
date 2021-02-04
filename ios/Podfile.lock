@@ -24,15 +24,6 @@ PODS:
     - UMCore
     - UMFileSystemInterface
     - UMPermissionsInterface
-  - EXLocation (8.3.0):
-    - UMCore
-    - UMPermissionsInterface
-    - UMTaskManagerInterface
-  - EXMediaLibrary (8.4.0):
-    - React
-    - UMCore
-    - UMFileSystemInterface
-    - UMPermissionsInterface
   - EXPermissions (10.0.0):
     - UMCore
     - UMPermissionsInterface
@@ -362,9 +353,6 @@ PODS:
     - React
   - react-native-geolocation (2.0.2):
     - React
-  - react-native-image-editor (2.3.0):
-    - React
-    - React-RCTImage
   - react-native-image-picker (3.1.4):
     - React-Core
   - react-native-safe-area-context (3.1.4):
@@ -433,14 +421,12 @@ PODS:
     - React-Core (= 0.63.4)
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
-  - RNBootSplash (2.2.5):
-    - React
+  - RNBootSplash (3.1.2):
+    - React-Core
   - RNCAsyncStorage (1.11.0):
     - React
   - RNCMaskedView (0.1.10):
     - React
-  - RNCPicker (1.9.2):
-    - React-Core
   - RNDateTimePicker (3.0.4):
     - React-Core
   - RNFastImage (8.3.2):
@@ -461,8 +447,6 @@ PODS:
   - RNReanimated (1.12.0):
     - React
   - RNScreens (2.10.1):
-    - React
-  - RNSVG (12.1.0):
     - React
   - RNVectorIcons (7.0.0):
     - React
@@ -500,8 +484,6 @@ DEPENDENCIES:
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
   - EXImagePicker (from `../node_modules/expo-image-picker/ios`)
-  - EXLocation (from `../node_modules/expo-location/ios`)
-  - EXMediaLibrary (from `../node_modules/expo-media-library/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
@@ -551,7 +533,6 @@ DEPENDENCIES:
   - "react-native-cookies (from `../node_modules/@react-native-community/cookies`)"
   - react-native-fingerprint-scanner (from `../node_modules/react-native-fingerprint-scanner`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
-  - "react-native-image-editor (from `../node_modules/@react-native-community/image-editor`)"
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sqlite-storage (from `../node_modules/react-native-sqlite-storage`)
@@ -569,7 +550,6 @@ DEPENDENCIES:
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
-  - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
@@ -578,7 +558,6 @@ DEPENDENCIES:
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
@@ -637,10 +616,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-image-loader/ios"
   EXImagePicker:
     :path: "../node_modules/expo-image-picker/ios"
-  EXLocation:
-    :path: "../node_modules/expo-location/ios"
-  EXMediaLibrary:
-    :path: "../node_modules/expo-media-library/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
   FBLazyVector:
@@ -697,8 +672,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fingerprint-scanner"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
-  react-native-image-editor:
-    :path: "../node_modules/@react-native-community/image-editor"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-safe-area-context:
@@ -733,8 +706,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
-  RNCPicker:
-    :path: "../node_modules/@react-native-picker/picker"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNFastImage:
@@ -751,8 +722,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNSVG:
-    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   UMAppLoader:
@@ -794,8 +763,6 @@ SPEC CHECKSUMS:
   EXFileSystem: 0e4974ab77bff04cda68d2886d070cbe64b93a6b
   EXImageLoader: f96ec9992733a4224418bbd9382e5485c8948944
   EXImagePicker: 82fb929fb57b38de8d0a2d7fc3ca49726b9b8f78
-  EXLocation: 7615a912e30e8834679d9a07c86d99602f45b479
-  EXMediaLibrary: 73b7e171c26e828dfadf1fd270a4498cc1902a72
   EXPermissions: 17d4846ad1880f6891c74ae58ca1acb43e47ed47
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
@@ -844,7 +811,6 @@ SPEC CHECKSUMS:
   react-native-cookies: ff2e6865dff2e5feeca8f1ed082ae7898e4fa912
   react-native-fingerprint-scanner: ac6656f18c8e45a7459302b84da41a44ad96dbbe
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
-  react-native-image-editor: 9361a215c3991cafbe5e7f28cbbad6e72c9c2705
   react-native-image-picker: 28d8d1f5a643119876b8b2c7d4d1dcfb2b232dd4
   react-native-safe-area-context: eb91fe1fb3f7b87d9c30a7f0808407d8569d539d
   react-native-sqlite-storage: 418ef4afc5e6df6ce3574c4617e5f0b65cffde55
@@ -859,10 +825,9 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  RNBootSplash: b3836aa90c5bec690c6cd3c9ab355fcf98d0fe1d
+  RNBootSplash: a9544ba7f1a68b561e61e9efc68e2b3eec05dcef
   RNCAsyncStorage: d059c3ee71738c39834a627476322a5a8cd5bf36
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNCPicker: 4850f485a2b6a51788c7582d90d4b7d0e1644036
   RNDateTimePicker: 3d1931e387248cb8f1d1d33740d4a1a82dfe622a
   RNFastImage: e19ba191922e7dab9d932a4d59d62d76660aa222
   RNFBApp: a74d8259d827c8bf55100e759cffa2e50ba6fe30
@@ -871,7 +836,6 @@ SPEC CHECKSUMS:
   RNPermissions: ad71dd4f767ec254f2cd57592fbee02afee75467
   RNReanimated: 9c475f9b272232351d94a1a781e8b7580bac1ff4
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
-  RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: da6fe858f5a65d7bbc3379540a889b0b12aa5976
   SDWebImage: b969dcfc02c40a5da71eac0b03b8f1a0c794a86f
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21

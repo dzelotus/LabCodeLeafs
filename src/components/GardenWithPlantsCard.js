@@ -171,7 +171,7 @@ const GardenWithPlantsCard = ({ data, editGarden, getGardens, nav }) => {
 						flexDirection: 'row',
 						flex: 1,
 						justifyContent: 'space-between',
-						padding: 10,
+						padding: 20,
 					}}
 					onPress={() => {
 						setOpen(!open);

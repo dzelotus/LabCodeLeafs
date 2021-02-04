@@ -105,7 +105,8 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 			>
 				<View style={styles.modalContainer}>
 					<Text style={{ textAlign: 'center', fontSize: 16 }}>
-						На текущий момент наша нейросеть может распозновать следующие растения:
+						На текущий момент наша нейросеть может автоматически распознавать следующие
+						растения:
 					</Text>
 					<FlatList
 						data={canScan}

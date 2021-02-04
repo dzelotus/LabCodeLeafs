@@ -19,7 +19,7 @@ const AboutUsScreen = () => (
 			</Text>
 		</View>
 		<View style={{ alignSelf: 'center', flex: 1, justifyContent: 'flex-end' }}>
-			<Text style={{ textAlign: 'center' }}>ООО Лабаратория Кода - www.lab-code.com</Text>
+			<Text style={{ textAlign: 'center' }}>ООО Лаборатория Кода - www.lab-code.com</Text>
 			<Text style={{ textAlign: 'center' }}>Пермь, 2020 год</Text>
 		</View>
 	</View>

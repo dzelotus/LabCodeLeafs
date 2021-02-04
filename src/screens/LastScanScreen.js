@@ -6,34 +6,38 @@ const LastScanScreen = (route) => {
 	const { data } = route.route.params;
 
 	const renderItem = ({ item }) => {
-		let status;
-		const imageUrl = item.image_url;
+		console.log('photo', item);
+
+		const imageUrl = item.compressed_url ? item.compressed_url : item.image_url;
 		const imageUrlReady = imageUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
 			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
 
-		console.log('STATUS', item);
+		let status;
+		let disease;
 
-		if (item.result === null) {
-			status = 'Ошибка сканирования фотографии';
-		} else if (item.result.status === 'ERROR') {
-			status = 'Ошибка сканирования фотографии';
+		if (item.result.is_plant) {
+			status = item.result.plant;
+			disease = item.result.disease;
 		} else {
-			status = item.result.disease;
+			status = 'Растение не обнаружено';
 		}
 
 		return (
 			<View
 				style={{
-					marginTop: 15,
-					marginLeft: 15,
+					marginTop: 10,
+					marginHorizontal: 10,
 				}}
 			>
-				<View style={{ flexDirection: 'row' }}>
-					<Text>{status}</Text>
-				</View>
-
-				<View style={{ paddingTop: 10 }}>
+				<View
+					style={{
+						flexDirection: 'row',
+						borderBottomWidth: 2,
+						borderBottomColor: 'gray',
+						paddingBottom: 10,
+					}}
+				>
 					<TouchableOpacity
 						onPress={() =>
 							route.navigation.navigate('LastScanFullscreen', {
@@ -51,6 +55,11 @@ const LastScanScreen = (route) => {
 							source={{ uri: imageUrlReady }}
 						/>
 					</TouchableOpacity>
+					<View style={{ paddingLeft: 10, justifyContent: 'center' }}>
+						<Text style={{ fontWeight: 'bold' }}>Результат сканирования:</Text>
+						<Text style={{ marginTop: 5 }}>{status}</Text>
+						<Text style={{ marginTop: 5 }}>{disease}</Text>
+					</View>
 				</View>
 			</View>
 		);

@@ -8,6 +8,7 @@ import {
 	/* TextInput, */
 	ActivityIndicator,
 } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import nodeApi from '../api/nodeApi';
 
 const CatalogScreen = (props) => {
@@ -35,23 +36,8 @@ const CatalogScreen = (props) => {
 			});
 	};
 
-	console.log(activeButton);
-
-	if (loading) {
-		return <ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />;
-	}
-	return (
-		<View style={{ flex: 1 }}>
-			{/* <View style={styles.inputContainer}>
-				<TextInput
-					autoCapitalize="none"
-					placeholder="Поиск по каталогу"
-					style={styles.inputStyle}
-					value={term}
-					onChangeText={(newTerm) => setTerm(newTerm)}
-					onEndEditing={() => console.log('submitted')}
-				/>
-			</View> */}
+	const MainButtons = () => {
+		return (
 			<View style={styles.mainButtons}>
 				<TouchableOpacity
 					style={{
@@ -99,6 +85,32 @@ const CatalogScreen = (props) => {
 					</Text>
 				</TouchableOpacity>
 			</View>
+		);
+	};
+
+	console.log(activeButton);
+
+	if (loading) {
+		return (
+			<View style={{ flex: 1 }}>
+				<MainButtons />
+				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
+			</View>
+		);
+	}
+	return (
+		<View style={{ flex: 1, backgroundColor: 'white' }}>
+			{/* <View style={styles.inputContainer}>
+				<TextInput
+					autoCapitalize="none"
+					placeholder="Поиск по каталогу"
+					style={styles.inputStyle}
+					value={term}
+					onChangeText={(newTerm) => setTerm(newTerm)}
+					onEndEditing={() => console.log('submitted')}
+				/>
+			</View> */}
+			<MainButtons />
 			<View style={{ paddingBottom: 60 }}>
 				<FlatList
 					data={fetchedData}
@@ -109,7 +121,10 @@ const CatalogScreen = (props) => {
 							style={{
 								flex: 1,
 								flexDirection: 'row',
-								margin: 10,
+								justifyContent: 'space-between',
+								borderBottomColor: 'gray',
+								borderBottomWidth: 1,
+								marginHorizontal: 10,
 							}}
 						>
 							{/* <Image
@@ -120,16 +135,19 @@ const CatalogScreen = (props) => {
 							/> */}
 							<View
 								style={{
-									flexDirection: 'column',
-									justifyContent: 'center',
-									marginLeft: 15,
 									flex: 1,
+									marginVertical: 20,
 								}}
 							>
 								<Text style={styles.nameStyle}>{item.name}</Text>
-								<Text style={styles.alternativeNameStyle}>
-									{item.alternativeName}
-								</Text>
+							</View>
+							<View
+								style={{
+									alignItems: 'flex-end',
+									justifyContent: 'center',
+								}}
+							>
+								<FontAwesome name="chevron-right" size={20} color="#379683" />
 							</View>
 						</TouchableOpacity>
 					)}
