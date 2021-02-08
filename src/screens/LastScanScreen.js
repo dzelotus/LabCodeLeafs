@@ -26,15 +26,13 @@ const LastScanScreen = (route) => {
 		return (
 			<View
 				style={{
-					marginTop: 10,
-					marginHorizontal: 10,
+					paddingTop: 10,
+					paddingHorizontal: 10,
 				}}
 			>
 				<View
 					style={{
 						flexDirection: 'row',
-						borderBottomWidth: 2,
-						borderBottomColor: 'gray',
 						paddingBottom: 10,
 					}}
 				>
@@ -55,7 +53,15 @@ const LastScanScreen = (route) => {
 							source={{ uri: imageUrlReady }}
 						/>
 					</TouchableOpacity>
-					<View style={{ paddingLeft: 10, justifyContent: 'center' }}>
+					<View
+						style={{
+							paddingLeft: 10,
+							justifyContent: 'center',
+							flex: 1,
+							borderColor: 'green',
+							borderWidth: 1,
+						}}
+					>
 						<Text style={{ fontWeight: 'bold' }}>Результат сканирования:</Text>
 						<Text style={{ marginTop: 5 }}>{status}</Text>
 						<Text style={{ marginTop: 5 }}>{disease}</Text>
