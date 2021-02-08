@@ -7,6 +7,7 @@ import nodeApi from '../api/nodeApi';
 const CatalogPlantScreen = (props) => {
 	const { route } = props;
 	// nav from plant get disease_content, nav from catalog get content
+	console.log('ROUTE', route);
 	const itemContent = route.params.item.content;
 
 	const itemId = route.params.item.id;
@@ -25,6 +26,7 @@ const CatalogPlantScreen = (props) => {
 		nodeApi
 			.get(`/plant-protection/link/disease/${itemId}/heal`)
 			.then((response) => {
+				console.log(response);
 				const dis = response.data.data;
 				let i;
 				for (i = 0; i < dis.length; i += 1) {
