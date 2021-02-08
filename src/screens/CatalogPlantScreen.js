@@ -29,8 +29,10 @@ const CatalogPlantScreen = (props) => {
 				for (i = 0; i < dis.length; i += 1) {
 					dis[i].content = dis[i].disease_content;
 					dis[i].name = dis[i].disease_name;
+					dis[i].id = dis[i].disease_id;
 					delete dis[i].disease_content;
 					delete dis[i].disease_name;
+					delete dis[i].disease_id;
 				}
 				console.log('dis', dis);
 				setDisease(dis);
