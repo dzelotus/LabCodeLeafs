@@ -67,7 +67,7 @@ const FirstLaunchScreen = (props) => {
 						LEAFS
 					</Text>
 					<Text style={{ fontSize: 20, textAlign: 'center' }}>
-						Мгновенное определние растений и заболеваний
+						Мгновенное определение растений и заболеваний
 					</Text>
 				</View>
 				<View key="3" style={styles.textContainer}>
