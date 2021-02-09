@@ -48,7 +48,7 @@ const FirstLaunchScreen = (props) => {
 			>
 				<View key="1" style={styles.textContainer}>
 					<Image
-						source={require('../../ios/assets/assets/firstLaunchScreenImages/position1.png')}
+						source={require('../../assets/firstLaunchScreenImages/position1.png')}
 						style={{ width: 200, height: 200, marginBottom: 15 }}
 					/>
 					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
@@ -60,7 +60,7 @@ const FirstLaunchScreen = (props) => {
 				</View>
 				<View key="2" style={styles.textContainer}>
 					<Image
-						source={require('../../ios/assets/assets/firstLaunchScreenImages/position2.png')}
+						source={require('../../assets/firstLaunchScreenImages/position2.png')}
 						style={{ width: 250, height: 250, marginBottom: 15 }}
 					/>
 					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
@@ -72,7 +72,7 @@ const FirstLaunchScreen = (props) => {
 				</View>
 				<View key="3" style={styles.textContainer}>
 					<Image
-						source={require('../../ios/assets/assets/firstLaunchScreenImages/position3.png')}
+						source={require('../../assets/firstLaunchScreenImages/position3.png')}
 						style={{ width: 250, height: 250, marginBottom: 15 }}
 					/>
 					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>
@@ -84,7 +84,7 @@ const FirstLaunchScreen = (props) => {
 				</View>
 				<View key="4" style={styles.textContainer}>
 					<Image
-						source={require('../../ios/assets/assets/firstLaunchScreenImages/position4.png')}
+						source={require('../../assets/firstLaunchScreenImages/position4.png')}
 						style={{ width: 250, height: 250, marginBottom: 15 }}
 					/>
 					<Text style={{ fontSize: 45, fontWeight: 'bold', color: '#379683' }}>

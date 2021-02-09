@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* LeafsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* LeafsTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1D31599D705B871C12EA438A /* libPods-Leafs-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7D9EDD80450FC3BA624BBD9 /* libPods-Leafs-tvOS.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -20,9 +19,11 @@
 		6792D62F437680EC1D73B4B4 /* libPods-Leafs-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 606447FE73BB3A9567D8F236 /* libPods-Leafs-tvOSTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		884C484113CC68B9DF8ECD90 /* libPods-Leafs-LeafsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C499B522D2C59F5A16323861 /* libPods-Leafs-LeafsTests.a */; };
-		A91DA3BC25C170F4006A075D /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
 		A9ADD2E925C2E24000ABCD17 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9ADD2E825C2E24000ABCD17 /* GoogleService-Info.plist */; };
 		A9CBCA6E25D1378A00035823 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9CBCA6D25D1378A00035823 /* BootSplash.storyboard */; };
+		A9CBCF5425D2B72300035823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		A9CBD07F25D2C71400035823 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A9CBD07E25D2C71400035823 /* main.jsbundle */; };
+		A9CBD08925D2C72700035823 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = A9CBD08825D2C72700035823 /* assets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +44,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00E356EE1AD99517003FC87E /* LeafsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LeafsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* LeafsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LeafsTests.m; sourceTree = "<group>"; };
@@ -66,6 +66,8 @@
 		A9ADD2D725C18A2E00ABCD17 /* LeafsRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = LeafsRelease.entitlements; path = Leafs/LeafsRelease.entitlements; sourceTree = "<group>"; };
 		A9ADD2E825C2E24000ABCD17 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A9CBCA6D25D1378A00035823 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = leafs/BootSplash.storyboard; sourceTree = "<group>"; };
+		A9CBD07E25D2C71400035823 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		A9CBD08825D2C72700035823 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		B48AD153C31EBB29EAA51765 /* Pods-Leafs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leafs.release.xcconfig"; path = "Target Support Files/Pods-Leafs/Pods-Leafs.release.xcconfig"; sourceTree = "<group>"; };
 		C499B522D2C59F5A16323861 /* libPods-Leafs-LeafsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Leafs-LeafsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8019E0E7BBEA39E27C51D73 /* Pods-Leafs-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leafs-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Leafs-tvOSTests/Pods-Leafs-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -134,11 +136,12 @@
 			children = (
 				A9ADD2D725C18A2E00ABCD17 /* LeafsRelease.entitlements */,
 				A91DA25425C169FD006A075D /* LeafsDebug.entitlements */,
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
+				A9CBD08825D2C72700035823 /* assets */,
+				A9CBD07E25D2C71400035823 /* main.jsbundle */,
 				A9CBCA6D25D1378A00035823 /* BootSplash.storyboard */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -352,11 +355,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9CBCF5425D2B72300035823 /* Images.xcassets in Resources */,
 				A9CBCA6E25D1378A00035823 /* BootSplash.storyboard in Resources */,
-				A91DA3BC25C170F4006A075D /* main.jsbundle in Resources */,
+				A9CBD07F25D2C71400035823 /* main.jsbundle in Resources */,
+				A9CBD08925D2C72700035823 /* assets in Resources */,
 				A9ADD2E925C2E24000ABCD17 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -749,7 +753,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Leafs/LeafsDebug.entitlements;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 97M39KRUZ4;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_BITCODE = YES;
@@ -778,7 +782,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Leafs/LeafsRelease.entitlements;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = 97M39KRUZ4;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_BITCODE = YES;

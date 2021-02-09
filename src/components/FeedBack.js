@@ -92,23 +92,24 @@ const FeedbackGeneralNew = (props) => {
 			{/* INPUTS */}
 			<View style={styles.inputsView}>
 				{/* NAME */}
-				<Controller
-					control={control}
-					render={({ onChange, value }) => (
-						<TextInput
-							style={styles.input}
-							placeholder="Ваше имя"
-							onChangeText={(newValue) => onChange(newValue)}
-							value={value}
-						/>
-					)}
-					name="name"
-					rules={{
-						required: { value: true, message: 'Данное поле обязательное' },
-						maxLength: { value: 100, message: 'Максимальная длина 100' },
-					}}
-					defaultValue=""
-				/>
+				<View style={styles.input}>
+					<Controller
+						control={control}
+						render={({ onChange, value }) => (
+							<TextInput
+								placeholder="Ваше имя"
+								onChangeText={(newValue) => onChange(newValue)}
+								value={value}
+							/>
+						)}
+						name="name"
+						rules={{
+							required: { value: true, message: 'Данное поле обязательное' },
+							maxLength: { value: 100, message: 'Максимальная длина 100' },
+						}}
+						defaultValue=""
+					/>
+				</View>
 
 				{/* NAME ERROR */}
 				{errors.name?.message && (
@@ -118,24 +119,25 @@ const FeedbackGeneralNew = (props) => {
 				)}
 
 				{/* EMAIL */}
-				<Controller
-					control={control}
-					render={({ onChange, value }) => (
-						<TextInput
-							style={styles.input}
-							placeholder="Ваш e-mail (электронная почта)"
-							onChangeText={(newValue) => onChange(newValue)}
-							value={value}
-						/>
-					)}
-					name="email"
-					rules={{
-						required: { value: true, message: 'Данное поле обязательное' },
-						maxLength: { value: 320, message: 'Максимальная длина 320' },
-						pattern: { value: regexEmail, message: 'Неверный формат e-mail' },
-					}}
-					defaultValue=""
-				/>
+				<View style={styles.input}>
+					<Controller
+						control={control}
+						render={({ onChange, value }) => (
+							<TextInput
+								placeholder="Ваш e-mail (электронная почта)"
+								onChangeText={(newValue) => onChange(newValue)}
+								value={value}
+							/>
+						)}
+						name="email"
+						rules={{
+							required: { value: true, message: 'Данное поле обязательное' },
+							maxLength: { value: 320, message: 'Максимальная длина 320' },
+							pattern: { value: regexEmail, message: 'Неверный формат e-mail' },
+						}}
+						defaultValue=""
+					/>
+				</View>
 
 				{/* EMAIL ERROR */}
 				{errors.email?.message && (
@@ -145,24 +147,25 @@ const FeedbackGeneralNew = (props) => {
 				)}
 
 				{/* MESSAGE */}
-				<Controller
-					control={control}
-					render={({ onChange, value }) => (
-						<TextInput
-							style={styles.input}
-							placeholder="Ваш отзыв"
-							onChangeText={(newValue) => onChange(newValue)}
-							value={value}
-							multiline
-							numberOfLines={10}
-						/>
-					)}
-					name="message"
-					rules={{
-						required: { value: true, message: 'Данное поле обязательно' },
-					}}
-					defaultValue=""
-				/>
+				<View style={styles.feedbackInput}>
+					<Controller
+						control={control}
+						render={({ onChange, value }) => (
+							<TextInput
+								placeholder="Ваш отзыв"
+								onChangeText={(newValue) => onChange(newValue)}
+								value={value}
+								multiline
+								numberOfLines={10}
+							/>
+						)}
+						name="message"
+						rules={{
+							required: { value: true, message: 'Данное поле обязательно' },
+						}}
+						defaultValue=""
+					/>
+				</View>
 
 				{/* MESSAGE ERROR */}
 				{errors.message?.message && (
@@ -202,16 +205,14 @@ const FeedBack = () => {
 	return (
 		<>
 			{/* MAIN VIEW */}
-			<View style={styles.feedbackView}>
-				<TouchableOpacity onPress={onPress}>
-					<View style={styles.feedbackViewButton}>
-						<Icon name="paper-plane-o" size={25} color="#379683" />
-						<Text style={{ fontSize: 18, marginLeft: 15, color: '#EB9156' }}>
-							Оставить отзыв
-						</Text>
-					</View>
-				</TouchableOpacity>
-			</View>
+			<TouchableOpacity onPress={onPress} style={styles.feedbackView}>
+				<View style={styles.feedbackViewButton}>
+					<Icon name="paper-plane-o" size={25} color="#379683" />
+					<Text style={{ fontSize: 18, marginLeft: 15, color: '#EB9156' }}>
+						Оставить отзыв
+					</Text>
+				</View>
+			</TouchableOpacity>
 
 			{/* MODAL */}
 			<Modal
@@ -239,7 +240,6 @@ const styles = StyleSheet.create({
 		},
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
-
 		elevation: 5,
 		borderRadius: 10,
 		borderColor: '#379683',
@@ -282,7 +282,6 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 0,
-		backgroundColor: '#fff',
 		justifyContent: 'center',
 	},
 	input: {
@@ -290,6 +289,14 @@ const styles = StyleSheet.create({
 		borderColor: '#696969',
 		borderWidth: 1,
 		marginBottom: 10,
+		height: 50,
+	},
+	feedbackInput: {
+		borderRadius: 4,
+		borderColor: '#696969',
+		borderWidth: 1,
+		marginBottom: 10,
+		height: 150,
 	},
 	submitButton: {
 		marginHorizontal: 90,
@@ -305,7 +312,6 @@ const styles = StyleSheet.create({
 	},
 	submitButtonText: {
 		fontSize: 18,
-		marginLeft: 10,
 		color: '#EB9156',
 	},
 	closeButton: {

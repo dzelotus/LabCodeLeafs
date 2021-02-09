@@ -11,7 +11,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import nodeApi from '../api/nodeApi';
 
 const NewsScreen = (props) => {
-	console.log('PROP', props);
 	const [newsData, setNewsData] = useState('');
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {

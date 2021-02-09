@@ -12,7 +12,7 @@ import GardenWithPlantsCard from '../components/GardenWithPlantsCard';
 
 const GardenScreen = (props) => {
 	const { navigation } = props;
-	console.log('GARDEN SCREEN', props);
+	console.log('GARDEN SCREEN', csrf);
 
 	const [loading, setLoading] = useState({
 		screenLoading: false,
@@ -49,6 +49,7 @@ const GardenScreen = (props) => {
 		nodeApi
 			.get('/garden/new')
 			.then((response) => {
+				console.log('getcsrf', response);
 				setCsrf(response.data.csrfToken);
 				setLoading({ buttonLoading: false });
 			})

@@ -18,31 +18,16 @@ const ArticleScreen = (props) => {
 
 	return (
 		<ScrollView style={styles.container}>
-			<HTML source={{ html: article }} />
+			<HTML
+				source={{ html: article }}
+				tagsStyles={{
+					b: { fontSize: 18, paddingBottom: 50 },
+					p: { fontSize: 16, paddingBottom: 15 },
+				}}
+			/>
 		</ScrollView>
 	);
 };
-
-/* const styles = StyleSheet.create({
-	articleContainer: {
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 12,
-		},
-		shadowOpacity: 0.58,
-		shadowRadius: 16.0,
-		elevation: 7,
-		borderRadius: 3,
-		borderColor: '#000',
-		backgroundColor: '#fff',
-
-		justifyContent: 'center',
-		marginTop: 10,
-		margin: 5,
-		padding: 5,
-	},
-}); */
 
 const styles = StyleSheet.create({
 	container: {

@@ -41,6 +41,8 @@
 	<string>Give $(PRODUCT_NAME) permission to use calendar</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to access your camera</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Give $(PRODUCT_NAME) permission to bio authentication</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Give $(PRODUCT_NAME) permission to access to your location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

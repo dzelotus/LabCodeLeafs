@@ -75,14 +75,12 @@ const ScanLeafScreen = (route) => {
 			Platform.OS === 'android'
 				? askPerms()
 				: requestMultiple([
-						PERMISSIONS.IOS.MEDIA_LIBRARY,
 						PERMISSIONS.IOS.PHOTO_LIBRARY,
 						PERMISSIONS.IOS.CAMERA,
 						PERMISSIONS.IOS.MICROPHONE,
 				  ]).then((statuses) => {
 						console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
 						console.log('PL', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-						console.log('ML', statuses[PERMISSIONS.IOS.MEDIA_LIBRARY]);
 						console.log('MP', statuses[PERMISSIONS.IOS.MICROPHONE]);
 				  });
 		});

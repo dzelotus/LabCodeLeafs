@@ -5,8 +5,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { withNavigation } from '@react-navigation/compat';
 
 const NewsCard = ({ iconName, navigation, nav, headerText, newsData }) => {
-	console.log('NEWS CARD', newsData);
-
 	const rendTitles = () => {
 		if (newsData) {
 			const slicedData = newsData.slice(0, 3);
@@ -78,7 +76,6 @@ const styles = StyleSheet.create({
 		},
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
-
 		elevation: 5,
 		borderRadius: 10,
 		borderColor: '#000',
