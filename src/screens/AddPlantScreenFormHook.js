@@ -315,6 +315,7 @@ const AddPlantScreenFormHook = (props) => {
 									textValue={value}
 									defaultValue={value.toString()}
 									keyboardType="number-pad"
+									style={{ flex: 1 }}
 								/>
 								{errors.planting_size?.message && (
 									<Text style={{ color: 'red' }}>

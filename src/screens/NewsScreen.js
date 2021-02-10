@@ -8,6 +8,7 @@ import {
 	ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import HTML from 'react-native-render-html';
 import nodeApi from '../api/nodeApi';
 
 const NewsScreen = (props) => {
@@ -52,10 +53,10 @@ const NewsScreen = (props) => {
 			<FlatList
 				data={newsData}
 				renderItem={(item) => {
-					console.log('ITTTTT', item);
 					const { title } = item.item;
 					const previewData = item.item.article_preview;
 					const date = item.item.insert_date;
+					console.log('ITTTTT', previewData);
 
 					return (
 						<View style={styles.articleContainer}>
@@ -87,7 +88,12 @@ const NewsScreen = (props) => {
 											style={{ alignSelf: 'center' }}
 										/>
 									</View>
-									<Text style={{ textAlign: 'left' }}>{previewData}</Text>
+									<HTML
+										source={{ html: previewData }}
+										tagsStyles={{
+											p: { fontSize: 16, paddingVertical: 10 },
+										}}
+									/>
 									<Text style={{ textAlign: 'right' }}>{date}</Text>
 								</TouchableOpacity>
 							</View>

@@ -58,8 +58,6 @@ const LastScanScreen = (route) => {
 							paddingLeft: 10,
 							justifyContent: 'center',
 							flex: 1,
-							borderColor: 'green',
-							borderWidth: 1,
 						}}
 					>
 						<Text style={{ fontWeight: 'bold' }}>Результат сканирования:</Text>

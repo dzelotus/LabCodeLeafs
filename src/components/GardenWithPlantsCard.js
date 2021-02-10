@@ -4,8 +4,9 @@ import { Text, TouchableOpacity, View, StyleSheet, ActivityIndicator, Alert } fr
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import PlantInGarden from './PlantInGarden';
 import nodeApi from '../api/nodeApi';
+import EditGardenModal from './EditGardenModal';
 
-const GardenWithPlantsCard = ({ data, editGarden, getGardens, nav }) => {
+const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 	const [open, setOpen] = useState(false);
 	const [gardenPlants, setGardenPlants] = useState(null);
 	const [loading, setLoading] = useState(false);
@@ -104,13 +105,7 @@ const GardenWithPlantsCard = ({ data, editGarden, getGardens, nav }) => {
 							borderBottomColor: '#379683',
 						}}
 					>
-						<TouchableOpacity
-							onPress={() => {
-								editGarden(gardenId);
-							}}
-						>
-							<Icon name="pencil-outline" size={25} color="orange" />
-						</TouchableOpacity>
+						<EditGardenModal gardenId={gardenId} getGardens={() => getGardens()} />
 						<TouchableOpacity
 							onPress={() => {
 								deleteAlert(gardenId);
