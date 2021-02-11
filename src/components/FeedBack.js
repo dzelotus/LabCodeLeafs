@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
 import {
 	StyleSheet,
+	Alert,
 	Text,
 	TextInput,
 	TouchableOpacity,
@@ -38,9 +39,10 @@ const FeedbackGeneralNew = (props) => {
 
 			setCsrfState(() => csrfToken);
 		} catch (error) {
-			// TODO: WHAT IF ERROR --> TILL NOW WE JUST CLOSE MODAL
+			// Close modal
+
 			onClose();
-			console.log(error);
+			// Error alert
 		}
 	}, [onClose]);
 
@@ -51,12 +53,26 @@ const FeedbackGeneralNew = (props) => {
 				_csrf: csrfState,
 			});
 
+			// Success alert
+			Alert.alert('Успешно', 'Ваш отзыв успешно отправлен. Спасибо!', [{ text: 'OK' }], {
+				cancelable: false,
+			});
+
 			// successfully performed
 			onPerform();
 		} catch (error) {
-			// TODO: WHAT IF ERROR --> TILL NOW WE JUST CLOSE MODAL
+			// Close modal
 			onClose();
-			console.log(error);
+
+			// Error alert
+			Alert.alert(
+				'Ошибка',
+				'Что-то пошло не так, пожалуйста свяжитесь с администратором',
+				[{ text: 'OK' }],
+				{
+					cancelable: false,
+				},
+			);
 		}
 	};
 
@@ -186,11 +202,12 @@ const FeedbackGeneralNew = (props) => {
 					<Text style={styles.submitButtonText}>Отправить</Text>
 				</TouchableOpacity>
 			)}
-
 			{/* CLOSE */}
 			<TouchableOpacity style={styles.closeButton} onPress={onClose}>
 				<Icon name="close" size={25} color="#379683" />
 			</TouchableOpacity>
+
+			{/* ALERTS */}
 		</View>
 	);
 };
