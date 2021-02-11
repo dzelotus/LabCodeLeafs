@@ -36,6 +36,7 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants }) => {
 
 	const plantItem = () => {
 		return plantData.map((item) => {
+			console.log('ITEM', item);
 			return (
 				<View
 					style={{
@@ -46,8 +47,8 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants }) => {
 					}}
 					key={item.id}
 				>
-					<Text>{item.planting_date}</Text>
-					<Text>
+					<Text style={{ fontSize: 16 }}>{item.planting_date}</Text>
+					<Text style={{ fontSize: 16 }}>
 						{item.planting_size} {item.planting_unit_short_name}
 					</Text>
 					<View style={{ flexDirection: 'row' }}>
@@ -59,7 +60,7 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants }) => {
 								});
 							}}
 						>
-							<Icon name="pencil-outline" size={25} color="orange" />
+							<Icon name="pencil-outline" size={30} color="orange" />
 						</TouchableOpacity>
 						<TouchableOpacity
 							onPress={() => {
@@ -69,7 +70,7 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants }) => {
 								deletePlant(plantId, gardenId);
 							}}
 						>
-							<Icon name="delete-outline" size={25} color="red" />
+							<Icon name="delete-outline" size={30} color="red" />
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -96,9 +97,9 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants }) => {
 							paddingVertical: 5,
 						}}
 					>
-						<Text>Дата посадки</Text>
-						<Text>Объем посадки</Text>
-						<Text>Управление</Text>
+						<Text style={{ fontSize: 16 }}>Дата посадки</Text>
+						<Text style={{ fontSize: 16 }}>Объем посадки</Text>
+						<Text style={{ fontSize: 16 }}>Управление</Text>
 					</View>
 					{plantItem()}
 				</View>
@@ -114,11 +115,14 @@ const PlantInGarden = ({ plantName, plantData, getGardenPlants }) => {
 						justifyContent: 'space-between',
 						borderBottomWidth: 2,
 						borderBottomColor: '#dedede',
+						paddingBottom: 10,
 					}}
 					onPress={() => setOpen(!open)}
 				>
-					<Text style={{ flex: 1 }}>{plantName}</Text>
-					<Text style={{ flex: 1, textAlign: 'center' }}>{plantData.length}</Text>
+					<Text style={{ flex: 1, fontSize: 18 }}>{plantName}</Text>
+					<Text style={{ flex: 1, textAlign: 'center', fontSize: 18 }}>
+						{plantData.length}
+					</Text>
 					<Icon
 						name={open ? 'chevron-up' : 'chevron-down'}
 						size={20}

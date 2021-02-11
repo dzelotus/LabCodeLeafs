@@ -10,20 +10,17 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 	const [showModal, setShowModal] = useState(false);
 
 	const canScan = [
-		'Персик',
-		'Хурма',
+		'Яблоня',
+		'Цитрус',
+		'Фейхоа',
+		'Инжир',
+		'Виноград',
+		'Лавр',
 		'Мушмула',
 		'Черешня',
-		'Лавр',
 		'Груша',
-		'Слива',
-		'Яблоня',
-		'Виноград',
-		'Цитрусы',
-		'Инжир',
+		'Хурма',
 		'Гранат',
-		'Фейхоа',
-		'Киви',
 	];
 
 	const renderItem = ({ item }) => {
@@ -85,12 +82,12 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 					renderItem={renderItem}
 				/>
 			</View>
-			<TouchableOpacity onPress={() => setShowModal(true)} style={{ paddingBottom: 10 }}>
+			<TouchableOpacity onPress={() => setShowModal(true)} style={{ paddingVertical: 10 }}>
 				<Text
 					style={{
 						textDecorationLine: 'underline',
 						textAlign: 'center',
-						fontSize: 16,
+						fontSize: 18,
 						color: '#EB9156',
 					}}
 				>
@@ -104,7 +101,7 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 				swipeDirection="down"
 			>
 				<View style={styles.modalContainer}>
-					<Text style={{ textAlign: 'center', fontSize: 16 }}>
+					<Text style={{ textAlign: 'center', fontSize: 16, marginBottom: 10 }}>
 						На текущий момент наша нейросеть может автоматически распознавать следующие
 						растения:
 					</Text>

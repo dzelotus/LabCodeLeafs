@@ -48,12 +48,6 @@ const GardenScreen = (props) => {
 			<ActivityIndicator size="large" color="#379683" />
 		</View>
 	);
-
-	// eslint-disable-next-line react/destructuring-assignment
-	if (loading.screenLoading === true) {
-		return <Indicator />;
-	}
-
 	const gardenRender = () => {
 		if (gardenData) {
 			return gardenData.map((item) => {
@@ -68,6 +62,15 @@ const GardenScreen = (props) => {
 			});
 		}
 	};
+
+	// eslint-disable-next-line react/destructuring-assignment
+	if (loading.screenLoading === true) {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center' }}>
+				<Indicator />
+			</View>
+		);
+	}
 
 	return (
 		<View

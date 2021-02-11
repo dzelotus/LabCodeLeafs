@@ -213,7 +213,7 @@ const EditGardenModal = (props) => {
 					setShowModal(true);
 				}}
 			>
-				<Icon name="pencil-outline" size={25} color="orange" />
+				<Icon name="pencil-outline" size={30} color="orange" />
 			</TouchableOpacity>
 			<Modal
 				isVisible={showModal}

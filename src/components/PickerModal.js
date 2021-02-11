@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import Modal from 'react-native-modal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,16 +10,13 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 
 	console.log('DATA', data);
 
-	useEffect(() => {
-		setData(plantsData);
-	}, []);
 
-	const result = plantsData
-		? plantsData.find((obj) => {
-				const toComapare = value.toString();
-				return obj.id === toComapare;
-		  })
-		: null;
+	const result = plantsData ?
+		plantsData.find((obj) => {
+			const toComapare = value.toString();
+			return obj.id === toComapare;
+		  }) :
+		null;
 
 	const searchFunc = (text) => {
 		const search = plantsData.filter((item) => {
@@ -36,7 +33,9 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 			<View>
 				<TouchableOpacity
 					onPress={() => {
+						setData(plantsData)
 						setIsModalVisible(true);
+						
 					}}
 				>
 					<Text>{result ? `${result.value}` : `${placeholder}`}</Text>
@@ -67,11 +66,12 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 									{placeholder}
 								</Text>
 							</View>
-							<View style={{ width: '99%', paddingHorizontal: 10 }}>
+							<View style={{ width: '99%', paddingHorizontal: 10,  }}>
 								<TextInput
 									style={{
 										borderBottomColor: 'gray',
 										borderBottomWidth: 1,
+										height: 50
 									}}
 									placeholder="Поиск растения"
 									onChangeText={(txt) => searchFunc(txt)}

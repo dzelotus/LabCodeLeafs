@@ -50,6 +50,7 @@ const AddPlantScreenFormHook = (props) => {
 		nodeApi
 			.get('/garden-plant')
 			.then((response) => {
+				console.log('plants', response.data.data);
 				const plantsForMap = response.data.data;
 				const plantsData = plantsForMap.map((item) => {
 					return { id: item.id, value: item.general_russian_name };
@@ -63,13 +64,12 @@ const AddPlantScreenFormHook = (props) => {
 		nodeApi
 			.get('/garden-plant-unit')
 			.then((response) => {
-				console.log('resp', response.data.data);
+				console.log('units', response.data.data);
 				const unitsForMap = response.data.data;
 				const unitsData = unitsForMap.map((item) => {
 					return { id: item.id, value: item.name };
 				});
 				setUnit(unitsData);
-				setLoading({ ...loading, screenLoading: false });
 			})
 			.catch((error) => console.log(error.response));
 	};
@@ -148,7 +148,9 @@ const AddPlantScreenFormHook = (props) => {
 		}
 	};
 
-	if (loading.screenLoading) {
+	console.log('UN', unit);
+
+	if (!plants && !unit) {
 		return <Indicator />;
 	}
 	return (
@@ -186,6 +188,8 @@ const AddPlantScreenFormHook = (props) => {
 										onChange(value);
 									}}
 									placeholder="Выберите растение"
+									route="/garden-plant"
+									key="namePicker"
 								/>
 								{errors.garden_plant_id?.message && (
 									<Text style={{ color: 'red' }}>
@@ -271,6 +275,8 @@ const AddPlantScreenFormHook = (props) => {
 										onChange(value);
 									}}
 									placeholder="Выберите ед. изм."
+									route="/garden-plant-unit"
+									key="unitPicker"
 								/>
 								{errors.planting_unit?.message && (
 									<Text style={{ color: 'red' }}>

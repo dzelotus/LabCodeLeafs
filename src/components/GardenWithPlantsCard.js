@@ -99,8 +99,7 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 						style={{
 							flexDirection: 'row',
 							justifyContent: 'flex-end',
-							borderTopWidth: 2,
-							borderTopColor: '#dedede',
+
 							borderBottomWidth: 2,
 							borderBottomColor: '#379683',
 						}}
@@ -111,7 +110,7 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 								deleteAlert(gardenId);
 							}}
 						>
-							<Icon name="delete-outline" size={25} color="red" />
+							<Icon name="delete-outline" size={30} color="red" />
 						</TouchableOpacity>
 					</View>
 					<View>
@@ -121,11 +120,13 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 								justifyContent: 'space-between',
 								borderBottomWidth: 2,
 								borderBottomColor: '#dedede',
-								paddingVertical: 5,
+								paddingVertical: 10,
 							}}
 						>
-							<Text style={{ flex: 1 }}>Название растения</Text>
-							<Text style={{ flex: 1, textAlign: 'center' }}>Количество записей</Text>
+							<Text style={{ flex: 1, fontSize: 16 }}>Название растения</Text>
+							<Text style={{ flex: 1, textAlign: 'center', fontSize: 16 }}>
+								Количество записей
+							</Text>
 							<View style={{ flex: 0.2 }} />
 						</View>
 						{loading && gardenPlants === null ? <Indicator /> : plantsNames()}
@@ -173,8 +174,8 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 						getGardenPlants();
 					}}
 				>
-					<Text>{data.name}</Text>
-					<Text>{data.description}</Text>
+					<Text style={{ fontSize: 16 }}>{data.name}</Text>
+					<Text style={{ fontSize: 16 }}>{data.description}</Text>
 					<Icon name={open ? 'chevron-up' : 'chevron-down'} size={20} />
 				</TouchableOpacity>
 			</View>
