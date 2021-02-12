@@ -2,7 +2,7 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable consistent-return */
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, ScrollView } from 'react-native';
+import { View, ActivityIndicator, ScrollView, Alert } from 'react-native';
 import nodeApi from '../api/nodeApi';
 import GardenWithPlantsCard from '../components/GardenWithPlantsCard';
 import AddGardenModal from '../components/AddGardenModal';
@@ -17,6 +17,60 @@ const GardenScreen = (props) => {
 	});
 
 	const [gardenData, setGardenData] = useState(null);
+	const [isVerified, setIsVerified] = useState(null);
+
+	const checkVerify = async () => {
+		nodeApi
+			.get('user_authentication')
+			.then((response) => {
+				console.log('RESP', response.data.data);
+				const token = response.data.data.hasValidTokens;
+				const verify = response.data.data.isVerified;
+				setIsVerified(response.data.data.isVerified);
+				verifyAlert(token, verify);
+			})
+			.catch((error) => console.log('USER AUTH ERR', error));
+	};
+
+	const verifyAlert = (token, verify) => {
+		console.log('token', token, 'verify', verify);
+		if (!verify && !token) {
+			console.log('ALERT FOR LINK');
+			Alert.alert(
+				'Внимание',
+				'Для работы с данным разделом, требуется подтверждение электронной почты. Отправить ссылку для подтверждения?',
+				[
+					{
+						text: 'Отмена',
+					},
+					{ text: 'Отправить', onPress: () => getNewVerifyLink() },
+				],
+			);
+		} else if (token && !verify) {
+			console.log('ALERT ABOUT LINK');
+			Alert.alert(
+				'Внимание',
+				'Для работы с данным разделом, требуется подтверждение электронной почты. Ссылка уже была отправлена на Вашу электронную почту',
+			);
+		}
+	};
+
+	const getNewVerifyLink = () => {
+		console.log('GET VERIFY LINK');
+		setLoading({ screenLoading: true });
+		nodeApi
+			.post('/verify', {})
+			.then((response) => {
+				console.log('VERIFY RESPONSE', response.data);
+				setLoading({ screenLoading: false });
+				Alert.alert('', response.data.message);
+			})
+			.catch((error) => {
+				console.log(error.response.data);
+				setLoading({ screenLoading: false });
+				Alert.alert('', error.response.data.message);
+			});
+	};
 
 	const getGardens = () => {
 		console.log('GET GARDENS START');
@@ -40,7 +94,12 @@ const GardenScreen = (props) => {
 	};
 
 	useEffect(() => {
-		getGardens();
+		const getFocus = navigation.addListener('focus', () => {
+			getGardens();
+			checkVerify();
+		});
+
+		return getFocus;
 	}, []);
 
 	const Indicator = () => (
@@ -81,7 +140,7 @@ const GardenScreen = (props) => {
 			<ScrollView>
 				{gardenRender()}
 				{loading.itemLoading ? <Indicator /> : null}
-				<AddGardenModal getGardens={() => getGardens()} />
+				{isVerified ? <AddGardenModal getGardens={() => getGardens()} /> : null}
 			</ScrollView>
 		</View>
 	);

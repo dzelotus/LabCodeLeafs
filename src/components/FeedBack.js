@@ -1,6 +1,7 @@
 // *** NPM ***
 import React, { useState, useEffect, useCallback } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import {
 	StyleSheet,
@@ -10,10 +11,13 @@ import {
 	TouchableOpacity,
 	View,
 	ActivityIndicator,
+	KeyboardAvoidingView,
+	Platform,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 
 // *** OTHER ***
+import { ScrollView } from 'react-native-gesture-handler';
 import axios from '../api/nodeApi';
 
 // *** REGEX ***
@@ -101,95 +105,112 @@ const FeedbackGeneralNew = (props) => {
 	}, [fetchNewFeedbackGeneral]);
 
 	return (
-		<View style={styles.titleView}>
+		<ScrollView style={styles.modalContainer}>
+			<TouchableOpacity style={styles.closeButton} onPress={onClose}>
+				<MatIcon name="close" size={30} color="#379683" />
+			</TouchableOpacity>
 			{/* TITLE */}
 			<Text style={styles.title}>Оставить отзыв</Text>
 
 			{/* INPUTS */}
-			<View style={styles.inputsView}>
-				{/* NAME */}
-				<View style={styles.input}>
-					<Controller
-						control={control}
-						render={({ onChange, value }) => (
+
+			<View style={styles.controllerContainer}>
+				<Controller
+					control={control}
+					render={({ onChange, value }) => (
+						<View
+							style={{
+								flex: 1,
+							}}
+						>
+							<View style={styles.containerHeader}>
+								<Text>Ваше имя</Text>
+							</View>
 							<TextInput
-								placeholder="Ваше имя"
 								onChangeText={(newValue) => onChange(newValue)}
 								value={value}
+								style={{ flex: 1, paddingHorizontal: 10 }}
 							/>
-						)}
-						name="name"
-						rules={{
-							required: { value: true, message: 'Данное поле обязательное' },
-							maxLength: { value: 100, message: 'Максимальная длина 100' },
-						}}
-						defaultValue=""
-					/>
-				</View>
-
-				{/* NAME ERROR */}
-				{errors.name?.message && (
-					<Text style={{ color: 'red', marginTop: -10, marginBottom: 10 }}>
-						{errors.name?.message}
-					</Text>
-				)}
-
-				{/* EMAIL */}
-				<View style={styles.input}>
-					<Controller
-						control={control}
-						render={({ onChange, value }) => (
-							<TextInput
-								placeholder="Ваш e-mail (электронная почта)"
-								onChangeText={(newValue) => onChange(newValue)}
-								value={value}
-							/>
-						)}
-						name="email"
-						rules={{
-							required: { value: true, message: 'Данное поле обязательное' },
-							maxLength: { value: 320, message: 'Максимальная длина 320' },
-							pattern: { value: regexEmail, message: 'Неверный формат e-mail' },
-						}}
-						defaultValue=""
-					/>
-				</View>
-
-				{/* EMAIL ERROR */}
-				{errors.email?.message && (
-					<Text style={{ color: 'red', marginTop: -10, marginBottom: 10 }}>
-						{errors.email.message}
-					</Text>
-				)}
-
-				{/* MESSAGE */}
-				<View style={styles.feedbackInput}>
-					<Controller
-						control={control}
-						render={({ onChange, value }) => (
-							<TextInput
-								placeholder="Ваш отзыв"
-								onChangeText={(newValue) => onChange(newValue)}
-								value={value}
-								multiline
-								numberOfLines={10}
-							/>
-						)}
-						name="message"
-						rules={{
-							required: { value: true, message: 'Данное поле обязательно' },
-						}}
-						defaultValue=""
-					/>
-				</View>
-
-				{/* MESSAGE ERROR */}
-				{errors.message?.message && (
-					<Text style={{ color: 'red', marginTop: -10, marginBottom: 10 }}>
-						{errors.message?.message}
-					</Text>
-				)}
+						</View>
+					)}
+					name="name"
+					rules={{
+						required: { value: true, message: 'Данное поле обязательное' },
+						maxLength: { value: 100, message: 'Максимальная длина 100' },
+					}}
+					defaultValue=""
+				/>
 			</View>
+			{/* NAME ERROR */}
+			{errors.name?.message && (
+				<Text style={styles.errorMessage}>{errors.name?.message}</Text>
+			)}
+
+			{/* EMAIL */}
+			<View style={styles.controllerContainer}>
+				<Controller
+					control={control}
+					render={({ onChange, value }) => (
+						<View style={{ flex: 1 }}>
+							<View style={styles.containerHeader}>
+								<Text>Электронная почта</Text>
+							</View>
+							<View style={styles.textInputContainer}>
+								<TextInput
+									onChangeText={(newValue) => onChange(newValue)}
+									value={value}
+									style={{ flex: 1 }}
+								/>
+							</View>
+						</View>
+					)}
+					name="email"
+					rules={{
+						required: { value: true, message: 'Данное поле обязательное' },
+						maxLength: { value: 320, message: 'Максимальная длина 320' },
+						pattern: { value: regexEmail, message: 'Неверный формат e-mail' },
+					}}
+					defaultValue=""
+				/>
+			</View>
+
+			{/* EMAIL ERROR */}
+			{errors.email?.message && (
+				<Text style={styles.errorMessage}>{errors.email.message}</Text>
+			)}
+
+			{/* MESSAGE */}
+			<View style={styles.feedbackControllerContainer}>
+				<Controller
+					control={control}
+					render={({ onChange, value }) => (
+						<View style={{ flex: 1 }}>
+							<View style={styles.containerHeader}>
+								<Text>Ваш отзыв</Text>
+							</View>
+							<View style={styles.textInputContainer}>
+								<TextInput
+									onChangeText={(newValue) => onChange(newValue)}
+									value={value}
+									multiline
+									numberOfLines={10}
+									style={{ flex: 1 }}
+								/>
+							</View>
+						</View>
+					)}
+					name="message"
+					rules={{
+						required: { value: true, message: 'Данное поле обязательно' },
+					}}
+					defaultValue=""
+				/>
+			</View>
+
+			{/* MESSAGE ERROR */}
+			{errors.message?.message && (
+				<Text style={styles.errorMessage}>{errors.message?.message}</Text>
+			)}
 
 			{/* SUBMIT */}
 			{loadingState ? (
@@ -203,12 +224,7 @@ const FeedbackGeneralNew = (props) => {
 				</TouchableOpacity>
 			)}
 			{/* CLOSE */}
-			<TouchableOpacity style={styles.closeButton} onPress={onClose}>
-				<Icon name="close" size={25} color="#379683" />
-			</TouchableOpacity>
-
-			{/* ALERTS */}
-		</View>
+		</ScrollView>
 	);
 };
 
@@ -220,7 +236,7 @@ const FeedBack = () => {
 	const onPress = () => setModalVisibleState(() => !modalVisibleState);
 
 	return (
-		<>
+		<View>
 			{/* MAIN VIEW */}
 			<TouchableOpacity onPress={onPress} style={styles.feedbackView}>
 				<View style={styles.feedbackViewButton}>
@@ -232,23 +248,30 @@ const FeedBack = () => {
 			</TouchableOpacity>
 
 			{/* MODAL */}
+
 			<Modal
 				isVisible={modalVisibleState}
 				onBackdropPress={() => setModalVisibleState(() => false)}
+				onSwipeComplete={() => setModalVisibleState(false)}
+				useNativeDriver={false}
+				swipeDirection="down"
+				style={{ flex: 1 }}
 			>
-				<FeedbackGeneralNew
-					onClose={() => setModalVisibleState(() => false)}
-					onPerform={() => setModalVisibleState(() => false)}
-				/>
+				<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>
+					<FeedbackGeneralNew
+						onClose={() => setModalVisibleState(() => false)}
+						onPerform={() => setModalVisibleState(() => false)}
+					/>
+				</KeyboardAvoidingView>
 			</Modal>
-		</>
+		</View>
 	);
 };
 
 // *** STYLES ***
 const styles = StyleSheet.create({
 	feedbackView: {
-		marginHorizontal: 15,
+		marginHorizontal: 5,
 		marginVertical: 10,
 		shadowColor: '#000',
 		shadowOffset: {
@@ -263,15 +286,16 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		backgroundColor: '#fff',
 		alignItems: 'center',
-		height: 40,
+		height: 50,
 		justifyContent: 'center',
 	},
 	feedbackViewButton: {
 		flexDirection: 'row',
 	},
-	titleView: {
-		marginHorizontal: 5,
-		marginBottom: 10,
+	modalContainer: {
+		margin: 15,
+		backgroundColor: 'white',
+		borderRadius: 5,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -280,40 +304,13 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 5,
-		borderRadius: 5,
-		borderColor: '#000',
-		backgroundColor: '#fff',
 	},
 	title: {
-		marginTop: 15,
 		textAlign: 'center',
+		paddingTop: 10,
+		paddingBottom: 15,
 		fontSize: 20,
 		color: '#EB9156',
-	},
-	inputsView: {
-		paddingVertical: 100,
-		paddingTop: 0,
-		paddingBottom: 0,
-		marginHorizontal: 40,
-		marginTop: 10,
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 0,
-		justifyContent: 'center',
-	},
-	input: {
-		borderRadius: 4,
-		borderColor: '#696969',
-		borderWidth: 1,
-		marginBottom: 10,
-		height: 50,
-	},
-	feedbackInput: {
-		borderRadius: 4,
-		borderColor: '#696969',
-		borderWidth: 1,
-		marginBottom: 10,
-		height: 150,
 	},
 	submitButton: {
 		marginHorizontal: 90,
@@ -332,9 +329,60 @@ const styles = StyleSheet.create({
 		color: '#EB9156',
 	},
 	closeButton: {
+		alignSelf: 'flex-end',
+		right: 5,
+		top: 5,
+	},
+	containerHeader: {
+		marginTop: -12,
+		marginHorizontal: 10,
+		paddingHorizontal: 10,
+		backgroundColor: 'white',
 		position: 'absolute',
-		top: 10,
-		right: 15,
+	},
+	controllerContainer: {
+		marginHorizontal: 15,
+		marginVertical: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		borderRadius: 10,
+		borderColor: '#379683',
+		borderWidth: 1,
+		backgroundColor: '#fff',
+		height: 50,
+	},
+	feedbackControllerContainer: {
+		marginHorizontal: 15,
+		marginVertical: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		borderRadius: 10,
+		borderColor: '#379683',
+		borderWidth: 1,
+		backgroundColor: '#fff',
+		height: 150,
+	},
+	textInputContainer: {
+		flex: 1,
+		paddingHorizontal: 10,
+		width: '99%',
+	},
+	errorMessage: {
+		color: 'red',
+		paddingBottom: 5,
+		paddingLeft: 15,
 	},
 });
 

@@ -1,9 +1,9 @@
 /* eslint-disable no-sequences */
 /* eslint-disable consistent-return */
 // *** NPM ***
-import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import Geolocation from '@react-native-community/geolocation';
 import RNBootSplash from 'react-native-bootsplash';
 
@@ -16,9 +16,7 @@ import weatherApi from '../api/weatherApi';
 import FeedBack from '../components/FeedBack';
 
 const MainScreen = ({ navigation }) => {
-	const [errorButton, setErrorButton] = useState(true);
 	const [scans, setScans] = useState();
-	const [verifyToken, setVerifyToken] = useState(true);
 	const [weather, setWeather] = useState();
 	const [newsData, setNewsData] = useState(null);
 
@@ -79,18 +77,10 @@ const MainScreen = ({ navigation }) => {
 			.catch((error) => console.log('!!!', error.response));
 	};
 
-	const checkVerify = () => {
-		nodeApi.get('user_authentication').then((response) => {
-			console.log('TOKEN', response.data);
-			setErrorButton(response.data.data.isVerified);
-			setVerifyToken(response.data.hasValidTokens);
-		});
-	};
-
 	useEffect(() => {
 		const getFocus = navigation.addListener('focus', () => {
 			getLastScans();
-			checkVerify();
+
 			getCoords();
 			getArticles();
 			isHermes();
@@ -99,7 +89,7 @@ const MainScreen = ({ navigation }) => {
 		return getFocus;
 	}, []);
 
-	const EmailVerify = () => {
+	/* 	const EmailVerify = () => {
 		if (!errorButton && !verifyToken) {
 			return (
 				<TouchableOpacity
@@ -119,7 +109,7 @@ const MainScreen = ({ navigation }) => {
 			);
 		}
 		return null;
-	};
+	}; */
 
 	const WeatherCardShow = () => {
 		if (weather) {
@@ -146,29 +136,10 @@ const MainScreen = ({ navigation }) => {
 				{WeatherCardShow()}
 
 				{/* FEEDBACK */}
-				<FeedBack headerText="Отзывы" nav="LastScan" />
+				<FeedBack />
 			</ScrollView>
-			<EmailVerify />
 		</View>
 	);
 };
-
-// *** STYLES ***
-const styles = StyleSheet.create({
-	errorButton: {
-		position: 'absolute',
-		justifyContent: 'center',
-		alignSelf: 'center',
-		alignItems: 'center',
-		borderColor: 'red',
-		borderWidth: 1,
-		borderRadius: 50,
-		height: 60,
-		width: 60,
-		right: 30,
-		bottom: -100,
-		backgroundColor: 'red',
-	},
-});
 
 export default MainScreen;

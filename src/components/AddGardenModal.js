@@ -91,17 +91,7 @@ const AddGardenForm = (props) => {
 			<TouchableOpacity onPress={() => onClose()} style={styles.closeButton}>
 				<Icon name="close" size={30} color="#379683" />
 			</TouchableOpacity>
-			<Text
-				style={{
-					textAlign: 'center',
-					paddingTop: 10,
-					paddingBottom: 15,
-					fontSize: 20,
-					color: '#EB9156',
-				}}
-			>
-				Добавить огород
-			</Text>
+			<Text style={styles.title}>Добавить огород</Text>
 			<View style={styles.controllerContainer}>
 				<Controller
 					control={control}
@@ -302,6 +292,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		height: 40,
 		justifyContent: 'center',
+	},
+	title: {
+		textAlign: 'center',
+		paddingTop: 10,
+		paddingBottom: 15,
+		fontSize: 20,
+		color: '#EB9156',
 	},
 });
 
