@@ -12,6 +12,7 @@ const ArticleScreen = (props) => {
 		if (stackNavigator) {
 			stackNavigator.setOptions({
 				headerTitle: route.params.data.title,
+				headerTruncatedBackTitle: '',
 			});
 		}
 	});

@@ -99,32 +99,65 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
 				onBackButtonPress={() => setShowModal(false)}
 				onSwipeComplete={() => setShowModal(false)}
 				swipeDirection="down"
+				style={{
+					justifyContent: 'flex-end',
+					margin: 0,
+				}}
 			>
 				<View style={styles.modalContainer}>
-					<Text style={{ textAlign: 'center', fontSize: 16, marginBottom: 10 }}>
-						На текущий момент наша нейросеть может автоматически распознавать следующие
-						растения:
-					</Text>
-					<FlatList
-						data={canScan}
-						renderItem={(item) => {
-							console.log(item);
-							return (
-								<View key={item.index}>
-									<Text style={{ fontSize: 15, textAlign: 'left' }}>
-										{item.item}
-									</Text>
-								</View>
-							);
+					<View
+						style={{
+							height: 25,
+							justifyContent: 'center',
 						}}
-						keyExtractor={(item) => item}
-					/>
-					<TouchableOpacity
-						style={styles.scanButtonStyle}
-						onPress={() => setShowModal(false)}
 					>
-						<Text style={{ margin: 10, color: '#EB9156' }}>Понятно</Text>
-					</TouchableOpacity>
+						<View
+							style={{
+								borderColor: '#379683',
+								borderWidth: 3,
+								marginHorizontal: 50,
+								borderRadius: 3,
+							}}
+						/>
+					</View>
+					<View>
+						<Text
+							style={{
+								textAlign: 'center',
+								fontSize: 20,
+								marginBottom: 10,
+								fontWeight: 'bold',
+							}}
+						>
+							Нейросеть может автоматически распознать:
+						</Text>
+						<FlatList
+							data={canScan}
+							renderItem={(item) => {
+								console.log(item);
+								return (
+									<View
+										key={item.index}
+										style={{ paddingHorizontal: 10, marginBottom: 10 }}
+									>
+										<Text
+											style={{
+												fontSize: 16,
+												textAlign: 'left',
+												paddingLeft: 30,
+											}}
+										>
+											{item.item}
+										</Text>
+									</View>
+								);
+							}}
+							keyExtractor={(item) => item}
+						/>
+						<Text style={{ paddingHorizontal: 10, textAlign: 'center' }}>
+							Скоро растений станет больше, нейросеть постоянно обновляется!
+						</Text>
+					</View>
 				</View>
 			</Modal>
 		</View>
@@ -204,10 +237,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	modalContainer: {
-		margin: 15,
 		backgroundColor: 'white',
-		borderRadius: 5,
-		alignItems: 'center',
+		borderTopRightRadius: 25,
+		borderTopLeftRadius: 25,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -216,6 +248,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 5,
+		paddingBottom: 50,
 	},
 });
 

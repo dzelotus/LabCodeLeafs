@@ -137,7 +137,7 @@ const GardenScreen = (props) => {
 				flex: 1,
 			}}
 		>
-			<ScrollView>
+			<ScrollView keyboardShouldPersistTaps="always">
 				{gardenRender()}
 				{loading.itemLoading ? <Indicator /> : null}
 				{isVerified ? <AddGardenModal getGardens={() => getGardens()} /> : null}

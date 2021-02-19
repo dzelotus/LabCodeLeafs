@@ -1,7 +1,6 @@
 // *** NPM ***
 import React, { useState, useEffect, useCallback } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
 import {
 	StyleSheet,
@@ -13,11 +12,10 @@ import {
 	ActivityIndicator,
 	KeyboardAvoidingView,
 	Platform,
+	ScrollView,
+	useWindowDimensions,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-
-// *** OTHER ***
-import { ScrollView } from 'react-native-gesture-handler';
 import axios from '../api/nodeApi';
 
 // *** REGEX ***
@@ -104,127 +102,143 @@ const FeedbackGeneralNew = (props) => {
 		})();
 	}, [fetchNewFeedbackGeneral]);
 
+	console.log('HEIGHT', useWindowDimensions().height);
+
 	return (
-		<ScrollView style={styles.modalContainer}>
-			<TouchableOpacity style={styles.closeButton} onPress={onClose}>
-				<MatIcon name="close" size={30} color="#379683" />
-			</TouchableOpacity>
-			{/* TITLE */}
-			<Text style={styles.title}>Оставить отзыв</Text>
-
-			{/* INPUTS */}
-
-			<View style={styles.controllerContainer}>
-				<Controller
-					control={control}
-					render={({ onChange, value }) => (
-						<View
-							style={{
-								flex: 1,
-							}}
-						>
-							<View style={styles.containerHeader}>
-								<Text>Ваше имя</Text>
-							</View>
-							<TextInput
-								onChangeText={(newValue) => onChange(newValue)}
-								value={value}
-								style={{ flex: 1, paddingHorizontal: 10 }}
-							/>
-						</View>
-					)}
-					name="name"
-					rules={{
-						required: { value: true, message: 'Данное поле обязательное' },
-						maxLength: { value: 100, message: 'Максимальная длина 100' },
+		<View style={styles.modalContainer}>
+			<View
+				style={{
+					height: 25,
+					justifyContent: 'center',
+				}}
+			>
+				<View
+					style={{
+						borderColor: '#379683',
+						borderWidth: 3,
+						marginHorizontal: 50,
+						borderRadius: 3,
 					}}
-					defaultValue=""
 				/>
 			</View>
-			{/* NAME ERROR */}
-			{errors.name?.message && (
-				<Text style={styles.errorMessage}>{errors.name?.message}</Text>
-			)}
+			<ScrollView keyboardShouldPersistTaps="always">
+				{/* TITLE */}
+				<Text style={styles.title}>Оставить отзыв</Text>
 
-			{/* EMAIL */}
-			<View style={styles.controllerContainer}>
-				<Controller
-					control={control}
-					render={({ onChange, value }) => (
-						<View style={{ flex: 1 }}>
-							<View style={styles.containerHeader}>
-								<Text>Электронная почта</Text>
-							</View>
-							<View style={styles.textInputContainer}>
+				{/* INPUTS */}
+
+				<View style={styles.controllerContainer}>
+					<Controller
+						control={control}
+						render={({ onChange, value }) => (
+							<View
+								style={{
+									flex: 1,
+								}}
+							>
+								<View style={styles.containerHeader}>
+									<Text>Ваше имя</Text>
+								</View>
 								<TextInput
 									onChangeText={(newValue) => onChange(newValue)}
 									value={value}
-									style={{ flex: 1 }}
+									style={{ flex: 1, paddingHorizontal: 10 }}
 								/>
 							</View>
-						</View>
-					)}
-					name="email"
-					rules={{
-						required: { value: true, message: 'Данное поле обязательное' },
-						maxLength: { value: 320, message: 'Максимальная длина 320' },
-						pattern: { value: regexEmail, message: 'Неверный формат e-mail' },
-					}}
-					defaultValue=""
-				/>
-			</View>
+						)}
+						name="name"
+						rules={{
+							required: { value: true, message: 'Данное поле обязательное' },
+							maxLength: { value: 100, message: 'Максимальная длина 100' },
+						}}
+						defaultValue=""
+					/>
+				</View>
+				{/* NAME ERROR */}
+				{errors.name?.message && (
+					<Text style={styles.errorMessage}>{errors.name?.message}</Text>
+				)}
 
-			{/* EMAIL ERROR */}
-			{errors.email?.message && (
-				<Text style={styles.errorMessage}>{errors.email.message}</Text>
-			)}
-
-			{/* MESSAGE */}
-			<View style={styles.feedbackControllerContainer}>
-				<Controller
-					control={control}
-					render={({ onChange, value }) => (
-						<View style={{ flex: 1 }}>
-							<View style={styles.containerHeader}>
-								<Text>Ваш отзыв</Text>
+				{/* EMAIL */}
+				<View style={styles.controllerContainer}>
+					<Controller
+						control={control}
+						render={({ onChange, value }) => (
+							<View style={{ flex: 1 }}>
+								<View style={styles.containerHeader}>
+									<Text>Электронная почта</Text>
+								</View>
+								<View style={styles.textInputContainer}>
+									<TextInput
+										onChangeText={(newValue) => onChange(newValue)}
+										value={value}
+										style={{ flex: 1 }}
+									/>
+								</View>
 							</View>
-							<View style={styles.textInputContainer}>
-								<TextInput
-									onChangeText={(newValue) => onChange(newValue)}
-									value={value}
-									multiline
-									numberOfLines={10}
-									style={{ flex: 1 }}
-								/>
+						)}
+						name="email"
+						rules={{
+							required: { value: true, message: 'Данное поле обязательное' },
+							maxLength: { value: 320, message: 'Максимальная длина 320' },
+							pattern: { value: regexEmail, message: 'Неверный формат e-mail' },
+						}}
+						defaultValue=""
+					/>
+				</View>
+
+				{/* EMAIL ERROR */}
+				{errors.email?.message && (
+					<Text style={styles.errorMessage}>{errors.email.message}</Text>
+				)}
+
+				{/* MESSAGE */}
+				<View style={styles.feedbackControllerContainer}>
+					<Controller
+						control={control}
+						render={({ onChange, value }) => (
+							<View style={{ flex: 1 }}>
+								<View style={styles.containerHeader}>
+									<Text>Ваш отзыв</Text>
+								</View>
+								<View style={styles.textInputContainer}>
+									<TextInput
+										onChangeText={(newValue) => onChange(newValue)}
+										value={value}
+										multiline
+										numberOfLines={10}
+										style={{ flex: 1 }}
+									/>
+								</View>
 							</View>
-						</View>
-					)}
-					name="message"
-					rules={{
-						required: { value: true, message: 'Данное поле обязательно' },
-					}}
-					defaultValue=""
-				/>
-			</View>
+						)}
+						name="message"
+						rules={{
+							required: { value: true, message: 'Данное поле обязательно' },
+						}}
+						defaultValue=""
+					/>
+				</View>
 
-			{/* MESSAGE ERROR */}
-			{errors.message?.message && (
-				<Text style={styles.errorMessage}>{errors.message?.message}</Text>
-			)}
+				{/* MESSAGE ERROR */}
+				{errors.message?.message && (
+					<Text style={styles.errorMessage}>{errors.message?.message}</Text>
+				)}
 
-			{/* SUBMIT */}
-			{loadingState ? (
-				<ActivityIndicator size="large" color="green" />
-			) : (
-				<TouchableOpacity
-					style={styles.submitButton}
-					onPress={handleSubmit(onSubmitHandler)}
-				>
-					<Text style={styles.submitButtonText}>Отправить</Text>
-				</TouchableOpacity>
-			)}
-			{/* CLOSE */}
-		</ScrollView>
+				{/* SUBMIT */}
+				{loadingState ? (
+					<ActivityIndicator size="large" color="green" />
+				) : (
+					<TouchableOpacity
+						style={styles.submitButton}
+						onPress={handleSubmit(onSubmitHandler)}
+					>
+						<Text style={styles.submitButtonText}>Отправить</Text>
+					</TouchableOpacity>
+				)}
+				{/* CLOSE */}
+			</ScrollView>
+		</View>
 	);
 };
 
@@ -255,9 +269,19 @@ const FeedBack = () => {
 				onSwipeComplete={() => setModalVisibleState(false)}
 				useNativeDriver={false}
 				swipeDirection="down"
-				style={{ flex: 1 }}
+				style={{
+					justifyContent: 'flex-end',
+					margin: 0,
+					paddingTop: 30,
+				}}
 			>
-				<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>
+				<KeyboardAvoidingView
+					behavior={Platform.OS === 'ios' ? 'padding' : null}
+					style={{
+						justifyContent: 'flex-end',
+						maxHeight: useWindowDimensions().height - 75,
+					}}
+				>
 					<FeedbackGeneralNew
 						onClose={() => setModalVisibleState(() => false)}
 						onPerform={() => setModalVisibleState(() => false)}
@@ -293,9 +317,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	modalContainer: {
-		margin: 15,
 		backgroundColor: 'white',
-		borderRadius: 5,
+		borderTopLeftRadius: 25,
+		borderTopRightRadius: 25,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -304,11 +328,12 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 5,
+		paddingBottom: 20,
 	},
 	title: {
 		textAlign: 'center',
 		paddingTop: 10,
-		paddingBottom: 15,
+		paddingBottom: 10,
 		fontSize: 20,
 		color: '#EB9156',
 	},
@@ -372,7 +397,7 @@ const styles = StyleSheet.create({
 		borderColor: '#379683',
 		borderWidth: 1,
 		backgroundColor: '#fff',
-		height: 150,
+		height: 135,
 	},
 	textInputContainer: {
 		flex: 1,

@@ -123,6 +123,7 @@ const MainScreen = ({ navigation }) => {
 				contentContainerStyle={{
 					paddingTop: 10,
 				}}
+				keyboardShouldPersistTaps="always"
 			>
 				{/* NEWS */}
 				<NewsCard iconName="star-o" nav="News" headerText="Новости" newsData={newsData} />

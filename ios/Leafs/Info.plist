@@ -38,21 +38,21 @@
 		</dict>
 	</dict>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Give $(PRODUCT_NAME) permission to use calendar</string>
+	<string>Необходим доступ к Вашему календарю для корректной установки даты посадки</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Give $(PRODUCT_NAME) permission to access your camera</string>
+	<string>Для выполнения сканирования растения необходим доступ к камере</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Give $(PRODUCT_NAME) permission to bio authentication</string>
+	<string>Для активации входа по биометрическим данным необходим доступ к биометрическим датчикам</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Give $(PRODUCT_NAME) permission to access to your location</string>
+	<string>Чтобы показывать погоду в месте, где вы находитесь, необходим доступ к геолокации</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Give $(PRODUCT_NAME) permission to access to your location when in use</string>
+	<string>Чтобы показывать погоду в месте, где вы находитесь, необходим доступ к геолокации</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Give $(PRODUCT_NAME) permission to use your microphone</string>
+	<string>Для корректной работы модуля камеры необходим доступ к микрофону</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Give $(PRODUCT_NAME) permission to use your photo-library</string>
+	<string>Для выполнения сканирования необходим доступ к Вашей галерее</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Give $(PRODUCT_NAME) permission to save photos</string>
+	<string>Для выполнения сканирования необходим доступ к Вашей галерее</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

@@ -15,7 +15,7 @@ const GoBackButton = ({ navigation, nav }) => {
 
 const styles = StyleSheet.create({
 	backButton: {
-		margin: 15,
+		marginTop: 15,
 		borderWidth: 2,
 		borderColor: '#379683',
 		borderRadius: 60,

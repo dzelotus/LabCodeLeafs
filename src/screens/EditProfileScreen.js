@@ -26,6 +26,9 @@ const EditProfileScreen = (props) => {
 
 	useEffect(() => {
 		props.getProfileInfo();
+		props.navigation.setOptions({
+			headerTruncatedBackTitle: 'Назад',
+		});
 	}, []);
 
 	const activeButton = () => {

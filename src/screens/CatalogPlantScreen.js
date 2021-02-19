@@ -16,6 +16,7 @@ const CatalogPlantScreen = (props) => {
 		getPlantDiseaseInfo();
 		props.navigation.setOptions({
 			headerTitle: route.params.item.name,
+			headerTruncatedBackTitle: 'Назад',
 		});
 	}, []);
 

@@ -1,15 +1,13 @@
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, FlatList, TextInput } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+
 import Modal from 'react-native-modal';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [data, setData] = useState(plantsData);
-
-	console.log('DATA', data);
-
 
 	const result = plantsData ?
 		plantsData.find((obj) => {
@@ -42,31 +40,48 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 				</TouchableOpacity>
 			</View>
 			<View>
-				<Modal isVisible={isModalVisible} onBackdropPress={() => setIsModalVisible(false)}>
-					<View>
-						<View style={styles.modalContainer}>
-							<TouchableOpacity
-								onPress={() => setIsModalVisible(false)}
+				<Modal
+					isVisible={isModalVisible}
+					onBackdropPress={() => setIsModalVisible(false)}
+					onSwipeComplete={() => setIsModalVisible(false)}					
+					swipeDirection="down"
+					style={{
+						justifyContent: 'flex-end',
+						margin: 0,
+						paddingTop: 50
+					}}
+					propagateSwipe
+				>			
+					<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>	
+						<View style={styles.modalContainer}>	
+							<View
 								style={{
-									alignSelf: 'flex-end',
-									marginTop: 10,
-									marginRight: 10,
+									height: 25,
+									justifyContent: 'center',
 								}}
 							>
-								<MaterialCommunityIcons name="close" size={30} />
-							</TouchableOpacity>
+								<View
+									style={{
+										borderColor: '#379683',
+										borderWidth: 3,
+										marginHorizontal: 50,
+										borderRadius: 3,
+									}}
+								/>
+							</View>					
 							<View style={{ marginBottom: 15 }}>
 								<Text
 									style={{
 										textAlign: 'center',
 										textAlignVertical: 'center',
 										fontSize: 22,
+										color: '#FF9800'
 									}}
 								>
 									{placeholder}
 								</Text>
 							</View>
-							<View style={{ width: '99%', paddingHorizontal: 10,  }}>
+							<View style={{  paddingHorizontal: 10, paddingBottom: 10  }}>
 								<TextInput
 									style={{
 										borderBottomColor: 'gray',
@@ -77,18 +92,12 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 									onChangeText={(txt) => searchFunc(txt)}
 								/>
 							</View>
-							<View
-								style={{
-									height: 300,
-									width: '99%',
-									padding: 10,
-								}}
-							>
+							<View style={{  paddingHorizontal: 10, flex: 1 }}>
 								<FlatList
 									data={data}
+									keyboardShouldPersistTaps='always'																	
 									renderItem={(item) => {
 										const plantName = item.item.value;
-
 										return (
 											<TouchableOpacity
 												onPress={() => {
@@ -104,8 +113,8 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 									}}
 								/>
 							</View>
-						</View>
-					</View>
+						</View>	
+					</KeyboardAvoidingView>				
 				</Modal>
 			</View>
 		</View>
@@ -114,10 +123,9 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 
 const styles = StyleSheet.create({
 	modalContainer: {
-		margin: 15,
 		backgroundColor: 'white',
-		borderRadius: 5,
-		alignItems: 'center',
+		borderTopLeftRadius: 25,
+		borderTopRightRadius: 25,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -126,6 +134,8 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 5,
+		paddingBottom: 35,			
+		height: 400,		
 	},
 });
 

@@ -87,80 +87,94 @@ const AddGardenForm = (props) => {
 	/* MODAL CONTENT WITH INPUTS, CLOSE AND ADD BUTTONS */
 
 	return (
-		<ScrollView style={styles.modalContainer} keyboardShouldPersistTaps="always">
-			<TouchableOpacity onPress={() => onClose()} style={styles.closeButton}>
-				<Icon name="close" size={30} color="#379683" />
-			</TouchableOpacity>
-			<Text style={styles.title}>Добавить огород</Text>
-			<View style={styles.controllerContainer}>
-				<Controller
-					control={control}
-					rules={{
-						required: {
-							value: true,
-							message: 'Обязательное поле',
-						},
+		<View style={styles.modalContainer}>
+			<View
+				style={{
+					height: 25,
+					justifyContent: 'center',
+				}}
+			>
+				<View
+					style={{
+						borderColor: '#379683',
+						borderWidth: 3,
+						marginHorizontal: 50,
+						borderRadius: 3,
 					}}
-					render={({ onChange, onBlur, value }) => (
-						<View style={{ flex: 1 }}>
-							<View style={styles.containerHeader}>
-								<Text>Название огорода</Text>
-							</View>
-							<View style={styles.textInputContainer}>
-								<TextInput
-									onChangeText={onChange}
-									onBlur={onBlur}
-									textValue={value}
-									defaultValue={value.toString()}
-									style={{ flex: 1 }}
-								/>
-								{errors.gardenName_input?.message && (
-									<Text style={{ color: 'red' }}>
-										{errors.gardenName_input.message}
-									</Text>
-								)}
-							</View>
-						</View>
-					)}
-					name="gardenName_input"
-					defaultValue=""
-					key="name"
 				/>
 			</View>
-			<View style={styles.controllerContainer}>
-				<Controller
-					control={control}
-					render={({ onChange, onBlur, value }) => (
-						<View style={{ flex: 1 }}>
-							<View style={styles.containerHeader}>
-								<Text>Описание огорода</Text>
+			<ScrollView keyboardShouldPersistTaps="always">
+				<Text style={styles.title}>Добавить огород</Text>
+				<View style={styles.controllerContainer}>
+					<Controller
+						control={control}
+						rules={{
+							required: {
+								value: true,
+								message: 'Обязательное поле',
+							},
+						}}
+						render={({ onChange, onBlur, value }) => (
+							<View style={{ flex: 1 }}>
+								<View style={styles.containerHeader}>
+									<Text>Название огорода</Text>
+								</View>
+								<View style={styles.textInputContainer}>
+									<TextInput
+										onChangeText={onChange}
+										onBlur={onBlur}
+										textValue={value}
+										defaultValue={value.toString()}
+										style={{ flex: 1 }}
+									/>
+									{errors.gardenName_input?.message && (
+										<Text style={{ color: 'red' }}>
+											{errors.gardenName_input.message}
+										</Text>
+									)}
+								</View>
 							</View>
-							<View style={styles.textInputContainer}>
-								<TextInput
-									onChangeText={onChange}
-									onBlur={onBlur}
-									textValue={value}
-									defaultValue={value.toString()}
-									style={{ flex: 1 }}
-								/>
-								{errors.gardenDescription_input?.message && (
-									<Text style={{ color: 'red' }}>
-										{errors.gardenDescription_input.message}
-									</Text>
-								)}
+						)}
+						name="gardenName_input"
+						defaultValue=""
+						key="name"
+					/>
+				</View>
+				<View style={styles.controllerContainer}>
+					<Controller
+						control={control}
+						render={({ onChange, onBlur, value }) => (
+							<View style={{ flex: 1 }}>
+								<View style={styles.containerHeader}>
+									<Text>Описание огорода</Text>
+								</View>
+								<View style={styles.textInputContainer}>
+									<TextInput
+										onChangeText={onChange}
+										onBlur={onBlur}
+										textValue={value}
+										defaultValue={value.toString()}
+										style={{ flex: 1 }}
+									/>
+									{errors.gardenDescription_input?.message && (
+										<Text style={{ color: 'red' }}>
+											{errors.gardenDescription_input.message}
+										</Text>
+									)}
+								</View>
 							</View>
-						</View>
-					)}
-					name="gardenDescription_input"
-					defaultValue=""
-				/>
-			</View>
-			{!loading ? (
-				<AddGardenButton />
-			) : (
-				<Indicator style={{ marginBottom: 10, marginTop: 20 }} />
-			)}
-		</ScrollView>
+						)}
+						name="gardenDescription_input"
+						defaultValue=""
+					/>
+				</View>
+				{!loading ? (
+					<AddGardenButton />
+				) : (
+					<Indicator style={{ marginBottom: 10, marginTop: 20 }} />
+				)}
+			</ScrollView>
+		</View>
 	);
 };
 
@@ -178,10 +192,13 @@ const AddGardenModal = (props) => {
 			</TouchableOpacity>
 			<Modal
 				isVisible={showModal}
-				style={{ flex: 1 }}
 				onBackdropPress={() => setShowModal(false)}
 				onSwipeComplete={() => setShowModal(false)}
 				swipeDirection="down"
+				style={{
+					justifyContent: 'flex-end',
+					margin: 0,
+				}}
 			>
 				<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>
 					<AddGardenForm
@@ -223,9 +240,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	modalContainer: {
-		margin: 15,
 		backgroundColor: 'white',
-		borderRadius: 5,
+		borderTopRightRadius: 25,
+		borderTopLeftRadius: 25,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -234,6 +251,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 5,
+		paddingBottom: 50,
 	},
 	closeButton: {
 		alignSelf: 'flex-end',

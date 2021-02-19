@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-const LastScanScreen = (route) => {
-	const { data } = route.route.params;
+const LastScanScreen = (props) => {
+	console.log('PROPS', props);
+	const { navigation, route } = props;
+	const { data } = route.params;
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerTruncatedBackTitle: 'Назад',
+		});
+	}, []);
 
 	const renderItem = ({ item }) => {
 		console.log('photo', item);

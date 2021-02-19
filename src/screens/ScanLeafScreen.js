@@ -19,6 +19,7 @@ import PhotoCameraScroll from '../components/PhotoCameraScroll';
 import imagePicker from '../hooks/imagePicker';
 import makePhoto from '../hooks/makePhoto';
 import GoBackButton from '../components/GoBackButton';
+import HowMakePhotoButton from '../components/HowMakePhotoButton'
 
 /* import makePhoto from '../hooks/makePhoto'; */
 
@@ -75,41 +76,28 @@ const ScanLeafScreen = (route) => {
 			Platform.OS === 'android'
 				? askPerms()
 				: requestMultiple([
-						PERMISSIONS.IOS.PHOTO_LIBRARY,
-						PERMISSIONS.IOS.CAMERA,
-						PERMISSIONS.IOS.MICROPHONE,
+					PERMISSIONS.IOS.PHOTO_LIBRARY,
+					PERMISSIONS.IOS.CAMERA,					
 				  ]).then((statuses) => {
-						console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
-						console.log('PL', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);
-						console.log('MP', statuses[PERMISSIONS.IOS.MICROPHONE]);
+					console.log('Camera', statuses[PERMISSIONS.IOS.CAMERA]);
+					console.log('PL', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);					
 				  });
 		});
 	}, []);
 
-	/* const checkCameraPermissions = async () => {
-    const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
-
-    if (status != 'granted') {
-      Alert.alert('Внимание!', 'Для сканирования требуется доступ к камере и галерее');
-    }
-  }; */
-
-	/* const checkLocationPermissions = async () => {
-    const { status } = await Permissions.getAsync(Permissions.LOCATION);
-
-    if (status != 'granted') {
-      Alert.alert('Внимание!', 'Для правильной работы приложения требуется доступ к геолокации');
-    }
-  }; */
 
 	return (
 		<View style={{ flex: 1, justifyContent: 'flex-end' }}>
 			{route.isFocused && (
 				<>
 					<StatusBar hidden />
+					
 					<View style={styles.backButtonContainer}>
 						<GoBackButton nav="Main" />
 					</View>
+					<View style={styles.howMakePhotoButtonContainer}>
+						<HowMakePhotoButton nav="Main" />
+					</View>		
 					<Camera
 						style={{
 							flex: 1,
@@ -239,7 +227,14 @@ const styles = StyleSheet.create({
 	backButtonContainer: {
 		position: 'absolute',
 		top: 0,
-		left: 0,
+		left: 15,
+		paddingTop: padding,
+		zIndex: 100,
+	},
+	howMakePhotoButtonContainer: {
+		position: 'absolute',
+		top: 0,
+		right: 15,
 		paddingTop: padding,
 		zIndex: 100,
 	},

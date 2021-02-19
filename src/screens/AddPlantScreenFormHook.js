@@ -3,7 +3,7 @@
 /* eslint-disable indent */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
 	View,
 	Text,
@@ -11,12 +11,13 @@ import {
 	TouchableOpacity,
 	TextInput,
 	StyleSheet,
-	ScrollView,
+	findNodeHandle,
 } from 'react-native';
 import moment from 'moment';
 import { useForm, Controller } from 'react-hook-form';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PickerModal from '../components/PickerModal';
 import nodeApi from '../api/nodeApi';
 
@@ -50,7 +51,6 @@ const AddPlantScreenFormHook = (props) => {
 		nodeApi
 			.get('/garden-plant')
 			.then((response) => {
-				console.log('plants', response.data.data);
 				const plantsForMap = response.data.data;
 				const plantsData = plantsForMap.map((item) => {
 					return { id: item.id, value: item.general_russian_name };
@@ -64,7 +64,6 @@ const AddPlantScreenFormHook = (props) => {
 		nodeApi
 			.get('/garden-plant-unit')
 			.then((response) => {
-				console.log('units', response.data.data);
 				const unitsForMap = response.data.data;
 				const unitsData = unitsForMap.map((item) => {
 					return { id: item.id, value: item.name };
@@ -89,6 +88,10 @@ const AddPlantScreenFormHook = (props) => {
 		getPlantsName();
 		getPlantsUnits();
 		getCsrf();
+		navigation.setOptions({
+			headerTitle: editData ? 'Редактировать растение' : 'Добавить растение',
+			headerTruncatedBackTitle: 'Назад',
+		});
 	}, []);
 
 	const Indicator = () => (
@@ -148,223 +151,243 @@ const AddPlantScreenFormHook = (props) => {
 		}
 	};
 
-	console.log('UN', unit);
+	const scrollViewRef = useRef(null);
+
+	const focusTextInput = (nodeHand) => {
+		console.log('REF2', scrollViewRef.current);
+
+		scrollViewRef.current.scrollIntoView(nodeHand);
+	};
 
 	if (!plants && !unit) {
 		return <Indicator />;
 	}
 	return (
-		<ScrollView
-			style={{ flex: 1, backgroundColor: 'white', paddingVertical: 10 }}
+		<KeyboardAwareScrollView
+			style={{ backgroundColor: 'white' }}
 			keyboardShouldPersistTaps="always"
+			onKeyboardWillShow={() => console.log('KEYBOARD')}
+			ref={scrollViewRef}
 		>
-			<View style={styles.container}>
-				<Controller
-					control={control}
-					rules={{
-						required: {
-							value: true,
-							message: 'Необходимо выбрать растение',
-						},
-					}}
-					render={({ onChange, value }) => (
-						<View style={{ flex: 1 }}>
-							<View style={styles.containerHeader}>
-								<Text>Растение</Text>
-							</View>
-							<View
-								style={{
-									flex: 1,
-									paddingHorizontal: 10,
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									alignItems: 'center',
-								}}
-							>
-								<PickerModal
-									plantsData={plants}
-									value={value}
-									onValueChange={(value) => {
-										onChange(value);
+			<View
+				style={{
+					backgroundColor: 'white',
+					paddingVertical: 10,
+				}}
+				keyboardShouldPersistTaps="always"
+			>
+				<View style={styles.container}>
+					<Controller
+						control={control}
+						rules={{
+							required: {
+								value: true,
+								message: 'Необходимо выбрать растение',
+							},
+						}}
+						render={({ onChange, value }) => (
+							<View style={{ flex: 1 }}>
+								<View style={styles.containerHeader}>
+									<Text>Растение</Text>
+								</View>
+								<View
+									style={{
+										flex: 1,
+										paddingHorizontal: 10,
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										alignItems: 'center',
 									}}
-									placeholder="Выберите растение"
-									route="/garden-plant"
-									key="namePicker"
-								/>
-								{errors.garden_plant_id?.message && (
-									<Text style={{ color: 'red' }}>
-										{errors.garden_plant_id.message}
-									</Text>
-								)}
+								>
+									<PickerModal
+										plantsData={plants}
+										value={value}
+										onValueChange={(value) => {
+											onChange(value);
+										}}
+										placeholder="Выберите растение"
+										route="/garden-plant"
+										key="namePicker"
+									/>
+									{errors.garden_plant_id?.message && (
+										<Text style={{ color: 'red' }}>
+											{errors.garden_plant_id.message}
+										</Text>
+									)}
+								</View>
 							</View>
-						</View>
-					)}
-					name="garden_plant_id"
-					defaultValue={editData ? Number.parseInt(editData.garden_plant_id) : ''}
-					key={editData ? 'plantLoaded' : 'plantLoading'}
-				/>
-			</View>
-			<View style={styles.container}>
-				<Controller
-					control={control}
-					render={({ onChange, value }) => (
-						<View style={{ flex: 1 }}>
-							<View style={styles.containerHeader}>
-								<Text>Дата посадки</Text>
-							</View>
-							<View
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									paddingHorizontal: 10,
-									paddingVertical: 10,
-									alignItems: 'center',
-								}}
-							>
-								<Text style={{ textAlignVertical: 'center' }}>
-									{moment(value).format('DD/MM/YYYY')}
-								</Text>
-								<TouchableOpacity onPress={() => setShow(true)}>
-									<Icon name="calendar" size={30} />
-								</TouchableOpacity>
-							</View>
-							<DateTimePickerModal
-								isVisible={show}
-								mode="date"
-								onConfirm={(value) => {
-									const currentDate = value;
-									setShow(false);
-									onChange(currentDate);
-								}}
-								onCancel={() => setShow(false)}
-							/>
-						</View>
-					)}
-					name="planting_date"
-					defaultValue={editData ? new Date(editData.planting_date) : new Date()}
-					key={editData ? 'datetLoaded' : 'datetLoading'}
-				/>
-			</View>
-			<View style={styles.container}>
-				<Controller
-					control={control}
-					rules={{
-						required: {
-							value: true,
-							message: 'Не выбрана единица измерения',
-						},
-					}}
-					render={({ onChange, value }) => (
-						<View style={{ flex: 1 }}>
-							<View style={styles.containerHeader}>
-								<Text>Единицы измерения</Text>
-							</View>
-							<View
-								style={{
-									flex: 1,
-									paddingHorizontal: 10,
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									alignItems: 'center',
-								}}
-							>
-								<PickerModal
-									plantsData={unit}
-									value={value}
-									onValueChange={(value) => {
-										onChange(value);
+						)}
+						name="garden_plant_id"
+						defaultValue={editData ? Number.parseInt(editData.garden_plant_id) : ''}
+						key={editData ? 'plantLoaded' : 'plantLoading'}
+					/>
+				</View>
+				<View style={styles.container}>
+					<Controller
+						control={control}
+						render={({ onChange, value }) => (
+							<View style={{ flex: 1 }}>
+								<View style={styles.containerHeader}>
+									<Text>Дата посадки</Text>
+								</View>
+								<View
+									style={{
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										paddingHorizontal: 10,
+										paddingVertical: 10,
+										alignItems: 'center',
 									}}
-									placeholder="Выберите ед. изм."
-									route="/garden-plant-unit"
-									key="unitPicker"
-								/>
-								{errors.planting_unit?.message && (
-									<Text style={{ color: 'red' }}>
-										{errors.planting_unit.message}
+								>
+									<Text style={{ textAlignVertical: 'center' }}>
+										{moment(value).format('DD/MM/YYYY')}
 									</Text>
-								)}
+									<TouchableOpacity onPress={() => setShow(true)}>
+										<Icon name="calendar" size={30} />
+									</TouchableOpacity>
+								</View>
+								<DateTimePickerModal
+									isVisible={show}
+									mode="date"
+									onConfirm={(value) => {
+										const currentDate = value;
+										setShow(false);
+										onChange(currentDate);
+									}}
+									onCancel={() => setShow(false)}
+								/>
 							</View>
-						</View>
-					)}
-					name="planting_unit"
-					defaultValue={editData ? Number.parseInt(editData.planting_unit) : ''}
-					key={editData ? 'unitLoaded' : 'unitLoading'}
-				/>
-			</View>
-			<View style={styles.container}>
-				<Controller
-					control={control}
-					rules={{
-						required: {
-							value: true,
-							message: 'Необходимо указать размер посдаки посадки',
-							pattern: /^[0-9.,]+$/,
-						},
-					}}
-					render={({ onChange, onBlur, value }) => (
-						<View style={{ flex: 1 }}>
-							<View style={styles.containerHeader}>
-								<Text>Размер посадки</Text>
+						)}
+						name="planting_date"
+						defaultValue={editData ? new Date(editData.planting_date) : new Date()}
+						key={editData ? 'datetLoaded' : 'datetLoading'}
+					/>
+				</View>
+				<View style={styles.container}>
+					<Controller
+						control={control}
+						rules={{
+							required: {
+								value: true,
+								message: 'Не выбрана единица измерения',
+							},
+						}}
+						render={({ onChange, value }) => (
+							<View style={{ flex: 1 }}>
+								<View style={styles.containerHeader}>
+									<Text>Единицы измерения</Text>
+								</View>
+								<View
+									style={{
+										flex: 1,
+										paddingHorizontal: 10,
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									<PickerModal
+										plantsData={unit}
+										value={value}
+										onValueChange={(value) => {
+											onChange(value);
+										}}
+										placeholder="Выберите ед. изм."
+										route="/garden-plant-unit"
+										key="unitPicker"
+									/>
+									{errors.planting_unit?.message && (
+										<Text style={{ color: 'red' }}>
+											{errors.planting_unit.message}
+										</Text>
+									)}
+								</View>
 							</View>
-							<View
-								style={{
-									flex: 1,
-									paddingHorizontal: 10,
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									alignItems: 'center',
-								}}
-							>
+						)}
+						name="planting_unit"
+						defaultValue={editData ? Number.parseInt(editData.planting_unit) : ''}
+						key={editData ? 'unitLoaded' : 'unitLoading'}
+					/>
+				</View>
+				<View style={styles.container}>
+					<Controller
+						control={control}
+						rules={{
+							required: {
+								value: true,
+								message: 'Необходимо указать размер посдаки посадки',
+								pattern: /^[0-9.,]+$/,
+							},
+						}}
+						render={({ onChange, onBlur, value }) => (
+							<View style={{ flex: 1 }}>
+								<View style={styles.containerHeader}>
+									<Text>Размер посадки</Text>
+								</View>
+								<View
+									style={{
+										flex: 1,
+										paddingHorizontal: 10,
+										flexDirection: 'row',
+										justifyContent: 'space-between',
+										alignItems: 'center',
+									}}
+								>
+									<TextInput
+										onChangeText={onChange}
+										onBlur={onBlur}
+										textValue={value}
+										defaultValue={value.toString()}
+										keyboardType="number-pad"
+										style={{ flex: 1 }}
+									/>
+									{errors.planting_size?.message && (
+										<Text style={{ color: 'red' }}>
+											{errors.planting_size.message}
+										</Text>
+									)}
+								</View>
+							</View>
+						)}
+						name="planting_size"
+						defaultValue={editData ? editData.planting_size : ''}
+						key={editData ? 'sizeLoaded' : 'plantLoading'}
+					/>
+				</View>
+
+				<View style={styles.notesContainer}>
+					<Controller
+						control={control}
+						render={({ onChange, onBlur, value }) => (
+							<View style={{ flex: 1 }}>
+								<View style={styles.containerHeader}>
+									<Text>Заметки</Text>
+								</View>
 								<TextInput
+									onFocus={(event) => {
+										focusTextInput(findNodeHandle(event.target));
+									}}
+									multiline
 									onChangeText={onChange}
 									onBlur={onBlur}
 									textValue={value}
-									defaultValue={value.toString()}
-									keyboardType="number-pad"
-									style={{ flex: 1 }}
+									style={{
+										flex: 1,
+										paddingLeft: 10,
+										paddingTop: 10,
+									}}
 								/>
-								{errors.planting_size?.message && (
-									<Text style={{ color: 'red' }}>
-										{errors.planting_size.message}
-									</Text>
-								)}
 							</View>
-						</View>
-					)}
-					name="planting_size"
-					defaultValue={editData ? editData.planting_size : ''}
-					key={editData ? 'sizeLoaded' : 'plantLoading'}
-				/>
-			</View>
+						)}
+						name="description"
+						defaultValue=""
+						key={editData ? 'notesLoaded' : 'notesLoading'}
+					/>
+				</View>
 
-			<View style={styles.notesContainer}>
-				<Controller
-					control={control}
-					render={({ onChange, onBlur, value }) => (
-						<View style={{ flex: 1 }}>
-							<View style={styles.containerHeader}>
-								<Text>Заметки</Text>
-							</View>
-							<TextInput
-								multiline
-								onChangeText={onChange}
-								onBlur={onBlur}
-								textValue={value}
-								style={{
-									flex: 1,
-									paddingLeft: 10,
-									paddingTop: 10,
-								}}
-							/>
-						</View>
-					)}
-					name="description"
-					defaultValue=""
-					key={editData ? 'notesLoaded' : 'notesLoading'}
-				/>
+				<ButtonWithActivityIndicator />
 			</View>
-			<ButtonWithActivityIndicator />
-		</ScrollView>
+		</KeyboardAwareScrollView>
 	);
 };
 
