@@ -1,20 +1,32 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable indent */
 /* eslint-disable prettier/prettier */
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+	View,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	TextInput,
+	KeyboardAvoidingView,
+	Platform,
+	Dimensions,
+	useWindowDimensions,
+} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import Modal from 'react-native-modal';
-
 
 const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [data, setData] = useState(plantsData);
 
-	const result = plantsData ?
-		plantsData.find((obj) => {
-			const toComapare = value.toString();
-			return obj.id === toComapare;
-		  }) :
-		null;
+	const result = plantsData
+		? plantsData.find((obj) => {
+				const toComapare = value.toString();
+				return obj.id === toComapare;
+		  })
+		: null;
 
 	const searchFunc = (text) => {
 		const search = plantsData.filter((item) => {
@@ -26,14 +38,36 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 		setData(search);
 	};
 
+	const MapData = () =>
+		data.map((item) => {
+			console.log('IT', item);
+			return (
+				<TouchableOpacity
+					onPress={() => {
+						onValueChange(item.id);
+						setIsModalVisible(false);
+					}}
+					key={item.id}
+				>
+					<Text
+						style={{
+							fontSize: 18,
+							marginBottom: 10,
+						}}
+					>
+						{item.value}
+					</Text>
+				</TouchableOpacity>
+			);
+		});
+
 	return (
 		<View>
 			<View>
 				<TouchableOpacity
 					onPress={() => {
-						setData(plantsData)
+						setData(plantsData);
 						setIsModalVisible(true);
-						
 					}}
 				>
 					<Text>{result ? `${result.value}` : `${placeholder}`}</Text>
@@ -43,17 +77,23 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 				<Modal
 					isVisible={isModalVisible}
 					onBackdropPress={() => setIsModalVisible(false)}
-					onSwipeComplete={() => setIsModalVisible(false)}					
+					onSwipeComplete={() => setIsModalVisible(false)}
 					swipeDirection="down"
 					style={{
 						justifyContent: 'flex-end',
 						margin: 0,
-						paddingTop: 50
+						paddingTop: 30,
 					}}
 					propagateSwipe
-				>			
-					<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>	
-						<View style={styles.modalContainer}>	
+				>
+					<KeyboardAvoidingView
+						behavior={Platform.OS === 'ios' ? 'padding' : null}
+						style={{
+							justifyContent: 'flex-end',
+							maxHeight: useWindowDimensions().height - 55,
+						}}
+					>
+						<View style={styles.modalContainer}>
 							<View
 								style={{
 									height: 25,
@@ -68,58 +108,56 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 										borderRadius: 3,
 									}}
 								/>
-							</View>					
-							<View style={{ marginBottom: 15 }}>
-								<Text
+							</View>
+							<View>
+								<View style={{ marginBottom: 15 }}>
+									<Text
+										style={{
+											textAlign: 'center',
+											textAlignVertical: 'center',
+											fontSize: 22,
+											color: '#FF9800',
+										}}
+									>
+										{placeholder}
+									</Text>
+								</View>
+								<View
 									style={{
-										textAlign: 'center',
-										textAlignVertical: 'center',
-										fontSize: 22,
-										color: '#FF9800'
+										paddingHorizontal: 10,
+										paddingBottom: 10,
 									}}
 								>
-									{placeholder}
-								</Text>
-							</View>
-							<View style={{  paddingHorizontal: 10, paddingBottom: 10  }}>
-								<TextInput
+									<TextInput
+										style={{
+											borderBottomColor: 'gray',
+											borderBottomWidth: 1,
+											height: 50,
+										}}
+										placeholder="Поиск растения"
+										onChangeText={(txt) => searchFunc(txt)}
+									/>
+								</View>
+
+								<ScrollView
 									style={{
-										borderBottomColor: 'gray',
-										borderBottomWidth: 1,
-										height: 50
+										paddingHorizontal: 10,
+										marginBottom: 10,
+										maxHeight: useWindowDimensions().height - 500,
 									}}
-									placeholder="Поиск растения"
-									onChangeText={(txt) => searchFunc(txt)}
-								/>
+								>
+									<MapData />
+								</ScrollView>
 							</View>
-							<View style={{  paddingHorizontal: 10, flex: 1 }}>
-								<FlatList
-									data={data}
-									keyboardShouldPersistTaps='always'																	
-									renderItem={(item) => {
-										const plantName = item.item.value;
-										return (
-											<TouchableOpacity
-												onPress={() => {
-													onValueChange(item.item.id);
-													setIsModalVisible(false);
-												}}
-											>
-												<Text style={{ fontSize: 18, marginBottom: 10 }}>
-													{plantName}
-												</Text>
-											</TouchableOpacity>
-										);
-									}}
-								/>
-							</View>
-						</View>	
-					</KeyboardAvoidingView>				
+						</View>
+					</KeyboardAvoidingView>
 				</Modal>
 			</View>
 		</View>
 	);
 };
+
+console.log('HEIGHT', Dimensions.get('screen').height);
 
 const styles = StyleSheet.create({
 	modalContainer: {
@@ -134,8 +172,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 5,
-		paddingBottom: 35,			
-		height: 400,		
+		maxHeight: Dimensions.get('window').height - 50,
 	},
 });
 
