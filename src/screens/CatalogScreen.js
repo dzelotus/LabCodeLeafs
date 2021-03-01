@@ -47,6 +47,7 @@ const CatalogScreen = (props) => {
 		fetchCatalog({ item: lType });
 		setNavScreen(`Catalog${lType[0].toUpperCase()}${lType.slice(1, lType.length)}`);
 		setListType(lType);
+		setSearchingField('');
 	};
 
 	const MainButtons = () => {
