@@ -9,6 +9,7 @@ import {
 	ActivityIndicator,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { SearchBar } from 'react-native-elements';
 import nodeApi from '../api/nodeApi';
 
 const CatalogScreen = (props) => {
@@ -16,9 +17,12 @@ const CatalogScreen = (props) => {
 	const [fetchedData, setFetchedData] = useState(null);
 	const [activeButton, setActiveButton] = useState('plant');
 	const [navScreen, setNavScreen] = useState('CatalogPlant');
+	const [searchingField, setSearchingField] = useState('');
+	const [displayedData, setDisplayedData] = useState(null);
+	const [listType, setListType] = useState('plant');
 
 	useEffect(() => {
-		fetchCatalog({ item: 'plant' });
+		fetchCatalog({ item: listType });
 	}, []);
 
 	const fetchCatalog = (item) => {
@@ -26,14 +30,23 @@ const CatalogScreen = (props) => {
 		nodeApi
 			.get(`/plant-protection/${item.item}`)
 			.then((response) => {
-				console.log('RESP', JSON.stringify(response, null, 2));
+				// console.log('RESP', JSON.stringify(response, null, 2));
 				setFetchedData(response.data.data);
+				setDisplayedData(response.data.data);
 				setLoading(false);
 			})
 			.catch((error) => {
 				console.log('ERROR', error.response);
 				setLoading(false);
 			});
+	};
+
+	const handlePressChangingList = (lType) => {
+		setActiveButton(lType);
+		setListType(lType);
+		fetchCatalog({ item: lType });
+		setNavScreen(`Catalog${lType[0].toUpperCase()}${lType.slice(1, lType.length)}`);
+		setListType(lType);
 	};
 
 	const MainButtons = () => {
@@ -47,9 +60,7 @@ const CatalogScreen = (props) => {
 						justifyContent: 'center',
 					}}
 					onPress={() => {
-						setActiveButton('plant');
-						fetchCatalog({ item: 'plant' });
-						setNavScreen('CatalogPlant');
+						handlePressChangingList('plant');
 					}}
 				>
 					<Text
@@ -61,9 +72,7 @@ const CatalogScreen = (props) => {
 				<TouchableOpacity
 					style={{ flex: 1 }}
 					onPress={() => {
-						setActiveButton('disease');
-						fetchCatalog({ item: 'disease' });
-						setNavScreen('CatalogDisease');
+						handlePressChangingList('disease');
 					}}
 				>
 					<Text
@@ -75,9 +84,7 @@ const CatalogScreen = (props) => {
 				<TouchableOpacity
 					style={{ flex: 1 }}
 					onPress={() => {
-						setActiveButton('heal');
-						fetchCatalog({ item: 'heal' });
-						setNavScreen('CatalogHeal');
+						handlePressChangingList('heal');
 					}}
 				>
 					<Text style={activeButton === 'heal' ? styles.activeButton : styles.itemButton}>
@@ -86,6 +93,20 @@ const CatalogScreen = (props) => {
 				</TouchableOpacity>
 			</View>
 		);
+	};
+	const SearchUpdate = (value) => {
+		setDisplayedData(
+			fetchedData.filter(
+				(item) =>
+					item.name !== undefined &&
+					item.name.toLowerCase().search(value.toLowerCase()) >= 0,
+			),
+		);
+	};
+
+	const HandleChangeSearchField = (value) => {
+		setSearchingField(value);
+		SearchUpdate(value);
 	};
 
 	console.log(activeButton);
@@ -98,6 +119,7 @@ const CatalogScreen = (props) => {
 			</View>
 		);
 	}
+
 	return (
 		<View style={{ flex: 1, backgroundColor: 'white' }}>
 			{/* <View style={styles.inputContainer}>
@@ -111,9 +133,13 @@ const CatalogScreen = (props) => {
 				/>
 			</View> */}
 			<MainButtons />
+			<SearchBar
+				onChangeText={(value) => HandleChangeSearchField(value)}
+				value={searchingField}
+			/>
 			<View style={{ paddingBottom: 60 }}>
 				<FlatList
-					data={fetchedData}
+					data={displayedData}
 					keyExtractor={(item) => item.name}
 					renderItem={({ item }) => (
 						<TouchableOpacity
