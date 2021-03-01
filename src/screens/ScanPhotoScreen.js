@@ -190,9 +190,11 @@ const styles = StyleSheet.create({
 	},
 
 	backButtonContainer: {
-		alignSelf: 'flex-start',
-		justifyContent: 'center',
+		position: 'absolute',
+		top: 0,
+		left: 15,
 		paddingTop: padding,
+		zIndex: 100,
 	},
 
 	image: {

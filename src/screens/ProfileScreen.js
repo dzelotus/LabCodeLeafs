@@ -1,14 +1,12 @@
-import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React, { useEffect } from 'react';
-
-import AsyncStorage from '@react-native-community/async-storage';
-import { Button } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ripple from 'react-native-material-ripple';
 import { connect } from 'react-redux';
 import nodeApi from '../api/nodeApi';
 import { resolveAuth } from '../actions/AuthActions';
 import { getProfileInfo } from '../actions/EditProfileActions';
+import NotAuthUser from '../components/NotAuthUser';
 
 const ProfileScreen = (route) => {
 	useEffect(() => {
@@ -30,12 +28,9 @@ const ProfileScreen = (route) => {
 					onPress: () =>
 						nodeApi
 							.post('/logout', {})
-							.then((response) => {
-								console.log('LOGOUT', response);
-								AsyncStorage.removeItem('token').then((token) => {
-									console.log(token);
-									route.resolveAuth({ prop: 'isSigned', value: false });
-								});
+							.then(() => {
+								route.resolveAuth({ prop: 'toAuthFlow', value: true });
+								route.resolveAuth({ prop: 'isSigned', value: false });
 							})
 							.catch((error) => console.log('ERROR', error)),
 				},
@@ -44,8 +39,16 @@ const ProfileScreen = (route) => {
 		);
 	};
 
+	if (!route.isSigned) {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
+				<NotAuthUser />
+			</View>
+		);
+	}
+
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={{ flex: 1, backgroundColor: 'white' }}>
 			<View
 				style={{
 					flexDirection: 'row',
@@ -127,12 +130,13 @@ const ProfileScreen = (route) => {
 						marginBottom: 15,
 					}}
 				>
-					<Button
-						title="выход"
-						onPress={createTwoButtonAlert}
-						containerStyle={{ paddingHorizontal: 10 }}
-						buttonStyle={{ backgroundColor: '#379683' }}
-					/>
+					<TouchableOpacity onPress={createTwoButtonAlert} style={styles.buttonStyle}>
+						<View>
+							<Text style={{ fontSize: 18, marginLeft: 15, color: '#EB9156' }}>
+								Выход
+							</Text>
+						</View>
+					</TouchableOpacity>
 				</View>
 			</View>
 		</View>
@@ -164,6 +168,25 @@ const styles = StyleSheet.create({
 		width: 120,
 		alignSelf: 'center',
 		marginVertical: 15,
+	},
+	buttonStyle: {
+		marginHorizontal: 5,
+		marginVertical: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		borderRadius: 10,
+		borderColor: '#379683',
+		borderWidth: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		height: 50,
+		justifyContent: 'center',
 	},
 });
 

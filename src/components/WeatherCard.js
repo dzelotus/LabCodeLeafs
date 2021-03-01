@@ -1,7 +1,5 @@
 import 'moment/locale/ru';
-
 import { Image, StyleSheet, Text, View } from 'react-native';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 import moment from 'moment';
@@ -26,8 +24,6 @@ const LastScansCard = ({ weatherInfo }) => {
 		],
 	});
 	const now = moment().locale('ru').format('D MMMM');
-
-	console.log(now);
 
 	return (
 		<View style={styles.containerStyle}>

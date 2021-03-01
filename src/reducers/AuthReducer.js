@@ -25,6 +25,7 @@ const INITIAL_STATE = {
 	hasBioScanner: false,
 	isBioAuthActive: false,
 	toSignupScreen: false,
+	toAuthFlow: false,
 };
 
 export default (state = INITIAL_STATE, action) => {

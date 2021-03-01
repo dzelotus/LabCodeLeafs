@@ -4,7 +4,7 @@ import { applyMiddleware, createStore } from 'redux';
 
 import { NavigationContainer } from '@react-navigation/native';
 import ReduxThunk from 'redux-thunk';
-import StackNavigator from './src/StackNavigator';
+import StackNavigator from './src/AppNavigation_v2';
 import { navigationRef } from './src/RootNavigation';
 import reducer from './src/reducers/index';
 

@@ -11,7 +11,6 @@ import {
 	SIGNIN_SUCCESS,
 	IS_BIO_AUTH_ACTIVE,
 } from './types';
-
 import nodeApi from '../api/nodeApi';
 
 export const inputChange = ({ prop, value }) => ({
@@ -66,7 +65,6 @@ export const signin = ({ username, password, _csrf }) => (dispatch) => {
 						console.log(error);
 					});
 			} else {
-				console.log('FAIL');
 				signinFail(dispatch, response.data.message);
 			}
 		})
@@ -151,11 +149,15 @@ const signinSuccess = (dispatch, response) => {
 	});
 	dispatch({
 		type: RESOLVE_AUTH,
-		payload: { prop: 'isSigned', value: true },
+		payload: { prop: 'toAuthFlow', value: false },
 	});
 	dispatch({
 		type: RESOLVE_AUTH,
 		payload: { prop: 'fistLaunchToken', value: true },
+	});
+	dispatch({
+		type: RESOLVE_AUTH,
+		payload: { prop: 'isSigned', value: true },
 	});
 };
 

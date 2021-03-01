@@ -14,12 +14,14 @@ import { PERMISSIONS, requestMultiple } from 'react-native-permissions';
 import { Camera } from 'expo-camera';
 import CameraRoll from '@react-native-community/cameraroll';
 import { withNavigationFocus } from '@react-navigation/compat';
+import { connect } from 'react-redux';
 import CameraButtons from '../components/CameraButtons';
 import PhotoCameraScroll from '../components/PhotoCameraScroll';
 import imagePicker from '../hooks/imagePicker';
 import makePhoto from '../hooks/makePhoto';
 import GoBackButton from '../components/GoBackButton';
 import HowMakePhotoButton from '../components/HowMakePhotoButton'
+import NotAuthUser from '../components/NotAuthUser'
 
 /* import makePhoto from '../hooks/makePhoto'; */
 
@@ -28,6 +30,8 @@ const ScanLeafScreen = (route) => {
 	const [flashType, setFlashType] = useState(Camera.Constants.FlashMode.off);
 	const [data, setData] = useState([]);
 	const [nextPage, setNextPage] = useState();
+
+	console.log('ROUTE', route)
 
 	let camera;
 
@@ -85,6 +89,16 @@ const ScanLeafScreen = (route) => {
 		});
 	}, []);
 
+	if (!route.isSigned) {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
+				<View style={styles.backButtonContainer}>
+					<GoBackButton nav="Main" />
+				</View>
+				<NotAuthUser />
+			</View>
+		)
+	}
 
 	return (
 		<View style={{ flex: 1, justifyContent: 'flex-end' }}>
@@ -240,4 +254,12 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default withNavigationFocus(ScanLeafScreen);
+const mapStateToProps = ({ auth }) => {
+	const { isSigned } = auth;
+
+	return {
+		isSigned,
+	};
+};
+
+export default withNavigationFocus(connect(mapStateToProps, {})(ScanLeafScreen));

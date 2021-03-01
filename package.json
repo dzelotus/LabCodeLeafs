@@ -12,6 +12,7 @@
 		"build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='ios'"
 	},
 	"dependencies": {
+		"@lab-code/moonphase": "^1.0.4",
 		"@react-native-community/async-storage": "^1.11.0",
 		"@react-native-community/cameraroll": "^4.0.0",
 		"@react-native-community/cookies": "^4.0.1",

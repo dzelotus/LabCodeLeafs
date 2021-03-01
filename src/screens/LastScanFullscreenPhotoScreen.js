@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'flex-start',
 		justifyContent: 'center',
 		paddingTop: padding,
+		left: 15,
 	},
 });
 

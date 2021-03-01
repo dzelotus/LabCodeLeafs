@@ -1,7 +1,7 @@
 import CameraRoll from '@react-native-community/cameraroll';
-import Geolocation from '@react-native-community/geolocation';
+/* import Geolocation from '@react-native-community/geolocation'; */
 
-const getCoords = () =>
+/* const getCoords = () => {
 	Geolocation.getCurrentPosition(
 		(info) => {
 			console.log('LOC', info);
@@ -12,10 +12,9 @@ const getCoords = () =>
 		},
 		{ timeout: 20000 },
 	);
+}; */
 
 const makePhoto = async ({ camera, nav }) => {
-	console.log(getCoords());
-
 	let photoUri;
 	const options = {
 		quality: 0.5,

@@ -46,7 +46,7 @@ const LastScanScreen = (props) => {
 				>
 					<TouchableOpacity
 						onPress={() =>
-							route.navigation.navigate('LastScanFullscreen', {
+							navigation.navigate('LastScanFullscreen', {
 								screen: 'LastScanFullscreenPhoto',
 								params: { uri: imageUrlReady, route: 'LastScan', show: true },
 							})

@@ -15,6 +15,8 @@ import nodeApi from '../api/nodeApi';
 import weatherApi from '../api/weatherApi';
 import FeedBack from '../components/FeedBack';
 
+const { Simple } = require('@lab-code/moonphase');
+
 const MainScreen = ({ navigation }) => {
 	const [scans, setScans] = useState();
 	const [weather, setWeather] = useState();
@@ -77,39 +79,29 @@ const MainScreen = ({ navigation }) => {
 			.catch((error) => console.log('!!!', error.response));
 	};
 
+	const getMoonPhase = () => {
+		const day = new Date().getDay();
+		const month = new Date().getMonth() + 1;
+		const year = new Date().getFullYear();
+		const moonphase = Simple(day, month, year);
+
+		nodeApi
+			.get(`/garden-calendar/moon-phase-calendar/${moonphase}`)
+			.then((response) => console.log('MOON RESP', response.data))
+			.catch((error) => console.log('MOON ERR', error));
+	};
+
 	useEffect(() => {
 		const getFocus = navigation.addListener('focus', () => {
 			getLastScans();
-
 			getCoords();
 			getArticles();
 			isHermes();
+			getMoonPhase();
 		});
 
 		return getFocus;
 	}, []);
-
-	/* 	const EmailVerify = () => {
-		if (!errorButton && !verifyToken) {
-			return (
-				<TouchableOpacity
-					style={styles.errorButton}
-					onPress={() =>
-						nodeApi
-							.post('/verify', {})
-							.then((response) => Alert.alert('', response.data.message))
-							.catch((error) => {
-								console.log(error.response.data.message);
-								Alert.alert('', error.response.data.message);
-							})
-					}
-				>
-					<FontAwesome name="exclamation-triangle" size={30} color="white" />
-				</TouchableOpacity>
-			);
-		}
-		return null;
-	}; */
 
 	const WeatherCardShow = () => {
 		if (weather) {

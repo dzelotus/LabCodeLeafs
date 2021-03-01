@@ -61,6 +61,9 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 			);
 		});
 
+		const minusHeight = Platform.OS === 'ios' ? 560 : 500
+		const padBot = Platform.OS === 'ios' ? 30 : 10
+
 	return (
 		<View>
 			<View>
@@ -90,7 +93,7 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 						behavior={Platform.OS === 'ios' ? 'padding' : null}
 						style={{
 							justifyContent: 'flex-end',
-							maxHeight: useWindowDimensions().height - 55,
+							maxHeight: useWindowDimensions().height - 75,
 						}}
 					>
 						<View style={styles.modalContainer}>
@@ -142,8 +145,8 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 								<ScrollView
 									style={{
 										paddingHorizontal: 10,
-										marginBottom: 10,
-										maxHeight: useWindowDimensions().height - 500,
+										marginBottom: padBot,										
+										maxHeight: useWindowDimensions().height - minusHeight,
 									}}
 								>
 									<MapData />
@@ -172,7 +175,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 3.84,
 		elevation: 5,
-		maxHeight: Dimensions.get('window').height - 50,
+		maxHeight: Dimensions.get('window').height - 100,
 	},
 });
 

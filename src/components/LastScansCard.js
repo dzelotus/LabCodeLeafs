@@ -5,10 +5,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import React, { useState } from 'react';
 import { withNavigation } from '@react-navigation/compat';
 import Modal from 'react-native-modal';
+import { connect } from 'react-redux';
 
-const LastScansCard = ({ iconName, navigation, nav, headerText, data }) => {
+const LastScansCard = ({ iconName, navigation, nav, headerText, data, isSigned }) => {
 	const [showModal, setShowModal] = useState(false);
 
+	console.log(isSigned);
 	const canScan = [
 		'Яблоня',
 		'Цитрус',
@@ -252,4 +254,12 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default withNavigation(LastScansCard);
+const mapStateToProps = ({ auth }) => {
+	const { isSigned } = auth;
+
+	return {
+		isSigned,
+	};
+};
+
+export default withNavigation(connect(mapStateToProps, {})(LastScansCard));

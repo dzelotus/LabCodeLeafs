@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable no-useless-escape */
 /* eslint-disable react/jsx-no-bind */
 import React, { useRef, useEffect, useState } from 'react';
@@ -11,6 +12,7 @@ import {
 	Modal,
 	TouchableOpacity,
 	Platform,
+	Image,
 } from 'react-native';
 import { Text, Button, Input } from 'react-native-elements';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -25,6 +27,7 @@ import {
 	getCsrf,
 	activateBioAuth,
 	checkBioScanner,
+	resolveAuth,
 } from '../actions/AuthActions';
 
 function SignupScreen(props) {
@@ -135,16 +138,11 @@ function SignupScreen(props) {
 		<View style={Platform.OS === 'ios' ? { paddingTop: 50 } : null}>
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>
 				<ScrollView keyboardShouldPersistTaps="always">
-					<Text
-						h1
-						style={{
-							fontWeight: 'bold',
-							color: '#379683',
-							textAlign: 'center',
-						}}
-					>
-						LEAFS
-					</Text>
+					<Image
+						source={require('../../assets/firstLaunchScreenImages/bitmap.png')}
+						style={{ width: 350, height: 60, marginTop: 15, alignSelf: 'center' }}
+						resizeMode="contain"
+					/>
 					<Text
 						h3
 						style={{
@@ -176,7 +174,7 @@ function SignupScreen(props) {
 									regexUsername.current = '';
 								} else {
 									regexUsername.current =
-										'Логин может содержать только буквы латинского алфавита и цифры';
+										'Имя пользователя должно быть длиннее двух символов и может содержать только буквы латинского алфавита и цифры';
 								}
 							}}
 							errorStyle={{ color: 'red' }}
@@ -230,7 +228,7 @@ function SignupScreen(props) {
 									regexPassword.current = '';
 								} else {
 									regexPassword.current =
-										'Пароль должен содержать цифры и хотя бы одну букву латинского алфавита';
+										'Пароль должен быть длиннее 7 символов, содержать цифры и хотя бы одну букву латинского алфавита';
 								}
 							}}
 							errorStyle={{ color: 'red' }}
@@ -282,6 +280,22 @@ function SignupScreen(props) {
 					>
 						<Text style={{ fontSize: 15, color: '#379683' }}>
 							Перейти на экран входа
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={{
+							alignSelf: 'center',
+							marginVertical: 20,
+							borderBottomWidth: 2,
+							borderBottomColor: '#379683',
+						}}
+						onPress={() => {
+							AsyncStorage.setItem('alreadyLaunched', 'true');
+							props.resolveAuth({ prop: 'toAuthFlow', value: false });
+						}}
+					>
+						<Text style={{ fontSize: 16, color: '#EB9156' }}>
+							Продолжить без регистрации
 						</Text>
 					</TouchableOpacity>
 				</ScrollView>
@@ -370,4 +384,5 @@ export default connect(mapStateToProps, {
 	getCsrf,
 	activateBioAuth,
 	checkBioScanner,
+	resolveAuth,
 })(SignupScreen);
