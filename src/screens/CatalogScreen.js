@@ -135,8 +135,16 @@ const CatalogScreen = (props) => {
 			</View> */}
 			<MainButtons />
 			<SearchBar
+				placeholder="Поиск по каталогу"
 				onChangeText={(value) => HandleChangeSearchField(value)}
 				value={searchingField}
+				lightTheme
+				containerStyle={{ backgroundColor: '#fff' }}
+				inputContainerStyle={{
+					backgroundColor: '#fff',
+					borderBottomWidth: 2,
+					borderBottomColor: '#cfcfcf',
+				}}
 			/>
 			<View style={{ paddingBottom: 60 }}>
 				<FlatList
