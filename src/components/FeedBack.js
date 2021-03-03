@@ -105,140 +105,144 @@ const FeedbackGeneralNew = (props) => {
 	console.log('HEIGHT', useWindowDimensions().height);
 
 	return (
-		<View style={styles.modalContainer}>
+		<>
 			<View
 				style={{
-					height: 25,
-					justifyContent: 'center',
+					borderColor: '#ffffff',
+					borderWidth: 3,
+					marginHorizontal: 50,
+					borderRadius: 3,
+					marginBottom: 10,
+					width: 45,
+					alignSelf: 'center',
 				}}
-			>
+			/>
+			<View style={styles.modalContainer}>
 				<View
 					style={{
-						borderColor: '#379683',
-						borderWidth: 3,
-						marginHorizontal: 50,
-						borderRadius: 3,
+						height: 25,
+						justifyContent: 'center',
 					}}
 				/>
+				<ScrollView keyboardShouldPersistTaps="always">
+					{/* TITLE */}
+					<Text style={styles.title}>Оставить отзыв</Text>
+
+					{/* INPUTS */}
+
+					<View style={styles.controllerContainer}>
+						<Controller
+							control={control}
+							render={({ onChange, value }) => (
+								<View
+									style={{
+										flex: 1,
+									}}
+								>
+									<View style={styles.containerHeader}>
+										<Text>Ваше имя</Text>
+									</View>
+									<TextInput
+										onChangeText={(newValue) => onChange(newValue)}
+										value={value}
+										style={{ flex: 1, paddingHorizontal: 10 }}
+									/>
+								</View>
+							)}
+							name="name"
+							rules={{
+								required: { value: true, message: 'Данное поле обязательное' },
+								maxLength: { value: 100, message: 'Максимальная длина 100' },
+							}}
+							defaultValue=""
+						/>
+					</View>
+					{/* NAME ERROR */}
+					{errors.name?.message && (
+						<Text style={styles.errorMessage}>{errors.name?.message}</Text>
+					)}
+
+					{/* EMAIL */}
+					<View style={styles.controllerContainer}>
+						<Controller
+							control={control}
+							render={({ onChange, value }) => (
+								<View style={{ flex: 1 }}>
+									<View style={styles.containerHeader}>
+										<Text>Электронная почта</Text>
+									</View>
+									<View style={styles.textInputContainer}>
+										<TextInput
+											onChangeText={(newValue) => onChange(newValue)}
+											value={value}
+											style={{ flex: 1 }}
+										/>
+									</View>
+								</View>
+							)}
+							name="email"
+							rules={{
+								required: { value: true, message: 'Данное поле обязательное' },
+								maxLength: { value: 320, message: 'Максимальная длина 320' },
+								pattern: { value: regexEmail, message: 'Неверный формат e-mail' },
+							}}
+							defaultValue=""
+						/>
+					</View>
+
+					{/* EMAIL ERROR */}
+					{errors.email?.message && (
+						<Text style={styles.errorMessage}>{errors.email.message}</Text>
+					)}
+
+					{/* MESSAGE */}
+					<View style={styles.feedbackControllerContainer}>
+						<Controller
+							control={control}
+							render={({ onChange, value }) => (
+								<View style={{ flex: 1 }}>
+									<View style={styles.containerHeader}>
+										<Text>Ваш отзыв</Text>
+									</View>
+									<View style={styles.textInputContainer}>
+										<TextInput
+											onChangeText={(newValue) => onChange(newValue)}
+											value={value}
+											multiline
+											numberOfLines={10}
+											style={{ flex: 1 }}
+										/>
+									</View>
+								</View>
+							)}
+							name="message"
+							rules={{
+								required: { value: true, message: 'Данное поле обязательно' },
+							}}
+							defaultValue=""
+						/>
+					</View>
+
+					{/* MESSAGE ERROR */}
+					{errors.message?.message && (
+						<Text style={styles.errorMessage}>{errors.message?.message}</Text>
+					)}
+
+					{/* SUBMIT */}
+					{loadingState ? (
+						<ActivityIndicator size="large" color="green" />
+					) : (
+						<TouchableOpacity
+							style={styles.submitButton}
+							onPress={handleSubmit(onSubmitHandler)}
+						>
+							<Text style={styles.submitButtonText}>Отправить</Text>
+						</TouchableOpacity>
+					)}
+					{/* CLOSE */}
+				</ScrollView>
 			</View>
-			<ScrollView keyboardShouldPersistTaps="always">
-				{/* TITLE */}
-				<Text style={styles.title}>Оставить отзыв</Text>
-
-				{/* INPUTS */}
-
-				<View style={styles.controllerContainer}>
-					<Controller
-						control={control}
-						render={({ onChange, value }) => (
-							<View
-								style={{
-									flex: 1,
-								}}
-							>
-								<View style={styles.containerHeader}>
-									<Text>Ваше имя</Text>
-								</View>
-								<TextInput
-									onChangeText={(newValue) => onChange(newValue)}
-									value={value}
-									style={{ flex: 1, paddingHorizontal: 10 }}
-								/>
-							</View>
-						)}
-						name="name"
-						rules={{
-							required: { value: true, message: 'Данное поле обязательное' },
-							maxLength: { value: 100, message: 'Максимальная длина 100' },
-						}}
-						defaultValue=""
-					/>
-				</View>
-				{/* NAME ERROR */}
-				{errors.name?.message && (
-					<Text style={styles.errorMessage}>{errors.name?.message}</Text>
-				)}
-
-				{/* EMAIL */}
-				<View style={styles.controllerContainer}>
-					<Controller
-						control={control}
-						render={({ onChange, value }) => (
-							<View style={{ flex: 1 }}>
-								<View style={styles.containerHeader}>
-									<Text>Электронная почта</Text>
-								</View>
-								<View style={styles.textInputContainer}>
-									<TextInput
-										onChangeText={(newValue) => onChange(newValue)}
-										value={value}
-										style={{ flex: 1 }}
-									/>
-								</View>
-							</View>
-						)}
-						name="email"
-						rules={{
-							required: { value: true, message: 'Данное поле обязательное' },
-							maxLength: { value: 320, message: 'Максимальная длина 320' },
-							pattern: { value: regexEmail, message: 'Неверный формат e-mail' },
-						}}
-						defaultValue=""
-					/>
-				</View>
-
-				{/* EMAIL ERROR */}
-				{errors.email?.message && (
-					<Text style={styles.errorMessage}>{errors.email.message}</Text>
-				)}
-
-				{/* MESSAGE */}
-				<View style={styles.feedbackControllerContainer}>
-					<Controller
-						control={control}
-						render={({ onChange, value }) => (
-							<View style={{ flex: 1 }}>
-								<View style={styles.containerHeader}>
-									<Text>Ваш отзыв</Text>
-								</View>
-								<View style={styles.textInputContainer}>
-									<TextInput
-										onChangeText={(newValue) => onChange(newValue)}
-										value={value}
-										multiline
-										numberOfLines={10}
-										style={{ flex: 1 }}
-									/>
-								</View>
-							</View>
-						)}
-						name="message"
-						rules={{
-							required: { value: true, message: 'Данное поле обязательно' },
-						}}
-						defaultValue=""
-					/>
-				</View>
-
-				{/* MESSAGE ERROR */}
-				{errors.message?.message && (
-					<Text style={styles.errorMessage}>{errors.message?.message}</Text>
-				)}
-
-				{/* SUBMIT */}
-				{loadingState ? (
-					<ActivityIndicator size="large" color="green" />
-				) : (
-					<TouchableOpacity
-						style={styles.submitButton}
-						onPress={handleSubmit(onSubmitHandler)}
-					>
-						<Text style={styles.submitButtonText}>Отправить</Text>
-					</TouchableOpacity>
-				)}
-				{/* CLOSE */}
-			</ScrollView>
-		</View>
+		</>
 	);
 };
 

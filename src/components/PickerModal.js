@@ -96,22 +96,24 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 							maxHeight: useWindowDimensions().height - 75,
 						}}
 					>
+						<View
+							style={{
+								borderColor: '#ffffff',
+								borderWidth: 3,
+								marginHorizontal: 50,
+								borderRadius: 3,
+								marginBottom: 10,
+								width: 45,
+								alignSelf: 'center',
+							}}
+						/>
 						<View style={styles.modalContainer}>
 							<View
 								style={{
 									height: 25,
 									justifyContent: 'center',
 								}}
-							>
-								<View
-									style={{
-										borderColor: '#379683',
-										borderWidth: 3,
-										marginHorizontal: 50,
-										borderRadius: 3,
-									}}
-								/>
-							</View>
+							/>
 							<View>
 								<View style={{ marginBottom: 15 }}>
 									<Text

@@ -87,94 +87,98 @@ const AddGardenForm = (props) => {
 	/* MODAL CONTENT WITH INPUTS, CLOSE AND ADD BUTTONS */
 
 	return (
-		<View style={styles.modalContainer}>
+		<>
 			<View
 				style={{
-					height: 25,
-					justifyContent: 'center',
+					borderColor: '#ffffff',
+					borderWidth: 3,
+					marginHorizontal: 50,
+					borderRadius: 3,
+					marginBottom: 10,
+					width: 45,
+					alignSelf: 'center',
 				}}
-			>
+			/>
+			<View style={styles.modalContainer}>
 				<View
 					style={{
-						borderColor: '#379683',
-						borderWidth: 3,
-						marginHorizontal: 50,
-						borderRadius: 3,
+						height: 25,
+						justifyContent: 'center',
 					}}
 				/>
+				<ScrollView keyboardShouldPersistTaps="always">
+					<Text style={styles.title}>Добавить огород</Text>
+					<View style={styles.controllerContainer}>
+						<Controller
+							control={control}
+							rules={{
+								required: {
+									value: true,
+									message: 'Обязательное поле',
+								},
+							}}
+							render={({ onChange, onBlur, value }) => (
+								<View style={{ flex: 1 }}>
+									<View style={styles.containerHeader}>
+										<Text>Название огорода</Text>
+									</View>
+									<View style={styles.textInputContainer}>
+										<TextInput
+											onChangeText={onChange}
+											onBlur={onBlur}
+											textValue={value}
+											defaultValue={value.toString()}
+											style={{ flex: 1 }}
+										/>
+										{errors.gardenName_input?.message && (
+											<Text style={{ color: 'red' }}>
+												{errors.gardenName_input.message}
+											</Text>
+										)}
+									</View>
+								</View>
+							)}
+							name="gardenName_input"
+							defaultValue=""
+							key="name"
+						/>
+					</View>
+					<View style={styles.controllerContainer}>
+						<Controller
+							control={control}
+							render={({ onChange, onBlur, value }) => (
+								<View style={{ flex: 1 }}>
+									<View style={styles.containerHeader}>
+										<Text>Описание огорода</Text>
+									</View>
+									<View style={styles.textInputContainer}>
+										<TextInput
+											onChangeText={onChange}
+											onBlur={onBlur}
+											textValue={value}
+											defaultValue={value.toString()}
+											style={{ flex: 1 }}
+										/>
+										{errors.gardenDescription_input?.message && (
+											<Text style={{ color: 'red' }}>
+												{errors.gardenDescription_input.message}
+											</Text>
+										)}
+									</View>
+								</View>
+							)}
+							name="gardenDescription_input"
+							defaultValue=""
+						/>
+					</View>
+					{!loading ? (
+						<AddGardenButton />
+					) : (
+						<Indicator style={{ marginBottom: 10, marginTop: 20 }} />
+					)}
+				</ScrollView>
 			</View>
-			<ScrollView keyboardShouldPersistTaps="always">
-				<Text style={styles.title}>Добавить огород</Text>
-				<View style={styles.controllerContainer}>
-					<Controller
-						control={control}
-						rules={{
-							required: {
-								value: true,
-								message: 'Обязательное поле',
-							},
-						}}
-						render={({ onChange, onBlur, value }) => (
-							<View style={{ flex: 1 }}>
-								<View style={styles.containerHeader}>
-									<Text>Название огорода</Text>
-								</View>
-								<View style={styles.textInputContainer}>
-									<TextInput
-										onChangeText={onChange}
-										onBlur={onBlur}
-										textValue={value}
-										defaultValue={value.toString()}
-										style={{ flex: 1 }}
-									/>
-									{errors.gardenName_input?.message && (
-										<Text style={{ color: 'red' }}>
-											{errors.gardenName_input.message}
-										</Text>
-									)}
-								</View>
-							</View>
-						)}
-						name="gardenName_input"
-						defaultValue=""
-						key="name"
-					/>
-				</View>
-				<View style={styles.controllerContainer}>
-					<Controller
-						control={control}
-						render={({ onChange, onBlur, value }) => (
-							<View style={{ flex: 1 }}>
-								<View style={styles.containerHeader}>
-									<Text>Описание огорода</Text>
-								</View>
-								<View style={styles.textInputContainer}>
-									<TextInput
-										onChangeText={onChange}
-										onBlur={onBlur}
-										textValue={value}
-										defaultValue={value.toString()}
-										style={{ flex: 1 }}
-									/>
-									{errors.gardenDescription_input?.message && (
-										<Text style={{ color: 'red' }}>
-											{errors.gardenDescription_input.message}
-										</Text>
-									)}
-								</View>
-							</View>
-						)}
-						name="gardenDescription_input"
-						defaultValue=""
-					/>
-				</View>
-				{!loading ? (
-					<AddGardenButton />
-				) : (
-					<Indicator style={{ marginBottom: 10, marginTop: 20 }} />
-				)}
-			</ScrollView>
-		</View>
+		</>
 	);
 };
 
