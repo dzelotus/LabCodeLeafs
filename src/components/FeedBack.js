@@ -102,8 +102,6 @@ const FeedbackGeneralNew = (props) => {
 		})();
 	}, [fetchNewFeedbackGeneral]);
 
-	console.log('HEIGHT', useWindowDimensions().height);
-
 	return (
 		<>
 			<View
@@ -118,12 +116,6 @@ const FeedbackGeneralNew = (props) => {
 				}}
 			/>
 			<View style={styles.modalContainer}>
-				<View
-					style={{
-						height: 25,
-						justifyContent: 'center',
-					}}
-				/>
 				<ScrollView keyboardShouldPersistTaps="always">
 					{/* TITLE */}
 					<Text style={styles.title}>Оставить отзыв</Text>
@@ -336,8 +328,7 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		textAlign: 'center',
-		paddingTop: 10,
-		paddingBottom: 10,
+		paddingVertical: 10,
 		fontSize: 20,
 		color: '#EB9156',
 	},

@@ -5,7 +5,6 @@ import {
 	Text,
 	FlatList,
 	TouchableOpacity,
-	/* TextInput, */
 	ActivityIndicator,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -123,16 +122,6 @@ const CatalogScreen = (props) => {
 
 	return (
 		<View style={{ flex: 1, backgroundColor: 'white' }}>
-			{/* <View style={styles.inputContainer}>
-				<TextInput
-					autoCapitalize="none"
-					placeholder="Поиск по каталогу"
-					style={styles.inputStyle}
-					value={term}
-					onChangeText={(newTerm) => setTerm(newTerm)}
-					onEndEditing={() => console.log('submitted')}
-				/>
-			</View> */}
 			<MainButtons />
 			<SearchBar
 				placeholder="Поиск по каталогу"
@@ -162,12 +151,6 @@ const CatalogScreen = (props) => {
 								marginHorizontal: 10,
 							}}
 						>
-							{/* <Image
-								style={styles.imageStyle}
-								source={{
-									uri: 'https://2ch.hk/test/src/22583/14918417781080.png',
-								}}
-							/> */}
 							<View
 								style={{
 									flex: 1,
