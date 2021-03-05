@@ -144,6 +144,7 @@ const GardenScreen = (props) => {
 		<View
 			style={{
 				flex: 1,
+				backgroundColor: 'white',
 			}}
 		>
 			<ScrollView keyboardShouldPersistTaps="always">

@@ -15,11 +15,12 @@ import nodeApi from '../api/nodeApi';
 import weatherApi from '../api/weatherApi';
 import FeedBack from '../components/FeedBack';
 
-const { Simple } = require('@lab-code/moonphase');
+const { Conway } = require('@lab-code/moonphase');
 
 const MainScreen = ({ navigation }) => {
 	const [scans, setScans] = useState();
 	const [weather, setWeather] = useState();
+	const [moon, setMoon] = useState();
 	const [newsData, setNewsData] = useState(null);
 
 	const isHermes = () => !!global.HermesInternal;
@@ -28,7 +29,6 @@ const MainScreen = ({ navigation }) => {
 		nodeApi
 			.get('/scans')
 			.then((response) => {
-				console.log('SCANS', response.data.data);
 				const startArray = response.data.data;
 				const data = startArray.slice(0, 9);
 				setScans(data);
@@ -59,7 +59,7 @@ const MainScreen = ({ navigation }) => {
 
 	const checkWeather = ({ lon, lat }) => {
 		weatherApi
-			.get('/', {
+			.get('/weather', {
 				params: {
 					lon,
 					lat,
@@ -74,6 +74,7 @@ const MainScreen = ({ navigation }) => {
 					icon: info.data.weather[0].icon,
 					temp: info.data.main.temp,
 					location: info.data.name,
+					coords: { lon, lat },
 				});
 			})
 			.catch((error) => console.log('!!!', error.response));
@@ -83,11 +84,14 @@ const MainScreen = ({ navigation }) => {
 		const day = new Date().getDay();
 		const month = new Date().getMonth() + 1;
 		const year = new Date().getFullYear();
-		const moonphase = Simple(day, month, year);
+		const moonphase = Conway(day, month, year);
 
 		nodeApi
 			.get(`/garden-calendar/moon-phase-calendar/${moonphase}`)
-			.then((response) => console.log('MOON RESP', response.data))
+			.then((response) => {
+				console.log('MOON RESP', response.data);
+				setMoon(response.data.data);
+			})
 			.catch((error) => console.log('MOON ERR', error));
 	};
 
@@ -105,7 +109,7 @@ const MainScreen = ({ navigation }) => {
 
 	const WeatherCardShow = () => {
 		if (weather) {
-			return <WeatherCard weatherInfo={weather} />;
+			return <WeatherCard weatherInfo={weather} moonInfo={moon} />;
 		}
 	};
 

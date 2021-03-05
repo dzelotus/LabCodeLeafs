@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 /* import { View, Text } from 'react-native'; */
 import { View, Text, Button, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import SQLite from 'react-native-sqlite-storage';
 
 const HelpScreen = () => {
+	const db = SQLite.openDatabase({ name: 'testDB.db', location: 'default' });
+
+	const getData = () => {
+		db.transaction((tx) => {
+			tx.executeSql('SELECT * FROM test_table', [], (tx, results) => {
+				console.log('len', results);
+			});
+		});
+	};
+
+	useEffect(() => {
+		getData();
+	}, []);
+
 	return (
 		<View>
 			<Text>Экран помощи</Text>

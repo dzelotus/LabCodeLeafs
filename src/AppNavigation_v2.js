@@ -34,6 +34,8 @@ import CatalogScreen from './screens/CatalogScreen';
 import CatalogPlantScreen from './screens/CatalogPlantScreen';
 import CatalogDiseaseScreen from './screens/CatalogDiseaseScreen';
 import CatalogHealScreen from './screens/CatalogHealScreen';
+import WeatherScreen from './screens/WeatherScreen';
+import MoonCalendarScreen from './screens/MoonCalendarScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -283,6 +285,16 @@ const StackNavigator = (route) => {
 				name="Signin"
 				component={SigninScreen}
 				options={{ headerTitle: 'Войти', headerTintColor: '#379683' }}
+			/>
+			<Stack.Screen
+				name="WeatherScreen"
+				component={WeatherScreen}
+				options={{ headerTitle: 'Погода', headerTintColor: '#379683' }}
+			/>
+			<Stack.Screen
+				name="MoonCalendar"
+				component={MoonCalendarScreen}
+				options={{ headerTitle: 'Лунный календарь', headerTintColor: '#379683' }}
 			/>
 		</Stack.Navigator>
 	);

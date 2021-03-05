@@ -1,13 +1,16 @@
 import 'moment/locale/ru';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 import moment from 'moment';
-import { withNavigation } from '@react-navigation/compat';
+
+import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 
-const LastScansCard = ({ weatherInfo }) => {
+const LastScansCard = ({ moonInfo, weatherInfo }) => {
 	console.log('WEATHER CARD', weatherInfo);
+	const navigation = useNavigation();
+
 	moment.updateLocale('ru', {
 		months: [
 			'Января',
@@ -31,7 +34,7 @@ const LastScansCard = ({ weatherInfo }) => {
 			<View
 				style={{
 					flexDirection: 'row',
-					marginTop: 5,
+					marginVertical: 10,
 					alignSelf: 'center',
 				}}
 			>
@@ -39,15 +42,17 @@ const LastScansCard = ({ weatherInfo }) => {
 				<Text style={{ fontSize: 18, marginLeft: 5, color: '#379683' }}>{now}</Text>
 			</View>
 			<View style={styles.rowStyle}>
-				<View
+				{/* WEATHER */}
+				<TouchableOpacity
 					style={{
 						alignContent: 'flex-end',
 						justifyContent: 'center',
 						flex: 1,
 						marginLeft: 10,
-						borderColor: 'red',
-						borderWidth: 2,
 					}}
+					onPress={() =>
+						navigation.navigate('WeatherScreen', { coords: weatherInfo.coords })
+					}
 				>
 					<View style={{ flexDirection: 'row' }}>
 						<View>
@@ -61,7 +66,7 @@ const LastScansCard = ({ weatherInfo }) => {
 						<View
 							style={{
 								flexDirection: 'row',
-								alignSelf: 'flex-start',
+								alignSelf: 'center',
 							}}
 						>
 							<Text
@@ -92,17 +97,46 @@ const LastScansCard = ({ weatherInfo }) => {
 					</View>
 					<View
 						style={{
-							alignSelf: 'flex-start',
+							alignSelf: 'center',
 						}}
 					>
-						<Text style={{ marginBottom: 5, color: '#379683', fontSize: 16 }}>
+						<Text style={{ marginVertical: 10, color: '#379683', fontSize: 16 }}>
 							{weatherInfo.description}
 						</Text>
 					</View>
-				</View>
-				<View style={{ borderColor: 'green', borderWidth: 2, flex: 1 }}>
-					<Text>Moon Calendar</Text>
-				</View>
+				</TouchableOpacity>
+				{/* MOONPHASE */}
+				{moonInfo ? (
+					<TouchableOpacity
+						style={{
+							alignContent: 'flex-end',
+							justifyContent: 'center',
+							flex: 1,
+							marginLeft: 10,
+						}}
+						onPress={() => navigation.navigate('MoonCalendar')}
+					>
+						<View style={{ flexDirection: 'row' }}>
+							<View>
+								<FastImage
+									style={styles.image}
+									source={{
+										uri: moonInfo.phase_image_url,
+									}}
+								/>
+							</View>
+						</View>
+						<View
+							style={{
+								alignSelf: 'flex-start',
+							}}
+						>
+							<Text style={{ marginVertical: 10, color: '#379683', fontSize: 16 }}>
+								{moonInfo.phase_name}
+							</Text>
+						</View>
+					</TouchableOpacity>
+				) : null}
 			</View>
 		</View>
 	);
@@ -156,8 +190,6 @@ const styles = StyleSheet.create({
 	image: {
 		width: 60,
 		height: 60,
-		borderColor: 'blue',
-		borderWidth: 2,
 	},
 
 	rowStyle: {
@@ -165,4 +197,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default withNavigation(LastScansCard);
+export default LastScansCard;
