@@ -1,11 +1,11 @@
 // import { JSDOM } from 'jsdom';
 
 const rules = {
-	'<table>': '<div style="margin: 10px;">',
-	'<th>': '<div style="font-weight: bold;">',
+	'<table>': '<div class="table">',
+	'<th>': '<div class="th">',
 	'</th>': '</div>',
-	'<tr>': '<div style="margin-top: 5px">',
-	'<td>': '<div style="margin: 0 2px;">',
+	'<tr>': '<div class="tr">',
+	'<td>': '<div class="td">',
 	'</td>': '</div>',
 	'</tr>': '</div>',
 	'</table>': '</div>',

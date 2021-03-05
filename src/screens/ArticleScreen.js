@@ -26,6 +26,29 @@ const ArticleScreen = (props) => {
 					b: { fontSize: 18, paddingBottom: 50 },
 					p: { fontSize: 16, paddingBottom: 15 },
 				}}
+				classesStyles={{
+					table: {
+						marginTop: 15,
+					},
+					th: {
+						flexBasis: '100%',
+						flexGrow: 1,
+						backgroundColor: '#F0FFF0',
+						padding: 2,
+						margin: 1,
+						fontWeight: 'bold',
+					},
+					tr: {
+						flexDirection: 'row',
+					},
+					td: {
+						flexBasis: '100%',
+						flexShrink: 1,
+						backgroundColor: '#F0FFF0',
+						padding: 2,
+						margin: 1,
+					},
+				}}
 			/>
 		</ScrollView>
 	);
