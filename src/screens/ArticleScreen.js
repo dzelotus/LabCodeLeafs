@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
 import HTML from 'react-native-render-html';
-import tableReparse from '../TableReparser';
 
 const ArticleScreen = (props) => {
 	const { route } = props;
-	// console.log(route.params.data);
-	const article = tableReparse(route.params.data.article_text);
+	console.log(route.params.data);
+	const article = route.params.data.article_text;
 
 	useEffect(() => {
 		const stackNavigator = props.navigation.dangerouslyGetParent();
@@ -33,7 +32,7 @@ const ArticleScreen = (props) => {
 					th: {
 						flexBasis: '100%',
 						flexGrow: 1,
-						backgroundColor: '#F0FFF0',
+						// backgroundColor: '#F0FFF0',
 						padding: 2,
 						margin: 1,
 						fontWeight: 'bold',
@@ -44,7 +43,7 @@ const ArticleScreen = (props) => {
 					td: {
 						flexBasis: '100%',
 						flexShrink: 1,
-						backgroundColor: '#F0FFF0',
+						// backgroundColor: '#F0FFF0',
 						padding: 2,
 						margin: 1,
 					},
