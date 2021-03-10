@@ -1,11 +1,12 @@
 /* eslint-disable no-sequences */
 /* eslint-disable consistent-return */
 // *** NPM ***
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Platform, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 import Geolocation from '@react-native-community/geolocation';
 import RNBootSplash from 'react-native-bootsplash';
+import { PERMISSIONS, request, check } from 'react-native-permissions';
 
 // *** OTHER ***
 import LastScansCard from '../components/LastScansCard';
@@ -22,6 +23,7 @@ const MainScreen = ({ navigation }) => {
 	const [weather, setWeather] = useState();
 	const [moon, setMoon] = useState();
 	const [newsData, setNewsData] = useState(null);
+	const [weatherLoading, setWeatherLoading] = useState(null);
 
 	const isHermes = () => !!global.HermesInternal;
 
@@ -33,7 +35,7 @@ const MainScreen = ({ navigation }) => {
 				const data = startArray.slice(0, 9);
 				setScans(data);
 			})
-			.catch((error) => console.log(error.response));
+			.catch(() => /* console.log(error.response) */ null);
 		RNBootSplash.hide();
 	};
 
@@ -46,18 +48,55 @@ const MainScreen = ({ navigation }) => {
 			.catch((error) => console.log(error));
 	};
 
+	const askPerms = async () => {
+		if (Platform.OS === 'ios') {
+			check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then(async (result) => {
+				console.log('IOS LOCATION', result);
+				if (result === 'blocked') {
+					Alert.alert(
+						'Для доступа к прогнозу погоды необходимо предоставить доступ к геолокации в настройках телефона',
+					);
+				} else if (result === 'denied' || result === 'unavailable') {
+					console.log('START ASKING');
+					await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then((result) => {
+						console.log('IOS LOCATION', result);
+						getCoords();
+					});
+				}
+			});
+			getCoords();
+		} else {
+			check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION).then(async (result) => {
+				console.log('ANDROID LOCATION', result);
+				if (result === 'blocked') {
+					Alert.alert(
+						'Для доступа к прогнозу погоды необходимо предоставить доступ к геолокации в настройках телефона',
+					);
+				} else if (result === 'denied' || result === 'unavailable') {
+					console.log('START ASKING');
+					await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then((result) => {
+						console.log('ANDROID LOCATION', result);
+						getCoords();
+					});
+				}
+			});
+			getCoords();
+		}
+	};
+
 	const getCoords = () =>
 		Geolocation.getCurrentPosition(
 			(info) => {
 				checkWeather({ lon: info.coords.longitude, lat: info.coords.latitude });
 			},
 			(e) => {
-				console.log(e);
+				console.log('GET COORDS ERR', e);
 			},
 			{ timeout: 20000 },
 		);
 
 	const checkWeather = ({ lon, lat }) => {
+		setWeatherLoading(true);
 		weatherApi
 			.get('/weather', {
 				params: {
@@ -76,42 +115,41 @@ const MainScreen = ({ navigation }) => {
 					location: info.data.name,
 					coords: { lon, lat },
 				});
+				setWeatherLoading(false);
 			})
-			.catch((error) => console.log('!!!', error.response));
+			.catch((error) => {
+				console.log('!!!', error.response);
+				setWeatherLoading(false);
+			});
 	};
 
 	const getMoonPhase = () => {
-		const day = new Date().getDay();
+		const day = new Date().getDate();
 		const month = new Date().getMonth() + 1;
 		const year = new Date().getFullYear();
+		console.log('for moonphase', day, month, year);
 		const moonphase = Conway(day, month, year);
 
 		nodeApi
 			.get(`/garden-calendar/moon-phase-calendar/${moonphase}`)
 			.then((response) => {
-				console.log('MOON RESP', response.data);
+				/* console.log('MOON RESP', response.data); */
 				setMoon(response.data.data);
 			})
-			.catch((error) => console.log('MOON ERR', error));
+			.catch(() => /* console.log('MOON ERR', error) */ null);
 	};
 
 	useEffect(() => {
 		const getFocus = navigation.addListener('focus', () => {
 			getLastScans();
-			getCoords();
 			getArticles();
 			isHermes();
+			askPerms();
 			getMoonPhase();
 		});
 
 		return getFocus;
 	}, []);
-
-	const WeatherCardShow = () => {
-		if (weather) {
-			return <WeatherCard weatherInfo={weather} moonInfo={moon} />;
-		}
-	};
 
 	return (
 		<View style={{ backgroundColor: 'white', flex: 1 }}>
@@ -130,8 +168,12 @@ const MainScreen = ({ navigation }) => {
 					iconName="pagelines"
 					data={scans}
 				/>
-				{WeatherCardShow()}
-
+				<WeatherCard
+					weatherInfo={weather}
+					moonInfo={moon}
+					getLocation={() => askPerms()}
+					weatherLoading={weatherLoading}
+				/>
 				{/* FEEDBACK */}
 				<FeedBack />
 			</ScrollView>

@@ -20,21 +20,25 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 			.get(`/garden-planting/${gardenId}`)
 			.then((response) => {
 				const gardenData = groupObjectArrayByKey(response.data.data, 'garden_plant_name');
+				console.log('GD', gardenData);
 				setGardenPlants(gardenData);
 				setLoading(false);
 			})
-			.catch((error) => console.log('ERR', error.response));
+			.catch((error) => {
+				console.log('ERR', error.response);
+				setLoading(false);
+			});
 	};
 
 	useEffect(() => {
 		const unsubscribe = nav.addListener('focus', () => {
-			console.log('POCUS');
 			getGardenPlants();
 		});
 
 		return unsubscribe;
 	}, [nav]);
 
+	console.log('GP', gardenPlants);
 	const deleteAlert = (gardenId) => {
 		Alert.alert(
 			'Предупреждение',

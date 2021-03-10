@@ -204,7 +204,6 @@ const EditGardenForm = (props) => {
 const EditGardenModal = (props) => {
 	const [showModal, setShowModal] = useState(false);
 	const { getGardens, gardenId } = props;
-	console.log('EDIT PROPS', getGardens);
 
 	return (
 		<View>

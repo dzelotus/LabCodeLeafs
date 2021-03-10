@@ -7,6 +7,22 @@ import SQLite from 'react-native-sqlite-storage';
 const HelpScreen = () => {
 	const db = SQLite.openDatabase({ name: 'testDB.db', location: 'default' });
 
+	const successToOpenDb = () => {
+		alert('success');
+	};
+
+	const failToOpenDb = (err) => {
+		console.log(err);
+	};
+
+	const openDB = () => {
+		SQLite.openDatabase({
+			name: 'testDB.db',
+			location: 'default',
+		});
+		successToOpenDb(), failToOpenDb(err);
+	};
+
 	const getData = () => {
 		db.transaction((tx) => {
 			tx.executeSql('SELECT * FROM test_table', [], (tx, results) => {

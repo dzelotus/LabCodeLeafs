@@ -113,6 +113,7 @@ const GardenScreen = (props) => {
 	const gardenRender = () => {
 		if (gardenData) {
 			return gardenData.map((item) => {
+				console.log('GD ITE', item);
 				return (
 					<GardenWithPlantsCard
 						data={item}

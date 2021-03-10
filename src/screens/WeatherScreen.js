@@ -88,7 +88,7 @@ const WeatherScreen = (props) => {
 	};
 
 	const Indicator = () => (
-		<View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
+		<View>
 			<ActivityIndicator size="large" color="#379683" />
 		</View>
 	);
