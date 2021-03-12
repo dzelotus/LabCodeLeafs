@@ -1,8 +1,9 @@
-import { Text, View, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text, View, ActivityIndicator, TouchableOpacity } from 'react-native';
 
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
+import FastImage from 'react-native-fast-image';
 import nodeApi from '../api/nodeApi';
 
 const { Conway } = require('@lab-code/moonphase');
@@ -127,10 +128,11 @@ const MoonCalendarScreen = (props) => {
 					>
 						<Icon name="chevron-thin-left" size={50} color="#EB9156" />
 					</TouchableOpacity>
-					<Image
+					<FastImage
 						style={{ width: 150, height: 150, marginHorizontal: 20 }}
 						source={{ uri: moon.phase_image_url }}
 					/>
+
 					<TouchableOpacity
 						onPress={() => {
 							increaseDate();
@@ -139,6 +141,16 @@ const MoonCalendarScreen = (props) => {
 						<Icon name="chevron-thin-right" size={50} color="#EB9156" />
 					</TouchableOpacity>
 				</View>
+				<Text
+					style={{
+						textAlign: 'center',
+						fontSize: 20,
+						marginVertical: 10,
+						color: '#EB9156',
+					}}
+				>
+					{moon.phase_name}
+				</Text>
 				<Text
 					style={{ fontSize: 18, color: '#379683', textAlign: 'center', marginTop: 10 }}
 				>

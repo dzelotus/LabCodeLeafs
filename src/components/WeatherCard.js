@@ -8,12 +8,11 @@ import moment from 'moment';
 
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
+import { connect } from 'react-redux';
+import { resolveAuth } from '../actions/AuthActions';
 
-const LastScansCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading }) => {
-	console.log('WEATHER CARD', moonInfo);
+const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resolveAuth }) => {
 	const navigation = useNavigation();
-
-	console.log('NEW DATE', new Date().getDate());
 
 	moment.updateLocale('ru', {
 		months: [
@@ -227,6 +226,11 @@ const LastScansCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading }) =
 							height: 75,
 							justifyContent: 'center',
 						}}
+						onPress={() => {
+							/* Linking.openURL('App-Prefs:LOCATION_SERVICES'); */
+							resolveAuth({ prop: 'toAuthFlow', value: true });
+							resolveAuth({ prop: 'toSignupScreen', value: false });
+						}}
 					>
 						<Text style={{ textAlign: 'center', fontSize: 18, color: '#EB9156' }}>
 							Лунный календарь доступен только авторизированным пользователям
@@ -293,4 +297,10 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default LastScansCard;
+const mapStateToProps = ({ auth }) => {
+	const { fistLaunchToken, isSigned, loadStart, toSignupScreen, toAuthFlow } = auth;
+
+	return { fistLaunchToken, isSigned, loadStart, toSignupScreen, toAuthFlow };
+};
+
+export default connect(mapStateToProps, { resolveAuth })(WeatherCard);

@@ -57,6 +57,7 @@
 		"react-native-render-html": "^5.0.1",
 		"react-native-safe-area-context": "^3.1.4",
 		"react-native-screens": "^2.9.0",
+		"react-native-settings": "^0.2.3",
 		"react-native-sqlite-storage": "^5.0.0",
 		"react-native-unimodules": "^0.12.0",
 		"react-native-vector-icons": "^7.0.0",
@@ -68,6 +69,7 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.8.4",
+		"@babel/plugin-proposal-decorators": "^7.13.5",
 		"@babel/runtime": "^7.8.4",
 		"@react-native-community/eslint-config": "^1.1.0",
 		"babel-eslint": "^10.1.0",

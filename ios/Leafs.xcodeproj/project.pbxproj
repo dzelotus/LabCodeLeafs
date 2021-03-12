@@ -24,6 +24,7 @@
 		A9CBCF5425D2B72300035823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		A9CBD07F25D2C71400035823 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A9CBD07E25D2C71400035823 /* main.jsbundle */; };
 		A9CBD08925D2C72700035823 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = A9CBD08825D2C72700035823 /* assets */; };
+		A9E7683E25F9E8830020FF87 /* www in Resources */ = {isa = PBXBuildFile; fileRef = A9E7683D25F9E8830020FF87 /* www */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,8 @@
 		A9CBCA6D25D1378A00035823 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = leafs/BootSplash.storyboard; sourceTree = "<group>"; };
 		A9CBD07E25D2C71400035823 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		A9CBD08825D2C72700035823 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		A9E7683D25F9E8830020FF87 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../www; sourceTree = "<group>"; };
+		A9E7684325FA1F3A0020FF87 /* Leafs-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Leafs-Bridging-Header.h"; sourceTree = "<group>"; };
 		B48AD153C31EBB29EAA51765 /* Pods-Leafs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leafs.release.xcconfig"; path = "Target Support Files/Pods-Leafs/Pods-Leafs.release.xcconfig"; sourceTree = "<group>"; };
 		C499B522D2C59F5A16323861 /* libPods-Leafs-LeafsTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Leafs-LeafsTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8019E0E7BBEA39E27C51D73 /* Pods-Leafs-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leafs-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Leafs-tvOSTests/Pods-Leafs-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -134,6 +137,7 @@
 		13B07FAE1A68108700A75B9A /* Leafs */ = {
 			isa = PBXGroup;
 			children = (
+				A9E7683D25F9E8830020FF87 /* www */,
 				A9ADD2D725C18A2E00ABCD17 /* LeafsRelease.entitlements */,
 				A91DA25425C169FD006A075D /* LeafsDebug.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -194,6 +198,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				1D361210AA7618B4E7039337 /* Pods */,
+				A9E7684325FA1F3A0020FF87 /* Leafs-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -309,7 +314,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 97M39KRUZ4;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1240;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -356,6 +361,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9CBCF5425D2B72300035823 /* Images.xcassets in Resources */,
+				A9E7683E25F9E8830020FF87 /* www in Resources */,
 				A9CBCA6E25D1378A00035823 /* BootSplash.storyboard in Resources */,
 				A9CBD07F25D2C71400035823 /* main.jsbundle in Resources */,
 				A9CBD08925D2C72700035823 /* assets in Resources */,
@@ -703,7 +709,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 78F76F7151BF0A5AD9AA0A12 /* Pods-Leafs-LeafsTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -728,7 +733,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E8CBF5ABFAB33B0656CA9D73 /* Pods-Leafs-LeafsTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -769,6 +773,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Leafs;
+				SWIFT_OBJC_BRIDGING_HEADER = "Leafs-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -798,6 +803,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Leafs;
+				SWIFT_OBJC_BRIDGING_HEADER = "Leafs-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

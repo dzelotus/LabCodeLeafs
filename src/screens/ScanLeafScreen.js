@@ -35,8 +35,7 @@ const ScanLeafScreen = (route) => {
 
 	let camera;
 
-	const getImages = async () => {
-		console.log('CAMERA ROLL');
+	const getImages = async () => {		
 		await CameraRoll.getPhotos({
 			first: 20,
 			assetType: 'Photos',
@@ -49,8 +48,7 @@ const ScanLeafScreen = (route) => {
 		});
 	};
 
-	const dataMoreLoading = async () => {
-		console.log('ML START');
+	const dataMoreLoading = async () => {		
 		if (nextPage.has_next_page) {
 			await CameraRoll.getPhotos({
 				first: 20,

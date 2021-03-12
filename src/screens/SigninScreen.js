@@ -62,6 +62,9 @@ function SigninScreen(props) {
 		RNBootSplash.hide();
 		props.checkBioScanner();
 		isBioAuthActive ? fingerprintLogin() : null;
+		props.navigation.setOptions({
+			headerBackTitle: 'Назад',
+		});
 		/* AsyncStorage.removeItem('BioAuth'); */
 	}, []);
 

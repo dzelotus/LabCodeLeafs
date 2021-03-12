@@ -25,8 +25,8 @@ const LastScanScreen = (props) => {
 		let disease;
 
 		if (item.result.is_plant) {
-			status = item.result.plant;
-			disease = item.result.disease;
+			status = item.plant_name;
+			disease = item.disease_name === null ? 'Болезни не обнаружены' : item.disease_name;
 		} else {
 			status = 'Растение не обнаружено';
 		}

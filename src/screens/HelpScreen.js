@@ -1,38 +1,36 @@
 import React, { useEffect } from 'react';
-/* import { View, Text } from 'react-native'; */
 import { View, Text, Button, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import SQLite from 'react-native-sqlite-storage';
 
 const HelpScreen = () => {
-	const db = SQLite.openDatabase({ name: 'testDB.db', location: 'default' });
-
-	const successToOpenDb = () => {
-		alert('success');
-	};
-
-	const failToOpenDb = (err) => {
-		console.log(err);
-	};
-
-	const openDB = () => {
-		SQLite.openDatabase({
-			name: 'testDB.db',
-			location: 'default',
-		});
-		successToOpenDb(), failToOpenDb(err);
-	};
-
 	const getData = () => {
-		db.transaction((tx) => {
-			tx.executeSql('SELECT * FROM test_table', [], (tx, results) => {
-				console.log('len', results);
+		SQLite.openDatabase({
+			name: 'a',
+			location: 'default',
+			createFromLocation: '~www/users.db',
+		})
+			.then((res) => {
+				console.log('SUC', res);
+
+				fetchData(res);
+			})
+			.catch((err) => {
+				console.log('ERR', err);
+			});
+	};
+
+	const fetchData = (db) => {
+		db.transaction((txn) => {
+			txn.executeSql('SELECT * FROM users', [], (tx, results) => {
+				console.log('len', results.rows.item(0));
 			});
 		});
 	};
 
 	useEffect(() => {
-		getData();
+		SQLite.enablePromise(true);
+		SQLite.DEBUG(true);
 	}, []);
 
 	return (
@@ -45,6 +43,7 @@ const HelpScreen = () => {
 					AsyncStorage.removeItem('alreadyLaunched').then(() => Alert.alert('Убрано'))
 				}
 			/>
+			<Button title="DB FETCH" onPress={() => getData()} />
 		</View>
 	);
 };

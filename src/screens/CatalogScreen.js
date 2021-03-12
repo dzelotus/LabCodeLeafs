@@ -29,7 +29,7 @@ const CatalogScreen = (props) => {
 		nodeApi
 			.get(`/plant-protection/${item.item}`)
 			.then((response) => {
-				// console.log('RESP', JSON.stringify(response, null, 2));
+				console.log('RESP', JSON.stringify(response, null, 2));
 				setFetchedData(response.data.data);
 				setDisplayedData(response.data.data);
 				setLoading(false);
