@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'kotlin-android'
 apply plugin: 'com.google.gms.google-services'
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
@@ -137,7 +138,7 @@ android {
         applicationId "com.leafs"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
+        versionCode 20
         versionName "1.0.0"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
@@ -214,6 +215,8 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
 	implementation project(':react-native-bootsplash')
+
+    implementation project(':watermelondb')
 
     compile project(':react-native-vector-icons')
     

@@ -19,6 +19,9 @@ target 'Leafs' do
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec" 
   pod 'Permission-Reminders', :path => "#{permissions_path}/Reminders.podspec"
 
+  pod 'WatermelonDB', :path => '../node_modules/@nozbe/watermelondb'
+  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
+
   target 'LeafsTests' do
     inherit! :complete
     # Pods for testing

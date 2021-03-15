@@ -13,6 +13,8 @@
 	},
 	"dependencies": {
 		"@lab-code/moonphase": "^1.0.4",
+		"@nozbe/watermelondb": "^0.20.0",
+		"@nozbe/with-observables": "^1.0.8",
 		"@react-native-community/async-storage": "^1.11.0",
 		"@react-native-community/cameraroll": "^4.0.0",
 		"@react-native-community/cookies": "^4.0.1",
@@ -74,6 +76,7 @@
 		"@react-native-community/eslint-config": "^1.1.0",
 		"babel-eslint": "^10.1.0",
 		"babel-jest": "^25.1.0",
+		"better-sqlite3": "^7.1.2",
 		"eslint": "^7.12.1",
 		"eslint-config-airbnb": "^18.2.0",
 		"eslint-config-prettier": "^6.11.0",
