@@ -824,7 +824,7 @@ SPEC CHECKSUMS:
   react-native-image-picker: 248afb60a0c5a24153cb7c7483b257f30541323b
   react-native-netinfo: 52cf0ee8342548a485e28f4b09e56b477567244d
   react-native-safe-area-context: 0ed9288ed4409beabb0817b54efc047286fc84da
-  react-native-settings: 67977214c0f7d6062ad25581107c16a7a27af2a8
+  react-native-settings: 6fc0f38956f8e46460e01c97db7ec3d018f2fdc1
   react-native-sqlite-storage: ce71689c5a73b79390a1ab213555ae80979a5dc7
   react-native-viewpager: da0a7f2b33f1d8d46f1967f4d3e7680c89a86854
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
@@ -864,7 +864,7 @@ SPEC CHECKSUMS:
   UMReactNativeAdapter: c2a83677e340b1448d7dfa6412377dd8bbf62c2c
   UMSensorsInterface: d7e32791c7d4e0fa9ae3e76698624f90494b7bd9
   UMTaskManagerInterface: eee33176282a16e6348aabcbe89ebd363e69f9cb
-  WatermelonDB: 8218afe27577cf10215efeb024397bafd8c73128
+  WatermelonDB: a464c2fd480e9446833ecc4cf21331277c6afbfe
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
