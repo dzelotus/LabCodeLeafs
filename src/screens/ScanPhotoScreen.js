@@ -62,25 +62,18 @@ const ScanPhotoScreen = (route) => {
 				},
 			})
 			.then((response) => {
-				console.log('RESPPHOTO', response);
+				console.log('RESPPHOTO', response.data);
 				setLoading(false);
-				const result = response.data.data.disease;
-				const { status } = response.data.data;
-				const isPlant = response.data.data.is_plant;
-				if (result === 'healthy') {
-					Alert.alert('Сканирование выполнено', 'Ваше растение здоровое', [
-						{ text: 'OK', onPress: () => route.navigation.pop() },
-					]);
-				} else if (status === 'ERROR' || isPlant === false) {
+				if (response.data.data.ai_scan_response.is_plant) {
+					route.navigation.navigate('LastScanFullscreenPhoto', {
+						scansData: response.data,
+					});
+				} else {
 					Alert.alert(
 						'Ошибка',
 						'Не получается распознать растение или растение не обнаружено, попробуйте другое фото',
 						[{ text: 'OK', onPress: () => route.navigation.pop() }],
 					);
-				} else {
-					Alert.alert('Обнаружено заражение ', response.data.data.disease, [
-						{ text: 'OK', onPress: () => route.navigation.pop() },
-					]);
 				}
 			})
 			.catch((error) => {

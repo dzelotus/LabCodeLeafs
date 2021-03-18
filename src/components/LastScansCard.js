@@ -31,17 +31,16 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data, isSigned }
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
 			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
 
-		const compressedUrl = item.compressed_url ? item.compressed_url : item.image_url;
-		const compressedUrlReady = compressedUrl
+		/* const compressedUrl = item.compressed_url ? item.compressed_url : item.image_url; */
+		/* 	const compressedUrlReady = compressedUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
-			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
+			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/'); */
 
 		return (
 			<TouchableOpacity
 				onPress={() =>
-					navigation.navigate('LastScanFullscreen', {
-						screen: 'LastScanFullscreenPhoto',
-						params: { uri: compressedUrlReady, route: 'Main', show: true },
+					navigation.navigate('LastScanFullscreenPhoto', {
+						data: item,
 					})
 				}
 			>

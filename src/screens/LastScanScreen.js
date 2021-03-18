@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 const LastScanScreen = (props) => {
@@ -44,23 +44,14 @@ const LastScanScreen = (props) => {
 						paddingBottom: 10,
 					}}
 				>
-					<TouchableOpacity
-						onPress={() =>
-							navigation.navigate('LastScanFullscreen', {
-								screen: 'LastScanFullscreenPhoto',
-								params: { uri: imageUrlReady, route: 'LastScan', show: true },
-							})
-						}
-					>
-						<FastImage
-							resizeMode="contain"
-							style={{
-								height: 200,
-								width: 200,
-							}}
-							source={{ uri: imageUrlReady }}
-						/>
-					</TouchableOpacity>
+					<FastImage
+						resizeMode="contain"
+						style={{
+							height: 200,
+							width: 200,
+						}}
+						source={{ uri: imageUrlReady }}
+					/>
 					<View
 						style={{
 							paddingLeft: 10,
@@ -71,6 +62,16 @@ const LastScanScreen = (props) => {
 						<Text style={{ fontWeight: 'bold' }}>Результат сканирования:</Text>
 						<Text style={{ marginTop: 5 }}>{status}</Text>
 						<Text style={{ marginTop: 5 }}>{disease}</Text>
+						<TouchableOpacity
+							style={styles.buttonStyle}
+							onPress={() =>
+								navigation.navigate('LastScanFullscreenPhoto', {
+									data: item,
+								})
+							}
+						>
+							<Text>Подробнее</Text>
+						</TouchableOpacity>
 					</View>
 				</View>
 			</View>
@@ -99,5 +100,26 @@ const LastScanScreen = (props) => {
 		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	buttonStyle: {
+		marginHorizontal: 5,
+		marginVertical: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		borderRadius: 10,
+		borderColor: '#379683',
+		borderWidth: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+});
 
 export default LastScanScreen;

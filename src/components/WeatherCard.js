@@ -13,7 +13,6 @@ import { resolveAuth } from '../actions/AuthActions';
 
 const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resolveAuth }) => {
 	const navigation = useNavigation();
-	console.log('weather', weatherInfo);
 
 	moment.updateLocale('ru', {
 		months: [
