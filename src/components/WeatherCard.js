@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import { resolveAuth } from '../actions/AuthActions';
+import imageSwitch from '../assets/weatherIcon';
 
 const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resolveAuth }) => {
 	const navigation = useNavigation();
@@ -32,7 +33,7 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 	});
 	const now = moment().locale('ru').format('D MMMM');
 
-	const imageSwitch = (icon) => {
+	/* const imageSwitch = (icon) => {
 		switch (icon) {
 			case '01n':
 				return require('../../assets/weatherImages/01n.png');
@@ -73,7 +74,7 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 			default:
 				return require('../../assets/weatherImages/01n.png');
 		}
-	};
+	}; */
 
 	const Indicator = () => (
 		<View style={{ alignSelf: 'center', flex: 1 }}>

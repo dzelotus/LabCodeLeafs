@@ -79,7 +79,7 @@ const LastScanScreen = (props) => {
 	};
 
 	return (
-		<View style={{ flex: 1, marginBottom: 10 }}>
+		<View style={{ flex: 1, marginBottom: 10, backgroundColor: 'white' }}>
 			<Text
 				style={{
 					textAlign: 'center',

@@ -74,7 +74,7 @@ const HelpScreen = () => {
 		<View>
 			<Text>Экран помощи</Text>
 			<Text>В разработке</Text>
-			<Button
+			{/* <Button
 				title="Убрать токен первого запуска"
 				onPress={() =>
 					AsyncStorage.removeItem('alreadyLaunched').then(() => Alert.alert('Убрано'))
@@ -82,7 +82,7 @@ const HelpScreen = () => {
 			/>
 			<Button title="DB FETCH" onPress={() => allPosts()} />
 			<Button title="DB ADD" onPress={() => savePost()} />
-			<Post />
+			<Post /> */}
 		</View>
 	);
 };

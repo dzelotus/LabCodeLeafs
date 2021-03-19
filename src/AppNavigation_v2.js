@@ -70,16 +70,6 @@ const MainFlow = () => (
 	</Stack.Navigator>
 );
 
-/* const LastScanFullscreen = () => (
-	<Stack.Navigator>
-		<Stack.Screen
-			name="LastScanFullscreenPhoto"
-			component={LastScanFullscreenPhotoScreen}
-			options={{ headerShown: false }}
-		/>
-	</Stack.Navigator>
-);
- */
 const ProfileFlow = () => (
 	<Stack.Navigator screenOptions={{ title: 'Профиль', headerTintColor: '#379683' }}>
 		<Stack.Screen name="Profile" component={ProfileScreen} />
@@ -158,7 +148,6 @@ const TabNavigator = () => (
 					<Pressable android_ripple={{ color: '#379683', borderless: true }} {...props} />
 				),
 			}}
-			initialParams={{ data: 'suck' }}
 		/>
 
 		<Tab.Screen

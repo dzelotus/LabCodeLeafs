@@ -135,10 +135,11 @@ const CatalogScreen = (props) => {
 					borderBottomColor: '#cfcfcf',
 				}}
 			/>
-			<View style={{ paddingBottom: 60 }}>
+			<View style={{ flex: 1, paddingBottom: 10 }}>
 				<FlatList
 					data={displayedData}
 					keyExtractor={(item) => item.name}
+					style={{ flex: 1 }}
 					renderItem={({ item }) => (
 						<TouchableOpacity
 							onPress={() => props.navigation.navigate(navScreen, { item })}

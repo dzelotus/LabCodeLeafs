@@ -7,22 +7,16 @@ import {
 	Alert,
 	TouchableOpacity,
 	ScrollView,
-	ActivityIndicator,
+	Dimensions,
 } from 'react-native';
-import HTML from 'react-native-render-html';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import nodeApi from '../api/nodeApi';
 
 const LastScanFullscreenPhotoScreen = (props) => {
 	const [stateData, setStateData] = useState(null);
-	const [loading, setLoading] = useState(null);
-	const [plant, setPlant] = useState(null);
-	const [disease, setDisease] = useState(null);
-	const [showPlant, setShowPlant] = useState(false);
-	const [showDisease, setShowDisease] = useState(false);
+
 	const { route } = props;
-	console.log('FULL SCREEN', props);
 
 	const getLastScans = async (scanId) => {
 		await nodeApi
@@ -43,102 +37,71 @@ const LastScanFullscreenPhotoScreen = (props) => {
 
 			getLastScans(scanId);
 		}
+		props.navigation.setOptions({
+			headerTruncatedBackTitle: 'Назад',
+		});
 	}, []);
 
 	const getPlant = () => {
-		if (!plant) {
-			setLoading(true);
-			nodeApi
-				.get(`/plant-protection/plant/${stateData.plant_id}`)
-				.then((response) => {
-					console.log('RESP', JSON.stringify(response, null, 2));
-					setPlant(response.data.data);
-					setLoading(false);
-				})
-				.catch((error) => {
-					console.log('ERROR', error.response);
-					setLoading(false);
+		nodeApi
+			.get(`/plant-protection/plant/${stateData.plant_id}`)
+			.then((response) => {
+				console.log('RESP', JSON.stringify(response, null, 2));
+				props.navigation.navigate('Catalog', {
+					screen: 'CatalogPlant',
+					params: { item: response.data.data },
+					initial: false,
 				});
-		}
-		return null;
+			})
+			.catch((error) => {
+				console.log('ERROR', error.response);
+			});
 	};
 
 	const getDisease = () => {
-		if (!disease) {
-			setLoading(true);
-			nodeApi
-				.get(`/plant-protection/disease/${stateData.disease_id}`)
-				.then((response) => {
-					console.log('RESP', JSON.stringify(response, null, 2));
-					setDisease(response.data.data);
-					setLoading(false);
-				})
-				.catch((error) => {
-					console.log('ERROR', error.response);
-					setLoading(false);
+		nodeApi
+			.get(`/plant-protection/disease/${stateData.disease_id}`)
+			.then((response) => {
+				console.log('RESP', JSON.stringify(response, null, 2));
+				props.navigation.navigate('Catalog', {
+					screen: 'CatalogDisease',
+					params: { item: response.data.data },
+					initial: false,
 				});
-		}
-		return null;
+			})
+			.catch((error) => {
+				console.log('ERROR', error.response);
+			});
 	};
 
 	const ShowPlant = () => {
 		if (stateData.plant_id) {
 			return (
-				<View style={styles.additionalInfo}>
+				<View style={styles.plantInfo}>
+					<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Растение</Text>
 					<TouchableOpacity
 						style={{ flexDirection: 'row', paddingVertical: 10 }}
 						onPress={() => {
 							getPlant();
-							setShowPlant(!showPlant);
 						}}
 					>
-						<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+						<Text style={{ fontSize: 18, textAlignVertical: 'center' }}>
 							{stateData.plant_name}
 						</Text>
 						<FontAwesome
-							name={showPlant ? 'chevron-up' : 'chevron-down'}
+							name="chevron-right"
 							size={20}
 							color="#379683"
-							style={{ flex: 1, paddingLeft: 10 }}
+							style={{ flex: 1, paddingLeft: 10, alignSelf: 'center' }}
 						/>
 					</TouchableOpacity>
-					{showPlant ? plantData() : null}
 				</View>
 			);
 		}
 		return (
-			<View>
-				<Text>Растение не обнаружено</Text>
-			</View>
-		);
-	};
-
-	const plantData = () => {
-		if (!loading) {
-			return (
-				<View>
-					<HTML source={{ html: plant.content }} />
-				</View>
-			);
-		}
-		return (
-			<View style={{ flex: 1 }}>
-				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
-			</View>
-		);
-	};
-
-	const diseaseData = () => {
-		if (disease) {
-			return (
-				<View>
-					<HTML source={{ html: disease.content }} />
-				</View>
-			);
-		}
-		return (
-			<View style={{ flex: 1 }}>
-				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
+			<View style={styles.plantInfo}>
+				<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Растение</Text>
+				<Text style={{ paddingVertical: 10, fontSize: 18 }}>Растение не обнаружено</Text>
 			</View>
 		);
 	};
@@ -146,31 +109,31 @@ const LastScanFullscreenPhotoScreen = (props) => {
 	const ShowDisease = () => {
 		if (stateData.disease_id) {
 			return (
-				<View style={styles.additionalInfo}>
+				<View style={styles.diseaseInfo}>
+					<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Заболевание</Text>
 					<TouchableOpacity
 						style={{ flexDirection: 'row', paddingVertical: 10 }}
 						onPress={() => {
 							getDisease();
-							setShowDisease(!showDisease);
 						}}
 					>
 						<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
 							{stateData.disease_name}
 						</Text>
 						<FontAwesome
-							name={showDisease ? 'chevron-up' : 'chevron-down'}
+							name="chevron-right"
 							size={20}
 							color="#379683"
 							style={{ flex: 1, paddingLeft: 10 }}
 						/>
 					</TouchableOpacity>
-					{showDisease ? diseaseData() : null}
 				</View>
 			);
 		}
 		return (
-			<View>
-				<Text>Болезни не обнаружены</Text>
+			<View style={styles.diseaseInfo}>
+				<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Заболевание</Text>
+				<Text style={{ paddingVertical: 10, fontSize: 18 }}>Заболевание не обнаружены</Text>
 			</View>
 		);
 	};
@@ -183,13 +146,13 @@ const LastScanFullscreenPhotoScreen = (props) => {
 			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
 
 		return (
-			<ScrollView style={{ flex: 1 }}>
+			<ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
 				<Image
 					source={{ uri: imageUrlReady }}
 					style={{
 						resizeMode: 'contain',
-						width: 200,
-						height: 200,
+						flex: 1,
+						height: 400,
 					}}
 				/>
 				<ShowPlant />
@@ -200,6 +163,25 @@ const LastScanFullscreenPhotoScreen = (props) => {
 	return null;
 };
 
-const styles = StyleSheet.create({});
+const window = Dimensions.get('screen').height / 2;
+console.log(window);
+
+const styles = StyleSheet.create({
+	image: {
+		resizeMode: 'contain',
+		flex: 1,
+		height: window,
+	},
+	cardStyle: {
+		flex: 1,
+		backgroundColor: 'white',
+	},
+	plantInfo: {
+		marginHorizontal: 10,
+	},
+	diseaseInfo: {
+		marginHorizontal: 10,
+	},
+});
 
 export default LastScanFullscreenPhotoScreen;

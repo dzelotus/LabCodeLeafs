@@ -109,8 +109,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 16,
-		marginTop: 5,
-		backgroundColor: '#f4f4f4',
+		backgroundColor: 'white',
 	},
 	additionalInfo: {
 		shadowColor: '#000',
