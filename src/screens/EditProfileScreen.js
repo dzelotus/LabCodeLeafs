@@ -9,6 +9,7 @@ import {
 	ActivityIndicator,
 	ScrollView,
 	Alert,
+	StyleSheet,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { inputChange, getProfileInfo, updateProfileInfo } from '../actions/EditProfileActions';
@@ -37,11 +38,11 @@ const EditProfileScreen = (props) => {
 		}
 		return (
 			<Button
-				style={{ marginHorizontal: 15 }}
-				title="Обновить профиль"
+				style={{ marginHorizontal: 60 }}
+				title="Сохранить"
 				onPress={() => onButtonPress()}
-				containerStyle={{ paddingHorizontal: 10 }}
-				buttonStyle={{ backgroundColor: '#379683' }}
+				containerStyle={{ marginHorizontal: 60 }}
+				buttonStyle={{ backgroundColor: '#116B58' }}
 			/>
 		);
 	};
@@ -78,19 +79,19 @@ const EditProfileScreen = (props) => {
 							textAlign: 'center',
 							fontSize: 15,
 							fontWeight: 'bold',
+							backgroundColor: '#116B58',
+							marginHorizontal: 60,
+							color: '#FFFFFF',
+							height: 35,
+							borderRadius: 5,
+							textAlignVertical: 'center',
 						}}
 					>
-						Сменить фото профиля
+						Изменить фото
 					</Text>
 				</TouchableOpacity>
-				<View
-					style={{
-						marginHorizontal: 10,
-						borderBottomColor: '#379683',
-						borderBottomWidth: 1,
-					}}
-				>
-					<Text>Имя</Text>
+				<View style={styles.inputContainer}>
+					<Text style={styles.inputLabel}>Имя</Text>
 					<TextInput
 						value={name}
 						onChangeText={(text) => {
@@ -101,14 +102,8 @@ const EditProfileScreen = (props) => {
 						}}
 					/>
 				</View>
-				<View
-					style={{
-						marginHorizontal: 10,
-						borderBottomColor: '#379683',
-						borderBottomWidth: 1,
-					}}
-				>
-					<Text>Фамилия</Text>
+				<View style={styles.inputContainer}>
+					<Text style={styles.inputLabel}>Фамилия</Text>
 					<TextInput
 						value={surname}
 						onChangeText={(text) => {
@@ -130,6 +125,25 @@ const mapStateToProps = ({ profile }) => {
 
 	return { name, surname, location, photo, data, _csrf, loading };
 };
+
+const styles = StyleSheet.create({
+	inputLabel: {
+		fontSize: 15,
+		color: '#116B58',
+	},
+	inputContainer: {
+		marginHorizontal: 40,
+		marginTop: 20,
+		borderBottomColor: '#379683',
+		borderBottomWidth: 1,
+	},
+	focusedInput: {
+		backgroundColor: '#D3D3D3',
+	},
+	inputInput: {
+		paddingRight: 'auto',
+	},
+});
 
 export default connect(mapStateToProps, {
 	inputChange,
