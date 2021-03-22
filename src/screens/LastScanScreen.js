@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
+/* import FastImage from 'react-native-fast-image'; */
 
 const LastScanScreen = (props) => {
 	console.log('PROPS', props);
@@ -16,7 +16,7 @@ const LastScanScreen = (props) => {
 	const renderItem = ({ item }) => {
 		console.log('photo', item);
 
-		const imageUrl = item.compressed_url ? item.compressed_url : item.image_url;
+		const imageUrl = item.compressed_url;
 		const imageUrlReady = imageUrl
 			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
 			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
@@ -44,7 +44,7 @@ const LastScanScreen = (props) => {
 						paddingBottom: 10,
 					}}
 				>
-					<FastImage
+					<Image
 						resizeMode="contain"
 						style={{
 							height: 200,
@@ -79,7 +79,7 @@ const LastScanScreen = (props) => {
 	};
 
 	return (
-		<View style={{ flex: 1, marginBottom: 10, backgroundColor: 'white' }}>
+		<View style={{ flex: 1, paddingBottom: 10, backgroundColor: 'white' }}>
 			<Text
 				style={{
 					textAlign: 'center',

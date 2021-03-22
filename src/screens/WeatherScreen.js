@@ -71,7 +71,7 @@ const WeatherScreen = (props) => {
 	const Weath = () => {
 		if (weather) {
 			return weather.map((item) => {
-				console.log('ITEM', item.weather[0]);
+				console.log('ITEM', item);
 				const date = new Date(item.dt * 1000);
 				const readyDate = moment(date).format('DD MMMM, dddd');
 				const dayTemp = Number.parseInt(item.temp.day, 10);
@@ -142,9 +142,9 @@ const WeatherScreen = (props) => {
 										fontSize: 16,
 									}}
 								>
+									<TempRow temp={mornTemp} />
 									<TempRow temp={dayTemp} />
 									<TempRow temp={eveTemp} />
-									<TempRow temp={mornTemp} />
 									<TempRow temp={nightTemp} />
 								</View>
 							</View>
