@@ -8,6 +8,7 @@ import {
 	SIGNIN_SUCCESS,
 	HAS_BIO_SCANNER,
 	IS_BIO_AUTH_ACTIVE,
+	IS_INTERNET_AVAILABLE,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -56,6 +57,8 @@ export default (state = INITIAL_STATE, action) => {
 			};
 		case IS_BIO_AUTH_ACTIVE:
 			return { ...state, isBioAuthActive: action.isBioAuthActive };
+		case IS_INTERNET_AVAILABLE:
+			return { ...state, isInternetAvailable: action.isInternetAvailable };
 		default:
 			return state;
 	}

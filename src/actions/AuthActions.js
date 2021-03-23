@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
+import NetInfo from '@react-native-community/netinfo';
 import {
 	CLEAR_ERROR_MESSAGE,
 	GET_CSRF,
@@ -10,6 +11,7 @@ import {
 	SIGNIN_FAIL,
 	SIGNIN_SUCCESS,
 	IS_BIO_AUTH_ACTIVE,
+	IS_INTERNET_AVAILABLE,
 } from './types';
 import nodeApi from '../api/nodeApi';
 
@@ -202,4 +204,13 @@ export const checkBioScanner = () => (dispatch) => {
 			dispatch({ type: IS_BIO_AUTH_ACTIVE, isBioAuthActive: false });
 			console.log('ERROR HERE', error);
 		});
+};
+
+export const checkInternetConnection = () => (dispatch) => {
+	NetInfo.fetch().then((state) => {
+		dispatch({
+			type: IS_INTERNET_AVAILABLE,
+			isInternetAvailable: state.isConnected,
+		});
+	});
 };
