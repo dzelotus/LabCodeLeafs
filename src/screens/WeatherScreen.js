@@ -86,7 +86,7 @@ const WeatherScreen = (props) => {
 						<View style={{ flexDirection: 'row', flex: 1, marginVertical: 10 }}>
 							<Image
 								source={imageSwitch(weatherIcon)}
-								resizeMode="center"
+								resizeMode="contain"
 								resizeMethod="resize"
 								style={{ width: 75, height: 75 }}
 							/>

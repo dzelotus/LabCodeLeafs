@@ -12,7 +12,14 @@ import { connect } from 'react-redux';
 import { resolveAuth } from '../actions/AuthActions';
 import imageSwitch from '../assets/weatherIcon';
 
-const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resolveAuth }) => {
+const WeatherCard = ({
+	moonInfo,
+	weatherInfo,
+	getLocation,
+	weatherLoading,
+	resolveAuth,
+	isSigned,
+}) => {
 	const navigation = useNavigation();
 
 	moment.updateLocale('ru', {
@@ -122,7 +129,7 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 									<Image
 										style={styles.image}
 										source={imageSwitch(weatherInfo.icon)}
-										resizeMode="center"
+										resizeMode="contain"
 										resizeMethod="resize"
 									/>
 								</View>
@@ -235,7 +242,7 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 							</View>
 						</View>
 					</TouchableOpacity>
-				) : (
+				) : !isSigned ? (
 					<TouchableOpacity
 						style={{
 							height: 75,
@@ -251,6 +258,8 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 							Лунный календарь доступен только авторизированным пользователям
 						</Text>
 					</TouchableOpacity>
+				) : (
+					<Indicator />
 				)}
 			</View>
 		</View>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, useWindowDimensions, Dimensions } from 'react-native';
 import HTML from 'react-native-render-html';
 
 const ArticleScreen = (props) => {
@@ -17,48 +17,38 @@ const ArticleScreen = (props) => {
 		}
 	});
 
+	const contentWidth = useWindowDimensions().width;
+	const computeEmbeddedMaxWidth = (availableWidth) => {
+		return Math.min(availableWidth, 500);
+	};
+
 	return (
 		<ScrollView style={styles.container}>
 			<HTML
+				containerStyle={{ marginVertical: 15 }}
 				source={{ html: article }}
 				tagsStyles={{
-					b: { fontSize: 18, paddingBottom: 50 },
+					div: { flex: 1, fontSize: 16 },
 					p: { fontSize: 16, paddingBottom: 15 },
+					i: { fontSize: 16, fontWeight: 'bold' },
 				}}
-				classesStyles={{
-					table: {
-						marginTop: 15,
-					},
-					th: {
-						flexBasis: '100%',
-						flexGrow: 1,
-						// backgroundColor: '#F0FFF0',
-						padding: 2,
-						margin: 1,
-						fontWeight: 'bold',
-					},
-					tr: {
-						flexDirection: 'row',
-					},
-					td: {
-						flexBasis: '100%',
-						flexShrink: 1,
-						// backgroundColor: '#F0FFF0',
-						padding: 2,
-						margin: 1,
-					},
-				}}
+				contentWidth={contentWidth}
+				computeEmbeddedMaxWidth={computeEmbeddedMaxWidth}
+				ignoredStyles={['width']}
 			/>
 		</ScrollView>
 	);
 };
 
+const wid = Dimensions.get('screen').width;
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		paddingHorizontal: 16,
-		marginTop: 5,
-		backgroundColor: '#f4f4f4',
+		paddingBottom: 15,
+		backgroundColor: 'white',
+		width: wid,
 	},
 });
 

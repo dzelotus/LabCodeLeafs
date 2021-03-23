@@ -113,7 +113,7 @@ const CatalogScreen = (props) => {
 
 	if (loading) {
 		return (
-			<View style={{ flex: 1 }}>
+			<View style={{ flex: 1, backgroundColor: 'white' }}>
 				<MainButtons />
 				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
 			</View>

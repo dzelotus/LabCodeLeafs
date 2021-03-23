@@ -36,6 +36,7 @@ import CatalogDiseaseScreen from './screens/CatalogDiseaseScreen';
 import CatalogHealScreen from './screens/CatalogHealScreen';
 import WeatherScreen from './screens/WeatherScreen';
 import MoonCalendarScreen from './screens/MoonCalendarScreen';
+import NotAuthUserScreen from './screens/NotAuthScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -67,6 +68,7 @@ const MainFlow = () => (
 			options={{ headerTitle: 'Мои сканирования' }}
 		/>
 		<Stack.Screen name="LastScanFullscreenPhoto" component={LastScanFullscreenPhotoScreen} />
+		<Stack.Screen name="NotAuthScreen" component={NotAuthUserScreen} />
 	</Stack.Navigator>
 );
 

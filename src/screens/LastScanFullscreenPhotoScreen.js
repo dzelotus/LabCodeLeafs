@@ -117,9 +117,7 @@ const LastScanFullscreenPhotoScreen = (props) => {
 							getDisease();
 						}}
 					>
-						<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-							{stateData.disease_name}
-						</Text>
+						<Text style={{ fontSize: 18 }}>{stateData.disease_name}</Text>
 						<FontAwesome
 							name="chevron-right"
 							size={20}
@@ -142,8 +140,8 @@ const LastScanFullscreenPhotoScreen = (props) => {
 
 	if (stateData) {
 		const imageUrlReady = stateData.compressed_url
-			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
-			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
+			.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
+			.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/');
 
 		return (
 			<ScrollView style={{ flex: 1, backgroundColor: 'white' }}>

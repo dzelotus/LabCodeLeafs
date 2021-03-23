@@ -136,7 +136,7 @@ const MainScreen = ({ navigation }) => {
 				/* console.log('MOON RESP', response.data); */
 				setMoon(response.data.data);
 			})
-			.catch(() => /* console.log('MOON ERR', error) */ null);
+			.catch((error) => console.log('MOON ERR', error.response));
 	};
 
 	useEffect(() => {

@@ -9,6 +9,7 @@ import {
 const INITIAL_STATE = {
 	name: '',
 	surname: '',
+	username: '',
 	location: '',
 	photo: '',
 	screenLoading: true,
@@ -24,8 +25,9 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				name: action.name,
 				surname: action.surname,
+				username: action.username,
 				photo: action.avatar,
-				screenLoading: true,
+				screenLoading: action.screenLoading,
 			};
 		case GET_PROFILE_CSRF:
 			return { ...state };

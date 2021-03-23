@@ -8,6 +8,7 @@ export const inputChange = ({ prop, value }) => ({
 });
 
 export const getProfileInfo = () => (dispatch) => {
+	dispatch({ type: GET_PROFILE_INFO, screenLoading: true });
 	nodeApi
 		.get('/profile')
 		.then((response) => {
@@ -17,6 +18,7 @@ export const getProfileInfo = () => (dispatch) => {
 				name: response.data.data.name,
 				surname: response.data.data.surname,
 				photo: response.data.data.logo_url,
+				username: response.data.data.username,
 				screenLoading: false,
 			});
 		})

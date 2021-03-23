@@ -1,6 +1,14 @@
-import { Alert, Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+	Alert,
+	Image,
+	StyleSheet,
+	Text,
+	View,
+	TouchableOpacity,
+	ActivityIndicator,
+} from 'react-native';
 import React, { useEffect } from 'react';
-import Ripple from 'react-native-material-ripple';
+
 import { connect } from 'react-redux';
 import nodeApi from '../api/nodeApi';
 import { resolveAuth } from '../actions/AuthActions';
@@ -11,6 +19,8 @@ const ProfileScreen = (route) => {
 	useEffect(() => {
 		route.getProfileInfo();
 	}, []);
+
+	console.log('ROUTE', route);
 
 	const createTwoButtonAlert = () => {
 		Alert.alert(
@@ -46,6 +56,14 @@ const ProfileScreen = (route) => {
 		);
 	}
 
+	if (route.screenLoading) {
+		return (
+			<View style={{ flex: 1, backgroundColor: 'white' }}>
+				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
+			</View>
+		);
+	}
+
 	return (
 		<View style={{ flex: 1, backgroundColor: 'white' }}>
 			<View
@@ -64,17 +82,16 @@ const ProfileScreen = (route) => {
 			</View>
 			<View style={{ flex: 1 }}>
 				<View>
-					<Ripple
-						rippleDuration={700}
+					<TouchableOpacity
 						onPress={() => {
 							route.navigation.navigate('EditProfile');
 						}}
-						style={styles.menuButton}
+						style={styles.buttonStyle}
 					>
 						<View>
 							<Text style={styles.buttonText}>Редактировать профиль</Text>
 						</View>
-					</Ripple>
+					</TouchableOpacity>
 					{/* <Ripple */}
 					{/*	rippleDuration={700} */}
 					{/*	onPress={() => { */}
@@ -110,23 +127,38 @@ const ProfileScreen = (route) => {
 					style={{
 						flex: 1,
 						marginLeft: 15,
-						alignSelf: 'center',
 					}}
 				>
-					<Text style={styles.name}>
-						{!route.name ? (
-							<Text style={{ color: 'red' }}>Имя не заполнено</Text>
-						) : (
-							route.name
-						)}
-					</Text>
-					<Text style={styles.name}>
-						{!route.surname ? (
-							<Text style={{ color: 'red' }}>Фамилия не заполнена</Text>
-						) : (
-							route.surname
-						)}
-					</Text>
+					<View style={styles.rowContainer}>
+						<Text style={styles.rowName}>Имя пользователя:</Text>
+						<Text style={styles.name}>
+							{!route.username ? (
+								<Text style={{ color: 'red' }}>Имя пользователя не доступно</Text>
+							) : (
+								route.username
+							)}
+						</Text>
+					</View>
+					<View style={styles.rowContainer}>
+						<Text style={styles.rowName}>Имя:</Text>
+						<Text style={styles.name}>
+							{!route.name ? (
+								<Text style={{ color: 'red' }}>Имя не заполнено</Text>
+							) : (
+								route.name
+							)}
+						</Text>
+					</View>
+					<View style={styles.rowContainer}>
+						<Text style={styles.rowName}>Фамилия:</Text>
+						<Text style={styles.name}>
+							{!route.surname ? (
+								<Text style={{ color: 'red' }}>Фамилия не заполнена</Text>
+							) : (
+								route.surname
+							)}
+						</Text>
+					</View>
 				</View>
 				<View
 					style={{
@@ -135,7 +167,7 @@ const ProfileScreen = (route) => {
 						marginBottom: 15,
 					}}
 				>
-					<TouchableOpacity onPress={createTwoButtonAlert} style={styles.menuButton}>
+					<TouchableOpacity onPress={createTwoButtonAlert} style={styles.buttonStyle}>
 						<View>
 							<Text style={styles.buttonText}>Выход</Text>
 						</View>
@@ -149,24 +181,16 @@ const ProfileScreen = (route) => {
 const styles = StyleSheet.create({
 	name: {
 		fontSize: 18,
-		fontWeight: 'bold',
-		marginTop: 10,
+		marginLeft: 10,
+		flex: 1,
 	},
-	menuButton: {
-		flexDirection: 'column',
-		justifyContent: 'center',
-		marginRight: 55,
-		marginLeft: 55,
-		paddingLeft: 10,
-		height: 35,
-		backgroundColor: '#116B58',
-		borderRadius: 5,
-	},
+	rowName: { fontSize: 18, flex: 1 },
+	rowContainer: { marginTop: 5, flexDirection: 'row' },
 	buttonText: {
 		fontSize: 18,
 		textAlignVertical: 'center',
 		textAlign: 'center',
-		color: '#FFFFFF',
+		color: '#EB9156',
 	},
 	imageStyle: {
 		borderColor: 'green',
@@ -193,7 +217,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		backgroundColor: '#fff',
 		alignItems: 'center',
-		height: 50,
+		height: 40,
 		justifyContent: 'center',
 	},
 });
@@ -202,9 +226,9 @@ ProfileScreen.navigationOptions = () => ({ title: 'Профиль' });
 
 const mapStateToProps = ({ auth, profile }) => {
 	const { fistLaunchToken, isSigned } = auth;
-	const { name, surname } = profile;
+	const { name, surname, username, screenLoading } = profile;
 
-	return { fistLaunchToken, isSigned, name, surname };
+	return { fistLaunchToken, isSigned, name, surname, username, screenLoading };
 };
 
 export default connect(mapStateToProps, { resolveAuth, getProfileInfo })(ProfileScreen);
