@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -8,18 +9,25 @@ import {
 	Image,
 	ActivityIndicator,
 	ScrollView,
-	Alert,
 	StyleSheet,
 } from 'react-native';
-import { inputChange, getProfileInfo, updateProfileInfo } from '../actions/EditProfileActions';
+import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontistoIcon from 'react-native-vector-icons/Fontisto';
+import {
+	inputChange,
+	getProfileInfo,
+	updateProfileInfo,
+	setPhoto,
+} from '../actions/EditProfileActions';
 
 const EditProfileScreen = (props) => {
 	console.log('THIS IS PROPS', props);
 
 	const onButtonPress = () => {
-		const { name, surname } = props;
+		const { name, surname, photo } = props;
 
-		props.updateProfileInfo({ name, surname });
+		props.updateProfileInfo({ name, surname, photo });
 	};
 
 	const { screenLoading, photo, name, surname } = props;
@@ -45,6 +53,62 @@ const EditProfileScreen = (props) => {
 			</TouchableOpacity>
 		);
 	};
+	console.log('PHOTO SCREEN', photo);
+
+	const openCamera = () => {
+		ImagePicker.launchCameraAsync()
+			.then((res) => {
+				console.log('RES', res);
+				if (!res.cancelled) {
+					props.setPhoto(res.uri);
+				}
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const openLibrary = () => {
+		ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			aspect: [4, 3],
+			allowsEditing: true,
+		})
+			.then((res) => {
+				console.log('RES', res);
+				if (!res.cancelled) {
+					props.setPhoto(res.uri);
+				}
+			})
+			.catch((error) => console.log(error));
+	};
+
+	const Avatar = () => {
+		if(photo) {
+			const photoUri = photo
+				.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
+				.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/')
+			return (
+				<Image
+					style={{
+						flex: 1,
+						height: 300,
+						marginTop: 10,
+					}}
+					source={{
+						uri: photoUri,
+					}}
+					resizeMode="contain"
+				/>
+			)
+		} 
+		return (
+			<View style={{ alignSelf: 'center', marginTop: 10, height: 300, justifyContent: 'center'}}>
+				<FontistoIcon name="user-secret" size={150}  />
+			</View>
+		)
+		
+	}
+
+
 
 	if (screenLoading) {
 		return (
@@ -56,30 +120,15 @@ const EditProfileScreen = (props) => {
 	return (
 		<View style={{ backgroundColor: 'white', flex: 1 }}>
 			<ScrollView keyboardShouldPersistTaps="always">
-				<Image
-					style={{
-						borderColor: 'green',
-						borderWidth: 1,
-						borderRadius: 75,
-						height: 120,
-						width: 120,
-						alignSelf: 'center',
-						marginTop: 15,
-						marginBottom: 10,
-					}}
-					source={{
-						uri: photo,
-					}}
-				/>
-				<TouchableOpacity
-					style={styles.buttonStyle}
-					onPress={() => {
-						Alert.alert('Ошибка', 'функция пока недоступна');
-					}}
-				>
-					<Text style={styles.buttonText}>Изменить фото</Text>
-				</TouchableOpacity>
-
+				<Avatar />
+				<View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+					<TouchableOpacity style={styles.iconStyle} onPress={() => openCamera()}>
+						<Icon name="camera" size={50} color="#379683" />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.iconStyle} onPress={() => openLibrary()}>
+						<Icon name="image-area" size={50} color="#379683" />
+					</TouchableOpacity>
+				</View>
 				<View style={styles.container}>
 					<View style={styles.containerHeader}>
 						<Text>Имя</Text>
@@ -160,6 +209,9 @@ const styles = StyleSheet.create({
 	inputInput: {
 		paddingRight: 'auto',
 	},
+	iconStyle: {
+		marginHorizontal: 10,
+	},
 	buttonStyle: {
 		marginHorizontal: 15,
 		marginVertical: 10,
@@ -215,4 +267,5 @@ export default connect(mapStateToProps, {
 	inputChange,
 	getProfileInfo,
 	updateProfileInfo,
+	setPhoto,
 })(EditProfileScreen);

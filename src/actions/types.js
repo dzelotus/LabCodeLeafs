@@ -20,3 +20,4 @@ export const EDIT = 'edit';
 export const EDIT_SUCCESS = 'edit_success';
 export const EDIT_FAIL = 'edis_fail';
 export const GET_PROFILE_CSRF = 'get_profile_csrf';
+export const EDIT_PHOTO = 'edit_photo';

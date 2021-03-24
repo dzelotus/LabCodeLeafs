@@ -4,6 +4,7 @@ import {
 	EDIT,
 	GET_PROFILE_CSRF,
 	GET_CSRF_SUCCESS,
+	EDIT_PHOTO,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -35,6 +36,8 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, _csrf: action.payload };
 		case PROFILE_INPUT_CHANGE:
 			return { ...state, [action.payload.prop]: action.payload.value };
+		case EDIT_PHOTO:
+			return { ...state, photo: action.avatar };
 		case EDIT:
 			return { ...state, loading: false };
 		default:

@@ -62,7 +62,7 @@ const ScanPhotoScreen = (route) => {
 				},
 			})
 			.then((response) => {
-				console.log('RESPPHOTO', response.data);
+				console.log('RESPPHOTO', response);
 				setLoading(false);
 				if (response.data.data.ai_scan_response.is_plant) {
 					route.navigation.navigate('LastScanFullscreenPhoto', {
