@@ -25,19 +25,22 @@ export const getProfileInfo = () => (dispatch) => {
 		.catch((error) => console.log(error));
 };
 
-export const updateProfileInfo = ({ name, surname, photo }) => (dispatch) => {
+export const updateProfileInfo = ({ name, surname, newPhoto, photo }) => (dispatch) => {
 	dispatch({ type: EDIT, loading: true });
+	console.log('newPhoto', newPhoto);
 	nodeApi
 		.get('/profile/edit')
 		.then((response) => {
 			const _csrf = response.data.csrfToken;
 			const image = new FormData();
-			if (photo) {
+			if (newPhoto) {
 				image.append('profile_image', {
-					uri: photo,
+					uri: newPhoto,
 					name: 'image.jpg',
 					type: 'image/jpg',
 				});
+			} else {
+				image.append('profile_image', photo);
 			}
 			image.append('_csrf', _csrf);
 			image.append('name', name);
@@ -58,9 +61,13 @@ export const updateProfileInfo = ({ name, surname, photo }) => (dispatch) => {
 				.catch((res) => {
 					console.log(image);
 					console.log('ER', res);
+					dispatch({ type: EDIT, loading: false });
 				});
 		})
-		.catch((error) => console.log('RESP ERROR', error));
+		.catch((error) => {
+			console.log('RESP ERROR', error.response);
+			dispatch({ type: EDIT, loading: false });
+		});
 };
 
 export const setPhoto = (photoInput) => (dispatch) => {

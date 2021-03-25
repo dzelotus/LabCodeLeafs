@@ -12,6 +12,7 @@ import {
 	StyleSheet,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { useForm, Controller } from 'react-hook-form';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import {
@@ -22,15 +23,9 @@ import {
 } from '../actions/EditProfileActions';
 
 const EditProfileScreen = (props) => {
-	console.log('THIS IS PROPS', props);
+	/* console.log('THIS IS PROPS', props); */
 
-	const onButtonPress = () => {
-		const { name, surname, photo } = props;
-
-		props.updateProfileInfo({ name, surname, photo });
-	};
-
-	const { screenLoading, photo, name, surname } = props;
+	const { screenLoading, photo, name, surname, newPhoto, loading } = props;
 
 	useEffect(() => {
 		props.getProfileInfo();
@@ -40,7 +35,7 @@ const EditProfileScreen = (props) => {
 	}, []);
 
 	const activeButton = () => {
-		if (props.loading === true) {
+		if (loading === true) {
 			return (
 				<View style={styles.buttonStyle}>
 					<ActivityIndicator size="large" color="#379683" />
@@ -51,16 +46,12 @@ const EditProfileScreen = (props) => {
 		return (
 			<TouchableOpacity
 				style={styles.buttonStyle}
-				onPress={() => {
-					onButtonPress();
-					console.log('PRESSED');
-				}}
+				onPress={handleSubmit(onSubmit)}
 			>
 				<Text style={styles.buttonText}>Сохранить</Text>
 			</TouchableOpacity>
 		);
 	};
-	console.log('PHOTO SCREEN', photo);
 
 	const openCamera = () => {
 		ImagePicker.launchCameraAsync()
@@ -86,10 +77,27 @@ const EditProfileScreen = (props) => {
 				}
 			})
 			.catch((error) => console.log(error));
-	};
+	};	
 
 	const Avatar = () => {
-		if (photo) {
+		if (newPhoto) {
+			const photoUri = newPhoto
+				.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
+				.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/');
+			return (
+				<Image
+					style={{
+						flex: 1,
+						height: 300,
+						marginTop: 10,
+					}}
+					source={{
+						uri: photoUri,
+					}}
+					resizeMode="contain"
+				/>
+			);
+		} if (photo) {
 			const photoUri = photo
 				.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
 				.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/');
@@ -121,6 +129,14 @@ const EditProfileScreen = (props) => {
 		);
 	};
 
+	const { control, handleSubmit, /* errors */ } = useForm();
+	const onSubmit = (data) => {				
+		props.updateProfileInfo({...data, photo, newPhoto})
+		
+	};
+
+	console.log('SCREEN LOADING', loading)
+
 	if (screenLoading) {
 		return (
 			<View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -140,57 +156,70 @@ const EditProfileScreen = (props) => {
 						<Icon name="image-area" size={50} color="#379683" />
 					</TouchableOpacity>
 				</View>
-				<View style={styles.container}>
-					<View style={styles.containerHeader}>
-						<Text>Имя</Text>
-					</View>
-					<View
-						style={{
-							flex: 1,
-							paddingHorizontal: 10,
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							alignItems: 'center',
-						}}
-					>
-						<TextInput
-							style={{ flex: 1 }}
-							value={name}
-							onChangeText={(text) => {
-								props.inputChange({
-									prop: 'name',
-									value: text,
-								});
-							}}
-						/>
-					</View>
-				</View>
-
-				<View style={styles.container}>
-					<View style={styles.containerHeader}>
-						<Text>Фамилия</Text>
-					</View>
-					<View
-						style={{
-							flex: 1,
-							paddingHorizontal: 10,
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							alignItems: 'center',
-						}}
-					>
-						<TextInput
-							style={{ flex: 1 }}
-							value={surname}
-							onChangeText={(text) => {
-								props.inputChange({
-									prop: 'surname',
-									value: text,
-								});
-							}}
-						/>
-					</View>
-				</View>
+				<Controller
+					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Необходимо выбрать растение',
+						},
+					}}
+					render={({ onChange, value }) => (
+						<View style={styles.container}>
+							<View style={styles.containerHeader}>
+								<Text>Имя</Text>
+							</View>
+							<View
+								style={{
+									flex: 1,
+									paddingHorizontal: 10,
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
+								}}
+							>
+								<TextInput
+									style={{ flex: 1 }}
+									textValue={value}
+									defaultValue={value}
+									onChangeText={onChange}
+								/>
+							</View>
+						</View>
+					)}
+					name="name"
+					defaultValue={name}
+					/* key={editData ? 'plantLoaded' : 'plantLoading'} */
+				/>
+				<Controller
+					control={control}					
+					render={({ onChange, value }) => (
+						<View style={styles.container}>
+							<View style={styles.containerHeader}>
+								<Text>Фамилия</Text>
+							</View>
+							<View
+								style={{
+									flex: 1,
+									paddingHorizontal: 10,
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
+								}}
+							>
+								<TextInput
+									style={{ flex: 1 }}
+									textValue={value}
+									defaultValue={value}
+									onChangeText={onChange}
+								/>
+							</View>
+						</View>
+					)}
+					name="surname"
+					defaultValue={surname}
+					/* key={editData ? 'plantLoaded' : 'plantLoading'} */
+				/>		
 				<View style={{ marginTop: 20, justifyContent: 'flex-end' }}>{activeButton()}</View>
 			</ScrollView>
 		</View>
@@ -198,9 +227,9 @@ const EditProfileScreen = (props) => {
 };
 
 const mapStateToProps = ({ profile }) => {
-	const { name, surname, location, photo, data, _csrf, loading } = profile;
+	const { name, surname, location, photo, data, _csrf, loading, newPhoto, screenLoading } = profile;
 
-	return { name, surname, location, photo, data, _csrf, loading };
+	return { name, surname, location, photo, data, _csrf, loading, newPhoto, screenLoading };
 };
 
 const styles = StyleSheet.create({

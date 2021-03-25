@@ -13,6 +13,7 @@ const INITIAL_STATE = {
 	username: '',
 	location: '',
 	photo: '',
+	newPhoto: '',
 	screenLoading: true,
 	loading: false,
 	data: [],
@@ -37,9 +38,9 @@ export default (state = INITIAL_STATE, action) => {
 		case PROFILE_INPUT_CHANGE:
 			return { ...state, [action.payload.prop]: action.payload.value };
 		case EDIT_PHOTO:
-			return { ...state, photo: action.avatar };
+			return { ...state, newPhoto: action.avatar };
 		case EDIT:
-			return { ...state, loading: false };
+			return { ...state, loading: action.loading };
 		default:
 			return state;
 	}

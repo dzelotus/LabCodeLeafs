@@ -18,11 +18,16 @@ import { getProfileInfo } from '../actions/EditProfileActions';
 import NotAuthUser from '../components/NotAuthUser';
 
 const ProfileScreen = (props) => {
-	useEffect(() => {
-		getProfileInfo();
-	}, []);
+	useEffect(() => {		
+		const unsubscribe = navigation.addListener('focus', () => {
+			getProfileInfo();
+			console.log('Refreshed!');
+		  });
 
-	const { photo, isSigned, screenLoading, username, name, surname, getProfileInfo } = props;
+		return unsubscribe;
+	}, [navigation]);
+
+	const { photo, isSigned, screenLoading, username, name, surname, getProfileInfo, navigation } = props;
 
 	console.log('props', props);
 
@@ -94,7 +99,6 @@ const ProfileScreen = (props) => {
 			</View>
 		);
 	}
-
 	return (
 		<View style={{ flex: 1, backgroundColor: 'white' }}>
 			
