@@ -47,8 +47,15 @@ const EditProfileScreen = (props) => {
 				</View>
 			);
 		}
+
 		return (
-			<TouchableOpacity style={styles.buttonStyle} onPress={() => onButtonPress()}>
+			<TouchableOpacity
+				style={styles.buttonStyle}
+				onPress={() => {
+					onButtonPress();
+					console.log('PRESSED');
+				}}
+			>
 				<Text style={styles.buttonText}>Сохранить</Text>
 			</TouchableOpacity>
 		);
@@ -82,10 +89,10 @@ const EditProfileScreen = (props) => {
 	};
 
 	const Avatar = () => {
-		if(photo) {
+		if (photo) {
 			const photoUri = photo
 				.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
-				.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/')
+				.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/');
 			return (
 				<Image
 					style={{
@@ -98,17 +105,21 @@ const EditProfileScreen = (props) => {
 					}}
 					resizeMode="contain"
 				/>
-			)
-		} 
+			);
+		}
 		return (
-			<View style={{ alignSelf: 'center', marginTop: 10, height: 300, justifyContent: 'center'}}>
-				<FontistoIcon name="user-secret" size={150}  />
+			<View
+				style={{
+					alignSelf: 'center',
+					marginTop: 10,
+					height: 300,
+					justifyContent: 'center',
+				}}
+			>
+				<FontistoIcon name="user-secret" size={150} />
 			</View>
-		)
-		
-	}
-
-
+		);
+	};
 
 	if (screenLoading) {
 		return (

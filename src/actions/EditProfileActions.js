@@ -55,9 +55,9 @@ export const updateProfileInfo = ({ name, surname, photo }) => (dispatch) => {
 					dispatch({ type: EDIT, loading: false });
 					RootNavigation.navigate('Profile');
 				})
-				.catch((error) => {
-					console.log('EDIT FAIL', error.response.config.data);
-					console.log('ER', error.response);
+				.catch((res) => {
+					console.log(image);
+					console.log('ER', res);
 				});
 		})
 		.catch((error) => console.log('RESP ERROR', error));
