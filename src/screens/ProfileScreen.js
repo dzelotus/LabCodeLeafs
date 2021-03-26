@@ -8,28 +8,46 @@ import {
 	TouchableOpacity,
 	ActivityIndicator,
 } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import nodeApi from '../api/nodeApi';
 import { resolveAuth } from '../actions/AuthActions';
-import { getProfileInfo } from '../actions/EditProfileActions';
 import NotAuthUser from '../components/NotAuthUser';
 
-const ProfileScreen = (props) => {
+;
+
+const ProfileScreen = (props) => {	
+	const [profile, setProfile] = useState(null)
+	const [loading, setLoading] = useState(false)
 	useEffect(() => {		
-		const unsubscribe = navigation.addListener('focus', () => {
-			getProfileInfo();
+		const unsubscribe = navigation.addListener('focus', () => {			
+			getProfile();
 			console.log('Refreshed!');
 		  });
 
 		return unsubscribe;
 	}, [navigation]);
 
-	const { photo, isSigned, screenLoading, username, name, surname, getProfileInfo, navigation } = props;
+	const getProfile = () => {
+		setLoading(true)
+		nodeApi
+			.get('/profile')
+			.then(async (response) => {
+				console.log('FUNC RESP', response.data.data)				
+				setProfile({
+					name: response.data.data.name,
+					surname: response.data.data.surname,
+					username: response.data.data.username,
+					userPhoto: response.data.data.profile_image
+				})			
+				setLoading(false)
+			})
+			.catch(() => setLoading(false));
+	}
 
-	console.log('props', props);
+	const { isSigned, navigation } = props;
 
 	const createTwoButtonAlert = () => {
 		Alert.alert(
@@ -58,8 +76,8 @@ const ProfileScreen = (props) => {
 	};
 
 	const Avatar = () => {
-		if(photo) {
-			const photoUri = photo
+		if(profile.userPhoto) {
+			const photoUri = profile.userPhoto
 				.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
 				.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/')
 			return (
@@ -92,7 +110,7 @@ const ProfileScreen = (props) => {
 		);
 	}
 
-	if (screenLoading) {
+	if (loading || !profile) {
 		return (
 			<View style={{ flex: 1, backgroundColor: 'white' }}>
 				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
@@ -108,7 +126,7 @@ const ProfileScreen = (props) => {
 				<View>
 					<TouchableOpacity
 						onPress={() => {
-							props.navigation.navigate('EditProfile');
+							props.navigation.navigate('EditProfile', {profile});
 						}}
 						style={styles.buttonStyle}
 					>
@@ -156,30 +174,30 @@ const ProfileScreen = (props) => {
 					<View style={styles.rowContainer}>
 						<Text style={styles.rowName}>Имя пользователя:</Text>
 						<Text style={styles.name}>
-							{!username ? (
+							{!profile.username ? (
 								<Text style={{ color: 'red' }}>Имя пользователя не доступно</Text>
 							) : (
-								username
+								profile.username
 							)}
 						</Text>
 					</View>
 					<View style={styles.rowContainer}>
 						<Text style={styles.rowName}>Имя:</Text>
 						<Text style={styles.name}>
-							{!name ? (
+							{!profile.name ? (
 								<Text style={{ color: 'red' }}>Имя не заполнено</Text>
 							) : (
-								name
+								profile.name
 							)}
 						</Text>
 					</View>
 					<View style={styles.rowContainer}>
 						<Text style={styles.rowName}>Фамилия:</Text>
 						<Text style={styles.name}>
-							{!surname ? (
+							{!profile.surname ? (
 								<Text style={{ color: 'red' }}>Фамилия не заполнена</Text>
 							) : (
-								surname
+								profile.surname
 							)}
 						</Text>
 					</View>
@@ -246,13 +264,11 @@ const styles = StyleSheet.create({
 	},
 });
 
-ProfileScreen.navigationOptions = () => ({ title: 'Профиль' });
 
-const mapStateToProps = ({ auth, profile }) => {
+const mapStateToProps = ({ auth }) => {
 	const { fistLaunchToken, isSigned } = auth;
-	const { name, surname, username, screenLoading, photo } = profile;
 
-	return { fistLaunchToken, isSigned, name, surname, username, screenLoading, photo };
+	return { fistLaunchToken, isSigned };
 };
 
-export default connect(mapStateToProps, { resolveAuth, getProfileInfo })(ProfileScreen);
+export default connect(mapStateToProps, { resolveAuth })(ProfileScreen);

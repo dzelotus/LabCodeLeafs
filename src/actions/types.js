@@ -10,14 +10,3 @@ export const CLEAR_ERROR_MESSAGE = 'clear_error_message';
 export const RESOLVE_AUTH = 'resolve_auth';
 export const HAS_BIO_SCANNER = 'has_bio_scanner';
 export const IS_BIO_AUTH_ACTIVE = 'is_bio_auth_active';
-
-// Edit profile action types
-export const GET_PROFILE_INFO = 'get_profile_info';
-export const GET_PROFILE_INFO_SUCCESS = 'get_profile_info_success';
-export const GET_PROFILE_INFO_FAIL = 'get_profile_info_fail';
-export const PROFILE_INPUT_CHANGE = 'profile_input_change';
-export const EDIT = 'edit';
-export const EDIT_SUCCESS = 'edit_success';
-export const EDIT_FAIL = 'edis_fail';
-export const GET_PROFILE_CSRF = 'get_profile_csrf';
-export const EDIT_PHOTO = 'edit_photo';

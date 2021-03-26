@@ -1,34 +1,34 @@
 /* eslint-disable prettier/prettier */
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import {
 	View,
 	TouchableOpacity,
 	Text,
-	TextInput,
-	Image,
+	TextInput,	
 	ActivityIndicator,
 	ScrollView,
 	StyleSheet,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useForm, Controller } from 'react-hook-form';
+import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
-import {
-	inputChange,
-	getProfileInfo,
-	updateProfileInfo,
-	setPhoto,
-} from '../actions/EditProfileActions';
+
+import nodeApi from '../api/nodeApi';
 
 const EditProfileScreen = (props) => {
-	/* console.log('THIS IS PROPS', props); */
+	const [loading, setLoading] = useState(false);
+	const [newPhoto, setNewPhoto] = useState(null);
+	console.log(loading)
+	console.log(newPhoto)
+	console.log('EDIT PROPS',props)	
 
-	const { screenLoading, photo, name, surname, newPhoto, loading } = props;
-
-	useEffect(() => {
-		props.getProfileInfo();
+	const { route, navigation } = props;
+	const { profile } = route.params
+	const {name, surname, userPhoto} = profile
+	
+	useEffect(() => {		
 		props.navigation.setOptions({
 			headerTruncatedBackTitle: 'Назад',
 		});
@@ -53,12 +53,54 @@ const EditProfileScreen = (props) => {
 		);
 	};
 
+	const updateProfileInfo = ({ name, surname, newPhoto, userPhoto })  => {		
+		setLoading(true)
+		nodeApi
+			.get('/profile/edit')
+			.then((response) => {
+				const _csrf = response.data.csrfToken;
+				const image = new FormData();
+				if (newPhoto) {
+					image.append('profile_image', {
+						uri: newPhoto,
+						name: 'image.jpg',
+						type: 'image/jpg',
+					});
+				} else {
+					image.append('profile_image', userPhoto);
+				}
+				image.append('_csrf', _csrf);
+				image.append('name', name);
+				image.append('surname', surname);
+	
+				nodeApi
+					.put('/profile', image, {
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'multipart/form-data;',
+						},
+					})
+					.then(() => {							
+						setLoading(false)				
+						navigation.navigate('Profile');
+					})
+					.catch(() => {
+						setLoading(false)
+						
+						
+					});
+			})
+			.catch(() => {
+				setLoading(false)
+				
+			});
+	};
+
 	const openCamera = () => {
 		ImagePicker.launchCameraAsync()
-			.then((res) => {
-				console.log('RES', res);
+			.then((res) => {				
 				if (!res.cancelled) {
-					props.setPhoto(res.uri);
+					setNewPhoto(res.uri);
 				}
 			})
 			.catch((err) => console.log(err));
@@ -70,10 +112,9 @@ const EditProfileScreen = (props) => {
 			aspect: [4, 3],
 			allowsEditing: true,
 		})
-			.then((res) => {
-				console.log('RES', res);
+			.then((res) => {				
 				if (!res.cancelled) {
-					props.setPhoto(res.uri);
+					setNewPhoto(res.uri);
 				}
 			})
 			.catch((error) => console.log(error));
@@ -85,7 +126,7 @@ const EditProfileScreen = (props) => {
 				.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
 				.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/');
 			return (
-				<Image
+				<FastImage
 					style={{
 						flex: 1,
 						height: 300,
@@ -97,12 +138,12 @@ const EditProfileScreen = (props) => {
 					resizeMode="contain"
 				/>
 			);
-		} if (photo) {
-			const photoUri = photo
+		} if (userPhoto) {
+			const photoUri = userPhoto
 				.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
 				.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/');
 			return (
-				<Image
+				<FastImage
 					style={{
 						flex: 1,
 						height: 300,
@@ -131,13 +172,12 @@ const EditProfileScreen = (props) => {
 
 	const { control, handleSubmit, /* errors */ } = useForm();
 	const onSubmit = (data) => {				
-		props.updateProfileInfo({...data, photo, newPhoto})
+		updateProfileInfo({...data, userPhoto, newPhoto})
 		
 	};
 
-	console.log('SCREEN LOADING', loading)
 
-	if (screenLoading) {
+	if (!profile) {
 		return (
 			<View style={{ flex: 1, backgroundColor: 'white' }}>
 				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
@@ -188,8 +228,7 @@ const EditProfileScreen = (props) => {
 						</View>
 					)}
 					name="name"
-					defaultValue={name}
-					/* key={editData ? 'plantLoaded' : 'plantLoading'} */
+					defaultValue={name}				
 				/>
 				<Controller
 					control={control}					
@@ -217,8 +256,7 @@ const EditProfileScreen = (props) => {
 						</View>
 					)}
 					name="surname"
-					defaultValue={surname}
-					/* key={editData ? 'plantLoaded' : 'plantLoading'} */
+					defaultValue={surname}					
 				/>		
 				<View style={{ marginTop: 20, justifyContent: 'flex-end' }}>{activeButton()}</View>
 			</ScrollView>
@@ -226,11 +264,6 @@ const EditProfileScreen = (props) => {
 	);
 };
 
-const mapStateToProps = ({ profile }) => {
-	const { name, surname, location, photo, data, _csrf, loading, newPhoto, screenLoading } = profile;
-
-	return { name, surname, location, photo, data, _csrf, loading, newPhoto, screenLoading };
-};
 
 const styles = StyleSheet.create({
 	inputLabel: {
@@ -303,9 +336,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default connect(mapStateToProps, {
-	inputChange,
-	getProfileInfo,
-	updateProfileInfo,
-	setPhoto,
-})(EditProfileScreen);
+export default EditProfileScreen;
