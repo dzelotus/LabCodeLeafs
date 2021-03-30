@@ -4,7 +4,7 @@ import HTML from 'react-native-render-html';
 
 const ArticleScreen = (props) => {
 	const { route } = props;
-	console.log(route.params.data);
+	console.log('PROPS', props);
 	const article = route.params.data.article_text;
 
 	useEffect(() => {
