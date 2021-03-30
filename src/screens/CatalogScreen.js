@@ -10,6 +10,7 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from 'react-native-elements';
 import nodeApi from '../api/nodeApi';
+import LocalCatalog from '../components/LocalCatalog';
 
 const CatalogScreen = (props) => {
 	const [loading, setLoading] = useState(true);
@@ -29,7 +30,7 @@ const CatalogScreen = (props) => {
 		nodeApi
 			.get(`/plant-protection/${item.item}`)
 			.then((response) => {
-				console.log('RESP', JSON.stringify(response, null, 2));
+				/* console.log('RESP', JSON.stringify(response, null, 2)); */
 				setFetchedData(response.data.data);
 				setDisplayedData(response.data.data);
 				setLoading(false);
@@ -109,8 +110,6 @@ const CatalogScreen = (props) => {
 		SearchUpdate(value);
 	};
 
-	console.log(activeButton);
-
 	if (loading) {
 		return (
 			<View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -122,6 +121,7 @@ const CatalogScreen = (props) => {
 
 	return (
 		<View style={{ flex: 1, backgroundColor: 'white' }}>
+			<LocalCatalog data={fetchedData} />
 			<MainButtons />
 			<SearchBar
 				placeholder="Поиск по каталогу"

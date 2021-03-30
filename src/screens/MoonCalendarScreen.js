@@ -22,6 +22,7 @@ const MoonCalendarScreen = (props) => {
 	const [date, setDate] = useState();
 	const [moon, setMoon] = useState();
 	const [showMonthlyData, setShowMonthlyData] = useState(false);
+	const [showPhaseDescription, setShowPhaseDescription] = useState(true);
 	const [montlyData, setMonthlyData] = useState(null);
 
 	moment.updateLocale('ru', {
@@ -202,15 +203,46 @@ const MoonCalendarScreen = (props) => {
 				>
 					{moon.phase_name}
 				</Text>
-				<Text
-					style={{ fontSize: 18, color: '#379683', textAlign: 'center', marginTop: 10 }}
-				>
-					{moon.phase_description}
-				</Text>
+				<View style={styles.additionalInfo}>
+					<TouchableOpacity
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							margin: 10,
+						}}
+						onPress={() => {
+							setShowPhaseDescription(!showPhaseDescription);
+						}}
+					>
+						<Text style={{ fontSize: 18 }}>Описание фазы</Text>
+						<FontAwesome
+							name={showPhaseDescription ? 'chevron-up' : 'chevron-down'}
+							size={20}
+							color="#379683"
+							style={{ paddingLeft: 10 }}
+						/>
+					</TouchableOpacity>
+					{showPhaseDescription ? (
+						<Text
+							style={{
+								fontSize: 18,
+								color: '#379683',
+								textAlign: 'center',
+								marginVertical: 10,
+							}}
+						>
+							{moon.phase_description}
+						</Text>
+					) : null}
+				</View>
 			</View>
 			<View style={styles.additionalInfo}>
 				<TouchableOpacity
-					style={{ flexDirection: 'row' }}
+					style={{
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+						margin: 10,
+					}}
 					onPress={() => {
 						setShowMonthlyData(!showMonthlyData);
 					}}
@@ -246,7 +278,7 @@ const styles = StyleSheet.create({
 		padding: 5,
 
 		marginTop: 10,
-		marginBottom: 20,
+		marginBottom: 10,
 	},
 });
 

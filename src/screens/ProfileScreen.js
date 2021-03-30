@@ -16,7 +16,6 @@ import nodeApi from '../api/nodeApi';
 import { resolveAuth } from '../actions/AuthActions';
 import NotAuthUser from '../components/NotAuthUser';
 
-;
 
 const ProfileScreen = (props) => {	
 	const [profile, setProfile] = useState(null)
