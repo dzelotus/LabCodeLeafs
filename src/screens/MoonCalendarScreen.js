@@ -14,7 +14,9 @@ import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HTML from 'react-native-render-html';
+import moonImageSwitch from '../assets/moonIcon';
 import nodeApi from '../api/nodeApi';
+import MoonPhaseCard from '../components/MoonPhaseCard';
 
 const { Conway } = require('@lab-code/moonphase');
 
@@ -80,22 +82,23 @@ const MoonCalendarScreen = (props) => {
 		getMoonPhase(moonphase);
 		getMonthlyData(month, year);
 	};
+
 	const getMoonPhase = (moonphase) => {
 		nodeApi
 			.get(`/garden-calendar/moon-phase-calendar/${moonphase}`)
 			.then((response) => {
-				console.log('MOON RESP', response.data);
-				setMoon(response.data.data);
+				if (moon !== response.data.data) {
+					console.log('STATE SETTED');
+					setMoon(response.data.data);
+				}
 			})
 			.catch(() => /* console.log('MOON ERR', error) */ null);
 	};
 
 	const getMonthlyData = (month, year) => {
-		console.log('MONTH', month);
 		nodeApi
 			.get(`/garden-calendar/monthly-calendar/${month}/${year}`)
 			.then((response) => {
-				console.log('MONTH RESP', response.data);
 				setMonthlyData(response.data.data.content);
 			})
 			.catch((error) => {
@@ -135,8 +138,6 @@ const MoonCalendarScreen = (props) => {
 			<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
 		</View>
 	);
-
-	console.log('MOON', moon);
 
 	useEffect(() => {
 		getDate();
@@ -182,7 +183,7 @@ const MoonCalendarScreen = (props) => {
 					</TouchableOpacity>
 					<FastImage
 						style={{ width: 150, height: 150, marginHorizontal: 20 }}
-						source={{ uri: moon.phase_image_url }}
+						source={moonImageSwitch(moon.phase_number.toString())}
 					/>
 
 					<TouchableOpacity
@@ -236,6 +237,7 @@ const MoonCalendarScreen = (props) => {
 					) : null}
 				</View>
 			</View>
+			<MoonPhaseCard />
 			<View style={styles.additionalInfo}>
 				<TouchableOpacity
 					style={{

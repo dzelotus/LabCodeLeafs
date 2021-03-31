@@ -11,6 +11,7 @@ import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import { resolveAuth } from '../actions/AuthActions';
 import imageSwitch from '../assets/weatherIcon';
+import moonImageSwitch from '../assets/moonIcon';
 
 const WeatherCard = ({
 	moonInfo,
@@ -174,9 +175,7 @@ const WeatherCard = ({
 							<View>
 								<FastImage
 									style={styles.image}
-									source={{
-										uri: moonInfo.phase_image_url,
-									}}
+									source={moonImageSwitch(moonInfo.phase_number.toString())}
 								/>
 							</View>
 							<View

@@ -10,7 +10,6 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from 'react-native-elements';
 import nodeApi from '../api/nodeApi';
-import LocalCatalog from '../components/LocalCatalog';
 
 const CatalogScreen = (props) => {
 	const [loading, setLoading] = useState(true);
@@ -121,7 +120,6 @@ const CatalogScreen = (props) => {
 
 	return (
 		<View style={{ flex: 1, backgroundColor: 'white' }}>
-			<LocalCatalog data={fetchedData} />
 			<MainButtons />
 			<SearchBar
 				placeholder="Поиск по каталогу"
