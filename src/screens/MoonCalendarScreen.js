@@ -7,14 +7,10 @@ import {
 	StyleSheet,
 	useWindowDimensions,
 } from 'react-native';
-
 import React, { useEffect, useState } from 'react';
-import Icon from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
-import FastImage from 'react-native-fast-image';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HTML from 'react-native-render-html';
-import moonImageSwitch from '../assets/moonIcon';
 import nodeApi from '../api/nodeApi';
 import MoonPhaseCard from '../components/MoonPhaseCard';
 
@@ -44,42 +40,26 @@ const MoonCalendarScreen = (props) => {
 		],
 	});
 
-	const getDate = () => {
+	useEffect(() => {
 		const now = moment();
+		getDateFunc(now);
+
+		props.navigation.setOptions({
+			headerBackTitle: 'Назад',
+		});
+	}, []);
+
+	const getDateFunc = (now) => {
 		const day = now.date();
 		const month = now.month() + 1;
 		const year = now.year();
 		const today = now.locale('ru').format('D MMMM YYYY');
-
-		setDate({ now, day, month, year, today });
 		const moonphase = Conway(day, month, year);
+
+		setDate({ now, day, month, year, today, moonphase });
+
 		getMoonPhase(moonphase);
-		getMonthlyData(month, year);
-	};
-
-	const increaseDate = () => {
-		const now = date.now.add(1, 'days');
-		const day = now.date();
-		const month = now.month() + 1;
-		const year = now.year();
-		const today = now.locale('ru').format('D MMMM YYYY');
-
-		setDate({ ...date, now, day, month, year, today });
-		const moonphase = Conway(day, month, year);
-		getMoonPhase(moonphase);
-		getMonthlyData(month, year);
-	};
-
-	const decreaseDate = () => {
-		const now = date.now.add(-1, 'days');
-		const day = now.date();
-		const month = now.month() + 1;
-		const year = now.year();
-		const today = now.locale('ru').format('D MMMM YYYY');
-
-		setDate({ ...date, now, day, month, year, today });
-		const moonphase = Conway(day, month, year);
-		getMoonPhase(moonphase);
+		console.log('MONTH', month);
 		getMonthlyData(month, year);
 	};
 
@@ -87,19 +67,23 @@ const MoonCalendarScreen = (props) => {
 		nodeApi
 			.get(`/garden-calendar/moon-phase-calendar/${moonphase}`)
 			.then((response) => {
+				console.log(response.data.data);
 				if (moon !== response.data.data) {
 					console.log('STATE SETTED');
 					setMoon(response.data.data);
 				}
 			})
-			.catch(() => /* console.log('MOON ERR', error) */ null);
+			.catch((error) => console.log('MOON ERR', error));
 	};
 
 	const getMonthlyData = (month, year) => {
 		nodeApi
 			.get(`/garden-calendar/monthly-calendar/${month}/${year}`)
 			.then((response) => {
-				setMonthlyData(response.data.data.content);
+				console.log(response.data.data.content);
+				if (montlyData !== response.data.data.content) {
+					setMonthlyData(response.data.data.content);
+				}
 			})
 			.catch((error) => {
 				console.log('MOON ERR', error.response);
@@ -139,14 +123,6 @@ const MoonCalendarScreen = (props) => {
 		</View>
 	);
 
-	useEffect(() => {
-		getDate();
-
-		props.navigation.setOptions({
-			headerBackTitle: 'Назад',
-		});
-	}, []);
-
 	if (!moon) {
 		return <Indicator />;
 	}
@@ -160,84 +136,49 @@ const MoonCalendarScreen = (props) => {
 				flex: 1,
 			}}
 		>
-			<View>
-				<Text
+			<MoonPhaseCard getDateFunc={(now) => getDateFunc(now)} date={date} />
+			<Text
+				style={{
+					textAlign: 'center',
+					fontSize: 20,
+					marginVertical: 10,
+					color: '#EB9156',
+				}}
+			>
+				{moon.phase_name}
+			</Text>
+			<View style={styles.additionalInfo}>
+				<TouchableOpacity
 					style={{
-						fontSize: 20,
-						color: '#EB9156',
-						textAlign: 'center',
-						marginVertical: 10,
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+						margin: 10,
+					}}
+					onPress={() => {
+						setShowPhaseDescription(!showPhaseDescription);
 					}}
 				>
-					{date.today}
-				</Text>
-				<View
-					style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
-				>
-					<TouchableOpacity
-						onPress={() => {
-							decreaseDate();
-						}}
-					>
-						<Icon name="chevron-thin-left" size={50} color="#EB9156" />
-					</TouchableOpacity>
-					<FastImage
-						style={{ width: 150, height: 150, marginHorizontal: 20 }}
-						source={moonImageSwitch(moon.phase_number.toString())}
+					<Text style={{ fontSize: 18 }}>Описание фазы</Text>
+					<FontAwesome
+						name={showPhaseDescription ? 'chevron-up' : 'chevron-down'}
+						size={20}
+						color="#379683"
+						style={{ paddingLeft: 10 }}
 					/>
-
-					<TouchableOpacity
-						onPress={() => {
-							increaseDate();
-						}}
-					>
-						<Icon name="chevron-thin-right" size={50} color="#EB9156" />
-					</TouchableOpacity>
-				</View>
-				<Text
-					style={{
-						textAlign: 'center',
-						fontSize: 20,
-						marginVertical: 10,
-						color: '#EB9156',
-					}}
-				>
-					{moon.phase_name}
-				</Text>
-				<View style={styles.additionalInfo}>
-					<TouchableOpacity
+				</TouchableOpacity>
+				{showPhaseDescription ? (
+					<Text
 						style={{
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							margin: 10,
-						}}
-						onPress={() => {
-							setShowPhaseDescription(!showPhaseDescription);
+							fontSize: 18,
+							color: '#379683',
+							textAlign: 'center',
+							marginVertical: 10,
 						}}
 					>
-						<Text style={{ fontSize: 18 }}>Описание фазы</Text>
-						<FontAwesome
-							name={showPhaseDescription ? 'chevron-up' : 'chevron-down'}
-							size={20}
-							color="#379683"
-							style={{ paddingLeft: 10 }}
-						/>
-					</TouchableOpacity>
-					{showPhaseDescription ? (
-						<Text
-							style={{
-								fontSize: 18,
-								color: '#379683',
-								textAlign: 'center',
-								marginVertical: 10,
-							}}
-						>
-							{moon.phase_description}
-						</Text>
-					) : null}
-				</View>
+						{moon.phase_description}
+					</Text>
+				) : null}
 			</View>
-			<MoonPhaseCard />
 			<View style={styles.additionalInfo}>
 				<TouchableOpacity
 					style={{
