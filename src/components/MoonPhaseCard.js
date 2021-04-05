@@ -7,7 +7,6 @@ import FastImage from 'react-native-fast-image';
 import moonImageSwitch from '../assets/moonIcon';
 
 const MoonPhaseCard = ({ getDateFunc, date }) => {
-	console.log(getDateFunc);
 	if (!date) {
 		return null;
 	}
