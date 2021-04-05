@@ -6,11 +6,13 @@ import {
 	ScrollView,
 	StyleSheet,
 	useWindowDimensions,
+	Button,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HTML from 'react-native-render-html';
+import SQLite from 'react-native-sqlite-storage';
 import nodeApi from '../api/nodeApi';
 import MoonPhaseCard from '../components/MoonPhaseCard';
 
@@ -44,10 +46,38 @@ const MoonCalendarScreen = (props) => {
 		const now = moment();
 		getDateFunc(now);
 
+		SQLite.enablePromise(true);
+		SQLite.DEBUG(true);
+
 		props.navigation.setOptions({
 			headerBackTitle: 'Назад',
 		});
 	}, []);
+
+	const getData = () => {
+		SQLite.openDatabase({
+			name: 'leafs',
+			location: 'default',
+			createFromLocation: '~www/leafsDb.db',
+		})
+			.then((res) => {
+				console.log('SUC', res);
+
+				fetchData(res);
+			})
+			.catch((err) => {
+				console.log('ERR', err);
+			});
+	};
+
+	const fetchData = (db) => {
+		db.transaction((txn) => {
+			txn.executeSql('SELECT * FROM moon WHERE phase_number = 1', [], (tx, results) => {
+				console.log('tx', tx);
+				console.log('len', results.rows.item(0));
+			});
+		});
+	};
 
 	const getDateFunc = (now) => {
 		const day = now.date();
@@ -59,7 +89,7 @@ const MoonCalendarScreen = (props) => {
 		setDate({ now, day, month, year, today, moonphase });
 
 		getMoonPhase(moonphase);
-		console.log('MONTH', month);
+
 		getMonthlyData(month, year);
 	};
 
@@ -67,7 +97,6 @@ const MoonCalendarScreen = (props) => {
 		nodeApi
 			.get(`/garden-calendar/moon-phase-calendar/${moonphase}`)
 			.then((response) => {
-				console.log(response.data.data);
 				if (moon !== response.data.data) {
 					console.log('STATE SETTED');
 					setMoon(response.data.data);
@@ -80,7 +109,6 @@ const MoonCalendarScreen = (props) => {
 		nodeApi
 			.get(`/garden-calendar/monthly-calendar/${month}/${year}`)
 			.then((response) => {
-				console.log(response.data.data.content);
 				if (montlyData !== response.data.data.content) {
 					setMonthlyData(response.data.data.content);
 				}
@@ -200,6 +228,13 @@ const MoonCalendarScreen = (props) => {
 				</TouchableOpacity>
 				{showMonthlyData ? <MonthlyCalendar /> : null}
 			</View>
+			<Button
+				title="OPEN DB"
+				onPress={() => {
+					console.log('PRESSED');
+					getData();
+				}}
+			/>
 		</ScrollView>
 	);
 };
