@@ -103,13 +103,13 @@ const MoonCalendarScreen = (props) => {
 	const getMonthlyData = (month, year) => {
 		db.transaction((txn) => {
 			txn.executeSql(
-				`SELECT * FROM monthly_calendar WHERE month_number = ${month} AND year_number = ${year}`,
+				`SELECT content FROM monthly_calendar WHERE month_number = ${month} AND year_number = ${year}`,
 				[],
 				(tx, results) => {
 					console.log('tx', tx);
 					console.log('len', results.rows.item(0));
 					const res = results.rows.item(0);
-					console.log('RES', res.content);
+					console.log('RES', res);
 					setMonthlyData(res.content);
 				},
 			);
@@ -136,19 +136,26 @@ const MoonCalendarScreen = (props) => {
 		const computeEmbeddedMaxWidth = (availableWidth) => {
 			return Math.min(availableWidth, 500);
 		};
+		if (montlyData) {
+			return (
+				<HTML
+					containerStyle={{ marginVertical: 15 }}
+					source={{ html: montlyData }}
+					tagsStyles={{
+						div: { flex: 1, fontSize: 16, borderWidth: 0.3 },
+						p: { fontSize: 16, paddingBottom: 15 },
+						i: { fontSize: 16, fontWeight: 'bold' },
+					}}
+					contentWidth={contentWidth}
+					computeEmbeddedMaxWidth={computeEmbeddedMaxWidth}
+					ignoredStyles={['width']}
+				/>
+			);
+		}
 		return (
-			<HTML
-				containerStyle={{ marginVertical: 15 }}
-				source={{ html: montlyData }}
-				tagsStyles={{
-					div: { flex: 1, fontSize: 16, borderWidth: 0.3 },
-					p: { fontSize: 16, paddingBottom: 15 },
-					i: { fontSize: 16, fontWeight: 'bold' },
-				}}
-				contentWidth={contentWidth}
-				computeEmbeddedMaxWidth={computeEmbeddedMaxWidth}
-				ignoredStyles={['width']}
-			/>
+			<View>
+				<Text>Нет данных</Text>
+			</View>
 		);
 	};
 
