@@ -15,6 +15,7 @@ import WeatherCard from '../components/WeatherCard';
 import nodeApi from '../api/nodeApi';
 import weatherApi from '../api/weatherApi';
 import FeedBack from '../components/FeedBack';
+import db from '../database/database';
 
 const { Conway } = require('@lab-code/moonphase');
 
@@ -127,16 +128,18 @@ const MainScreen = ({ navigation }) => {
 		const day = new Date().getDate();
 		const month = new Date().getMonth() + 1;
 		const year = new Date().getFullYear();
-		console.log('for moonphase', day, month, year);
 		const moonphase = Conway(day, month, year);
 
-		nodeApi
-			.get(`/garden-calendar/moon-phase-calendar/${moonphase}`)
-			.then((response) => {
-				/* console.log('MOON RESP', response.data); */
-				setMoon(response.data.data);
-			})
-			.catch((error) => console.log('MOON ERR', error.response));
+		db.transaction((txn) => {
+			txn.executeSql(
+				`SELECT * FROM moon WHERE phase_number = ${moonphase}`,
+				[],
+				(tx, results) => {
+					const res = results.rows.item(0);
+					setMoon(res);
+				},
+			);
+		});
 	};
 
 	useEffect(() => {

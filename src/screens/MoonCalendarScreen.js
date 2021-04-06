@@ -14,17 +14,16 @@ import HTML from 'react-native-render-html';
 import SQLite from 'react-native-sqlite-storage';
 
 import MoonPhaseCard from '../components/MoonPhaseCard';
+import db from '../database/database';
 
 const { Conway } = require('@lab-code/moonphase');
 
 const MoonCalendarScreen = (props) => {
 	const [date, setDate] = useState();
-	const [moon, setMoon] = useState();
+	const [moon, setMoon] = useState(null);
 	const [showMonthlyData, setShowMonthlyData] = useState(false);
 	const [showPhaseDescription, setShowPhaseDescription] = useState(true);
-	const [db, setDb] = useState(null);
 	const [montlyData, setMonthlyData] = useState(null);
-	const [loading, setLoading] = useState(true);
 
 	moment.updateLocale('ru', {
 		months: [
@@ -46,33 +45,14 @@ const MoonCalendarScreen = (props) => {
 	useEffect(() => {
 		SQLite.enablePromise(true);
 		SQLite.DEBUG(true);
-		getData();
 
-		if (!loading) {
-			const now = moment();
-			getDateFunc(now);
-		}
+		const now = moment();
+		getDateFunc(now);
 
 		props.navigation.setOptions({
 			headerBackTitle: 'Назад',
 		});
-	}, [loading]);
-
-	const getData = () => {
-		SQLite.openDatabase({
-			name: 'leafs',
-			location: 'default',
-			createFromLocation: '~www/leafsDb.db',
-		})
-			.then((res) => {
-				console.log('SUC', res);
-				setDb(res);
-				setLoading(false);
-			})
-			.catch((err) => {
-				console.log('ERR', err);
-			});
-	};
+	}, []);
 
 	const fetchData = (moonphase) => {
 		db.transaction((txn) => {
@@ -80,7 +60,12 @@ const MoonCalendarScreen = (props) => {
 				`SELECT * FROM moon WHERE phase_number = ${moonphase}`,
 				[],
 				(tx, results) => {
-					setMoon(results.rows.item(0));
+					const res = results.rows.item(0);
+					if (!moon) {
+						setMoon(res);
+					} else if (res.phase_description !== moon.phase_description) {
+						setMoon(res);
+					}
 				},
 			);
 		});
@@ -106,30 +91,14 @@ const MoonCalendarScreen = (props) => {
 				`SELECT content FROM monthly_calendar WHERE month_number = ${month} AND year_number = ${year}`,
 				[],
 				(tx, results) => {
-					console.log('tx', tx);
-					console.log('len', results.rows.item(0));
 					const res = results.rows.item(0);
-					console.log('RES', res);
-					setMonthlyData(res.content);
+					if (res.content !== montlyData) {
+						setMonthlyData(res.content);
+					}
 				},
 			);
 		});
 	};
-
-	/* const getMonthlyData = (month, year) => {
-		nodeApi
-			.get(`/garden-calendar/monthly-calendar/${month}/${year}`)
-			.then((response) => {
-				console.log(response.data.data.content);
-				if (montlyData !== response.data.data.content) {
-					setMonthlyData(response.data.data.content);
-				}
-			})
-			.catch((error) => {
-				console.log('MOON ERR', error.response);
-				setMonthlyData('Нет данных');
-			});
-	}; */
 
 	const MonthlyCalendar = () => {
 		const contentWidth = useWindowDimensions().width;
