@@ -59,6 +59,7 @@
 		"react-native-reanimated": "^1.10.1",
 		"react-native-render-html": "^5.0.1",
 		"react-native-safe-area-context": "^3.1.4",
+		"react-native-safe-area-view": "^0.14.9",
 		"react-native-screens": "^2.9.0",
 		"react-native-settings": "^0.2.3",
 		"react-native-sqlite-storage": "^5.0.0",
