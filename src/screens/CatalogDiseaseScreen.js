@@ -3,6 +3,7 @@ import { StyleSheet, Text, ScrollView, TouchableOpacity, View } from 'react-nati
 import HTML from 'react-native-render-html';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import nodeApi from '../api/nodeApi';
+import db from '../database/database';
 
 const CatalogPlantScreen = (props) => {
 	const { route } = props;
@@ -24,7 +25,7 @@ const CatalogPlantScreen = (props) => {
 	}, []);
 
 	const getDiseaseHealInfo = () => {
-		nodeApi
+		/* nodeApi
 			.get(`/plant-protection/link/disease/${itemId}/heal`)
 			.then((response) => {
 				console.log(response);
@@ -39,7 +40,25 @@ const CatalogPlantScreen = (props) => {
 				console.log('dis', dis);
 				setDisease(dis);
 			})
-			.catch((error) => console.log('ERR', error.response));
+			.catch((error) => console.log('ERR', error.response)); */
+
+		db.transaction((txn) => {
+			txn.executeSql(
+				/* `SELECT * FROM plant_disease_link WHERE plant_id = ${itemId}`, */
+				`SELECT content, name, heal.id FROM disease_heal_link LEFT JOIN heal ON disease_heal_link.heal_id  = heal.id WHERE disease_id = ${itemId}`,
+				[],
+				(tx, results) => {
+					const res = results.rows;
+					const disArr = [];
+					console.log('DATABASE', res);
+					for (let i = 0; i < res.length; i += 1) {
+						disArr.push(res.item(i));
+					}
+					console.log('DIS ARR', disArr);
+					setDisease(disArr);
+				},
+			);
+		});
 	};
 
 	const RenderDiseaseList = () => {
@@ -67,7 +86,7 @@ const CatalogPlantScreen = (props) => {
 
 	const getDiseaseItem = () => {
 		return disease.map((item) => {
-			console.log(item.name);
+			console.log(item);
 			const healName = item.name;
 			return (
 				<TouchableOpacity

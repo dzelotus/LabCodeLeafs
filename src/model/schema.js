@@ -1,16 +1,23 @@
-import { appSchema, tableSchema } from '@nozbe/watermelondb'
+import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-  version: 1,
-  tables: [
-    tableSchema({
-      name: 'posts',
-      columns: [
-        { name: 'title', type: 'string' },
-        { name: 'subtitle', type: 'string', isOptional: true },
-        { name: 'body', type: 'string' },
-        { name: 'is_pinned', type: 'boolean', isOptional: true },
-      ]
-    })  
-  ]
-})
+	version: 1,
+	tables: [
+		tableSchema({
+			name: 'posts',
+			columns: [
+				{ name: 'title', type: 'string' },
+				{ name: 'subtitle', type: 'string', isOptional: true },
+				{ name: 'body', type: 'string' },
+				{ name: 'is_pinned', type: 'boolean', isOptional: true },
+			],
+		}),
+		tableSchema({
+			name: 'catalog',
+			columns: [
+				{ name: 'name', type: 'string' },
+				{ name: 'content', type: 'string' },
+			],
+		}),
+	],
+});

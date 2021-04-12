@@ -3,13 +3,15 @@
 /* eslint-disable consistent-return */
 import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator, ScrollView, Alert } from 'react-native';
+import { connect } from 'react-redux';
 import nodeApi from '../api/nodeApi';
 import GardenWithPlantsCard from '../components/GardenWithPlantsCard';
 import AddGardenModal from '../components/AddGardenModal';
+import { resolveAuth } from '../actions/AuthActions';
 import NotAuthUser from '../components/NotAuthUser';
 
 const GardenScreen = (props) => {
-	const { navigation } = props;
+	const { navigation, isSigned } = props;
 
 	const [loading, setLoading] = useState({
 		screenLoading: false,
@@ -18,7 +20,6 @@ const GardenScreen = (props) => {
 	});
 	const [gardenData, setGardenData] = useState(null);
 	const [isVerified, setIsVerified] = useState(null);
-	const [isAuth, setIsAuth] = useState(null);
 
 	const checkVerify = async () => {
 		nodeApi
@@ -85,13 +86,11 @@ const GardenScreen = (props) => {
 			.get('/garden')
 			.then((response) => {
 				console.log('GET GARDENS RESPONSE', response);
-				setIsAuth(true);
 				setGardenData(response.data.data);
 				setLoading({ screenLoading: false, itemLoading: false, buttonLoading: false });
 			})
 			.catch((error) => {
 				console.log(error.response);
-				setIsAuth(false);
 				setLoading({ screenLoading: false, itemLoading: false, buttonLoading: false });
 			});
 	};
@@ -126,17 +125,19 @@ const GardenScreen = (props) => {
 		}
 	};
 
+	if (!isSigned) {
+		return (
+			<View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
+				<NotAuthUser />
+			</View>
+		);
+	}
+
 	// eslint-disable-next-line react/destructuring-assignment
 	if (loading.screenLoading === true) {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
 				<Indicator />
-			</View>
-		);
-	} else if (!isAuth) {
-		return (
-			<View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
-				<NotAuthUser />
 			</View>
 		);
 	}
@@ -157,4 +158,10 @@ const GardenScreen = (props) => {
 	);
 };
 
-export default GardenScreen;
+const mapStateToProps = ({ auth }) => {
+	const { isSigned } = auth;
+
+	return { isSigned };
+};
+
+export default connect(mapStateToProps, { resolveAuth })(GardenScreen);

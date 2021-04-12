@@ -3,6 +3,7 @@ import { StyleSheet, Text, ScrollView, TouchableOpacity, View } from 'react-nati
 import HTML from 'react-native-render-html';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import nodeApi from '../api/nodeApi';
+import db from '../database/database';
 
 const CatalogPlantScreen = (props) => {
 	const { route } = props;
@@ -21,11 +22,11 @@ const CatalogPlantScreen = (props) => {
 	}, []);
 
 	const getPlantDiseaseInfo = () => {
-		nodeApi
+		/* nodeApi
 			.get(`/plant-protection/link/plant/${itemId}/disease`)
 			.then((response) => {
-				console.log('RESP', response.data.data);
 				const dis = response.data.data;
+				console.log('DIS', dis);
 				let i;
 				for (i = 0; i < dis.length; i += 1) {
 					dis[i].content = dis[i].disease_content;
@@ -35,10 +36,28 @@ const CatalogPlantScreen = (props) => {
 					delete dis[i].disease_name;
 					delete dis[i].disease_id;
 				}
-				console.log('dis', dis);
+
 				setDisease(dis);
 			})
-			.catch((error) => console.log('ERR', error.response));
+			.catch((error) => console.log('ERR', error.response)); */
+
+		db.transaction((txn) => {
+			txn.executeSql(
+				/* `SELECT * FROM plant_disease_link WHERE plant_id = ${itemId}`, */
+				`SELECT content, name, disease.id FROM plant_disease_link LEFT JOIN disease ON plant_disease_link.disease_id  = disease.id WHERE plant_id = ${itemId}`,
+				[],
+				(tx, results) => {
+					const res = results.rows;
+					const disArr = [];
+					console.log('DATABASE', res);
+					for (let i = 0; i < res.length; i += 1) {
+						disArr.push(res.item(i));
+					}
+					console.log('DIS ARR', disArr);
+					setDisease(disArr);
+				},
+			);
+		});
 	};
 
 	const RenderDiseaseList = () => {
@@ -66,9 +85,11 @@ const CatalogPlantScreen = (props) => {
 		return null;
 	};
 
+	console.log('DISEASE', disease);
+
 	const getDiseaseItem = () => {
 		return disease.map((item) => {
-			console.log(item.disease_name);
+			/* console.log('DISEASE ITEM', item); */
 			const diseaseName = item.name;
 			return (
 				<TouchableOpacity

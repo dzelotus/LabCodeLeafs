@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from 'react-native-elements';
-import nodeApi from '../api/nodeApi';
+import SQLite from 'react-native-sqlite-storage';
+
+import db from '../database/database';
 
 const CatalogScreen = (props) => {
-	const [loading, setLoading] = useState(true);
 	const [fetchedData, setFetchedData] = useState(null);
 	const [activeButton, setActiveButton] = useState('plant');
 	const [navScreen, setNavScreen] = useState('CatalogPlant');
@@ -22,22 +23,23 @@ const CatalogScreen = (props) => {
 
 	useEffect(() => {
 		fetchCatalog({ item: listType });
+		SQLite.enablePromise(true);
+		SQLite.DEBUG(true);
 	}, []);
 
 	const fetchCatalog = (item) => {
-		setLoading(true);
-		nodeApi
-			.get(`/plant-protection/${item.item}`)
-			.then((response) => {
-				console.log('RESP', JSON.stringify(response, null, 2));
-				setFetchedData(response.data.data);
-				setDisplayedData(response.data.data);
-				setLoading(false);
-			})
-			.catch((error) => {
-				console.log('ERROR', error.response);
-				setLoading(false);
+		db.transaction((txn) => {
+			txn.executeSql(`SELECT * FROM ${item.item} ORDER BY name`, [], (tx, results) => {
+				const res = results.rows;
+				const resArr = [];
+				for (let i = 0; i < res.length; i += 1) {
+					resArr.push(res.item(i));
+				}
+				console.log(resArr);
+				setFetchedData(resArr);
+				setDisplayedData(resArr);
 			});
+		});
 	};
 
 	const handlePressChangingList = (lType) => {
@@ -109,17 +111,14 @@ const CatalogScreen = (props) => {
 		SearchUpdate(value);
 	};
 
-	console.log(activeButton);
-
-	if (loading) {
+	if (!displayedData) {
 		return (
-			<View style={{ flex: 1 }}>
+			<View style={{ flex: 1, backgroundColor: 'white' }}>
 				<MainButtons />
 				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
 			</View>
 		);
 	}
-
 	return (
 		<View style={{ flex: 1, backgroundColor: 'white' }}>
 			<MainButtons />
@@ -140,36 +139,38 @@ const CatalogScreen = (props) => {
 					data={displayedData}
 					keyExtractor={(item) => item.name}
 					style={{ flex: 1 }}
-					renderItem={({ item }) => (
-						<TouchableOpacity
-							onPress={() => props.navigation.navigate(navScreen, { item })}
-							style={{
-								flex: 1,
-								flexDirection: 'row',
-								justifyContent: 'space-between',
-								borderBottomColor: 'gray',
-								borderBottomWidth: 1,
-								marginHorizontal: 10,
-							}}
-						>
-							<View
+					renderItem={({ item }) => {
+						return (
+							<TouchableOpacity
+								onPress={() => props.navigation.navigate(navScreen, { item })}
 								style={{
 									flex: 1,
-									marginVertical: 20,
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									borderBottomColor: 'gray',
+									borderBottomWidth: 1,
+									marginHorizontal: 10,
 								}}
 							>
-								<Text style={styles.nameStyle}>{item.name}</Text>
-							</View>
-							<View
-								style={{
-									alignItems: 'flex-end',
-									justifyContent: 'center',
-								}}
-							>
-								<FontAwesome name="chevron-right" size={20} color="#379683" />
-							</View>
-						</TouchableOpacity>
-					)}
+								<View
+									style={{
+										flex: 1,
+										marginVertical: 20,
+									}}
+								>
+									<Text style={styles.nameStyle}>{item.name}</Text>
+								</View>
+								<View
+									style={{
+										alignItems: 'flex-end',
+										justifyContent: 'center',
+									}}
+								>
+									<FontAwesome name="chevron-right" size={20} color="#379683" />
+								</View>
+							</TouchableOpacity>
+						);
+					}}
 				/>
 			</View>
 		</View>

@@ -1,130 +1,269 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+/* eslint-disable prettier/prettier */
+import React, { useEffect, useState } from 'react';
 import {
 	View,
 	TouchableOpacity,
 	Text,
-	TextInput,
-	Image,
+	TextInput,	
 	ActivityIndicator,
 	ScrollView,
-	Alert,
 	StyleSheet,
 } from 'react-native';
-import { Button } from 'react-native-elements';
-import { inputChange, getProfileInfo, updateProfileInfo } from '../actions/EditProfileActions';
+import * as ImagePicker from 'expo-image-picker';
+import { useForm, Controller } from 'react-hook-form';
+import FastImage from 'react-native-fast-image'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontistoIcon from 'react-native-vector-icons/Fontisto';
+
+import nodeApi from '../api/nodeApi';
 
 const EditProfileScreen = (props) => {
-	console.log('THIS IS PROPS', props);
+	const [loading, setLoading] = useState(false);
+	const [newPhoto, setNewPhoto] = useState(null);
+	console.log(loading)
+	console.log(newPhoto)
+	console.log('EDIT PROPS',props)	
 
-	const onButtonPress = () => {
-		const { name, surname } = props;
-
-		props.updateProfileInfo({ name, surname });
-	};
-
-	const { screenLoading, photo, name, surname } = props;
-
-	useEffect(() => {
-		props.getProfileInfo();
+	const { route, navigation } = props;
+	const { profile } = route.params
+	const {name, surname, userPhoto} = profile
+	
+	useEffect(() => {		
 		props.navigation.setOptions({
 			headerTruncatedBackTitle: 'Назад',
 		});
 	}, []);
 
 	const activeButton = () => {
-		if (props.loading === true) {
-			return <ActivityIndicator size="large" />;
+		if (loading === true) {
+			return (
+				<View style={styles.buttonStyle}>
+					<ActivityIndicator size="large" color="#379683" />
+				</View>
+			);
 		}
+
 		return (
-			<Button
-				style={{ marginHorizontal: 60 }}
-				title="Сохранить"
-				onPress={() => onButtonPress()}
-				containerStyle={{ marginHorizontal: 60 }}
-				buttonStyle={{ backgroundColor: '#116B58' }}
-			/>
+			<TouchableOpacity
+				style={styles.buttonStyle}
+				onPress={handleSubmit(onSubmit)}
+			>
+				<Text style={styles.buttonText}>Сохранить</Text>
+			</TouchableOpacity>
 		);
 	};
 
-	if (screenLoading) {
-		return <ActivityIndicator size="large" color="#379683" />;
+	const updateProfileInfo = ({ name, surname, newPhoto, userPhoto })  => {		
+		setLoading(true)
+		nodeApi
+			.get('/profile/edit')
+			.then((response) => {
+				const _csrf = response.data.csrfToken;
+				const image = new FormData();
+				if (newPhoto) {
+					image.append('profile_image', {
+						uri: newPhoto,
+						name: 'image.jpg',
+						type: 'image/jpg',
+					});
+				} else {
+					image.append('profile_image', userPhoto);
+				}
+				image.append('_csrf', _csrf);
+				image.append('name', name);
+				image.append('surname', surname);
+	
+				nodeApi
+					.put('/profile', image, {
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'multipart/form-data;',
+						},
+					})
+					.then(() => {							
+						setLoading(false)				
+						navigation.navigate('Profile');
+					})
+					.catch(() => {
+						setLoading(false)
+						
+						
+					});
+			})
+			.catch(() => {
+				setLoading(false)
+				
+			});
+	};
+
+	const openCamera = () => {
+		ImagePicker.launchCameraAsync()
+			.then((res) => {				
+				if (!res.cancelled) {
+					setNewPhoto(res.uri);
+				}
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const openLibrary = () => {
+		ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			aspect: [4, 3],
+			allowsEditing: true,
+		})
+			.then((res) => {				
+				if (!res.cancelled) {
+					setNewPhoto(res.uri);
+				}
+			})
+			.catch((error) => console.log(error));
+	};	
+
+	const Avatar = () => {
+		if (newPhoto) {
+			const photoUri = newPhoto
+				.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
+				.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/');
+			return (
+				<FastImage
+					style={{
+						flex: 1,
+						height: 300,
+						marginTop: 10,
+					}}
+					source={{
+						uri: photoUri,
+					}}
+					resizeMode="contain"
+				/>
+			);
+		} if (userPhoto) {
+			const photoUri = userPhoto
+				.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
+				.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/');
+			return (
+				<FastImage
+					style={{
+						flex: 1,
+						height: 300,
+						marginTop: 10,
+					}}
+					source={{
+						uri: photoUri,
+					}}
+					resizeMode="contain"
+				/>
+			);
+		}
+		return (
+			<View
+				style={{
+					alignSelf: 'center',
+					marginTop: 10,
+					height: 300,
+					justifyContent: 'center',
+				}}
+			>
+				<FontistoIcon name="user-secret" size={150} />
+			</View>
+		);
+	};
+
+	const { control, handleSubmit, /* errors */ } = useForm();
+	const onSubmit = (data) => {				
+		updateProfileInfo({...data, userPhoto, newPhoto})
+		
+	};
+
+
+	if (!profile) {
+		return (
+			<View style={{ flex: 1, backgroundColor: 'white' }}>
+				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
+			</View>
+		);
 	}
 	return (
-		<View>
+		<View style={{ backgroundColor: 'white', flex: 1 }}>
 			<ScrollView keyboardShouldPersistTaps="always">
-				<TouchableOpacity
-					style={{ marginBottom: 10 }}
-					onPress={() => {
-						Alert.alert('Ошибка', 'функция пока недоступна');
+				<Avatar />
+				<View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}>
+					<TouchableOpacity style={styles.iconStyle} onPress={() => openCamera()}>
+						<Icon name="camera" size={50} color="#379683" />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.iconStyle} onPress={() => openLibrary()}>
+						<Icon name="image-area" size={50} color="#379683" />
+					</TouchableOpacity>
+				</View>
+				<Controller
+					control={control}
+					rules={{
+						required: {
+							value: true,
+							message: 'Необходимо выбрать растение',
+						},
 					}}
-				>
-					<Image
-						style={{
-							borderColor: 'green',
-							borderWidth: 1,
-							borderRadius: 75,
-							height: 120,
-							width: 120,
-							alignSelf: 'center',
-							marginTop: 15,
-							marginBottom: 10,
-						}}
-						source={{
-							uri: photo,
-						}}
-					/>
-					<Text
-						style={{
-							textAlign: 'center',
-							fontSize: 15,
-							fontWeight: 'bold',
-							backgroundColor: '#116B58',
-							marginHorizontal: 60,
-							color: '#FFFFFF',
-							height: 35,
-							borderRadius: 5,
-							textAlignVertical: 'center',
-						}}
-					>
-						Изменить фото
-					</Text>
-				</TouchableOpacity>
-				<View style={styles.inputContainer}>
-					<Text style={styles.inputLabel}>Имя</Text>
-					<TextInput
-						value={name}
-						onChangeText={(text) => {
-							props.inputChange({
-								prop: 'name',
-								value: text,
-							});
-						}}
-					/>
-				</View>
-				<View style={styles.inputContainer}>
-					<Text style={styles.inputLabel}>Фамилия</Text>
-					<TextInput
-						value={surname}
-						onChangeText={(text) => {
-							props.inputChange({
-								prop: 'surname',
-								value: text,
-							});
-						}}
-					/>
-				</View>
-				<View style={{ marginTop: 20 }}>{activeButton()}</View>
+					render={({ onChange, value }) => (
+						<View style={styles.container}>
+							<View style={styles.containerHeader}>
+								<Text>Имя</Text>
+							</View>
+							<View
+								style={{
+									flex: 1,
+									paddingHorizontal: 10,
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
+								}}
+							>
+								<TextInput
+									style={{ flex: 1 }}
+									textValue={value}
+									defaultValue={value}
+									onChangeText={onChange}
+								/>
+							</View>
+						</View>
+					)}
+					name="name"
+					defaultValue={name}				
+				/>
+				<Controller
+					control={control}					
+					render={({ onChange, value }) => (
+						<View style={styles.container}>
+							<View style={styles.containerHeader}>
+								<Text>Фамилия</Text>
+							</View>
+							<View
+								style={{
+									flex: 1,
+									paddingHorizontal: 10,
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									alignItems: 'center',
+								}}
+							>
+								<TextInput
+									style={{ flex: 1 }}
+									textValue={value}
+									defaultValue={value}
+									onChangeText={onChange}
+								/>
+							</View>
+						</View>
+					)}
+					name="surname"
+					defaultValue={surname}					
+				/>		
+				<View style={{ marginTop: 20, justifyContent: 'flex-end' }}>{activeButton()}</View>
 			</ScrollView>
 		</View>
 	);
 };
 
-const mapStateToProps = ({ profile }) => {
-	const { name, surname, location, photo, data, _csrf, loading } = profile;
-
-	return { name, surname, location, photo, data, _csrf, loading };
-};
 
 const styles = StyleSheet.create({
 	inputLabel: {
@@ -143,10 +282,58 @@ const styles = StyleSheet.create({
 	inputInput: {
 		paddingRight: 'auto',
 	},
+	iconStyle: {
+		marginHorizontal: 10,
+	},
+	buttonStyle: {
+		marginHorizontal: 15,
+		marginVertical: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		borderRadius: 10,
+		borderColor: '#379683',
+		borderWidth: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		height: 40,
+		justifyContent: 'center',
+	},
+	buttonText: {
+		fontSize: 18,
+		textAlignVertical: 'center',
+		textAlign: 'center',
+		color: '#EB9156',
+	},
+	container: {
+		marginHorizontal: 15,
+		marginVertical: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
+		borderRadius: 10,
+		borderColor: '#379683',
+		borderWidth: 1,
+		backgroundColor: '#fff',
+		height: 50,
+	},
+	containerHeader: {
+		marginTop: -12,
+		marginHorizontal: 10,
+		paddingHorizontal: 10,
+		backgroundColor: 'white',
+		position: 'absolute',
+	},
 });
 
-export default connect(mapStateToProps, {
-	inputChange,
-	getProfileInfo,
-	updateProfileInfo,
-})(EditProfileScreen);
+export default EditProfileScreen;

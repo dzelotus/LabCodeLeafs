@@ -21,7 +21,6 @@ import imagePicker from '../hooks/imagePicker';
 import makePhoto from '../hooks/makePhoto';
 import GoBackButton from '../components/GoBackButton';
 import HowMakePhotoButton from '../components/HowMakePhotoButton'
-import NotAuthUser from '../components/NotAuthUser'
 
 /* import makePhoto from '../hooks/makePhoto'; */
 
@@ -73,6 +72,7 @@ const ScanLeafScreen = (route) => {
 	};
 
 	useEffect(() => {
+	
 		getImages();
 		route.navigation.addListener('focus', () => {
 			Platform.OS === 'android'
@@ -85,18 +85,7 @@ const ScanLeafScreen = (route) => {
 					console.log('PL', statuses[PERMISSIONS.IOS.PHOTO_LIBRARY]);					
 				  });
 		});
-	}, []);
-
-	if (!route.isSigned) {
-		return (
-			<View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
-				<View style={styles.backButtonContainer}>
-					<GoBackButton nav="Main" />
-				</View>
-				<NotAuthUser />
-			</View>
-		)
-	}
+	}, []);	
 
 	return (
 		<View style={{ flex: 1, justifyContent: 'flex-end' }}>

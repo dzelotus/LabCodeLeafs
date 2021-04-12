@@ -11,8 +11,16 @@ import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
 import { resolveAuth } from '../actions/AuthActions';
 import imageSwitch from '../assets/weatherIcon';
+import moonImageSwitch from '../assets/moonIcon';
 
-const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resolveAuth }) => {
+const WeatherCard = ({
+	moonInfo,
+	weatherInfo,
+	getLocation,
+	weatherLoading,
+	resolveAuth,
+	isSigned,
+}) => {
 	const navigation = useNavigation();
 
 	moment.updateLocale('ru', {
@@ -32,49 +40,6 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 		],
 	});
 	const now = moment().locale('ru').format('D MMMM');
-
-	/* const imageSwitch = (icon) => {
-		switch (icon) {
-			case '01n':
-				return require('../../assets/weatherImages/01n.png');
-			case '01d':
-				return require('../../assets/weatherImages/01d.png');
-			case '02n':
-				return require('../../assets/weatherImages/02n.png');
-			case '02d':
-				return require('../../assets/weatherImages/02d.png');
-			case '03d':
-				return require('../../assets/weatherImages/03d.png');
-			case '03n':
-				return require('../../assets/weatherImages/03d.png');
-			case '04n':
-				return require('../../assets/weatherImages/04n.png');
-			case '04d':
-				return require('../../assets/weatherImages/04n.png');
-			case '09d':
-				return require('../../assets/weatherImages/09n.png');
-			case '09n':
-				return require('../../assets/weatherImages/09n.png');
-			case '10d':
-				return require('../../assets/weatherImages/10n.png');
-			case '10n':
-				return require('../../assets/weatherImages/10n.png');
-			case '11d':
-				return require('../../assets/weatherImages/11n.png');
-			case '11n':
-				return require('../../assets/weatherImages/11n.png');
-			case '13d':
-				return require('../../assets/weatherImages/13n.png');
-			case '13n':
-				return require('../../assets/weatherImages/13n.png');
-			case '50n':
-				return require('../../assets/weatherImages/50n.png');
-			case '50d':
-				return require('../../assets/weatherImages/50n.png');
-			default:
-				return require('../../assets/weatherImages/01n.png');
-		}
-	}; */
 
 	const Indicator = () => (
 		<View style={{ alignSelf: 'center', flex: 1 }}>
@@ -112,6 +77,7 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 								borderBottomColor: '#379683',
 								borderBottomWidth: 2,
 								marginHorizontal: 10,
+								paddingVertical: 5,
 							}}
 							onPress={() =>
 								navigation.navigate('WeatherScreen', { coords: weatherInfo.coords })
@@ -122,7 +88,7 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 									<Image
 										style={styles.image}
 										source={imageSwitch(weatherInfo.icon)}
-										resizeMode="center"
+										resizeMode="contain"
 										resizeMethod="resize"
 									/>
 								</View>
@@ -166,7 +132,7 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 											style={{
 												marginVertical: 10,
 												color: '#379683',
-												fontSize: 16,
+												fontSize: 18,
 											}}
 										>
 											{weatherInfo.description}
@@ -201,7 +167,7 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 							justifyContent: 'center',
 							flex: 1,
 							marginHorizontal: 10,
-							marginVertical: 10,
+							paddingVertical: 10,
 						}}
 						onPress={() => navigation.navigate('MoonCalendar')}
 					>
@@ -209,9 +175,7 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 							<View>
 								<FastImage
 									style={styles.image}
-									source={{
-										uri: moonInfo.phase_image_url,
-									}}
+									source={moonImageSwitch(moonInfo.phase_number.toString())}
 								/>
 							</View>
 							<View
@@ -235,7 +199,7 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 							</View>
 						</View>
 					</TouchableOpacity>
-				) : (
+				) : !isSigned ? (
 					<TouchableOpacity
 						style={{
 							height: 75,
@@ -251,6 +215,8 @@ const WeatherCard = ({ moonInfo, weatherInfo, getLocation, weatherLoading, resol
 							Лунный календарь доступен только авторизированным пользователям
 						</Text>
 					</TouchableOpacity>
+				) : (
+					<Indicator />
 				)}
 			</View>
 		</View>

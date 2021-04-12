@@ -49,7 +49,7 @@ const NewsScreen = (props) => {
 		return <Indicator />;
 	}
 	return (
-		<View style={{ flex: 1 }}>
+		<View style={{ flex: 1, backgroundColor: 'white' }}>
 			<FlatList
 				data={newsData}
 				renderItem={(item) => {

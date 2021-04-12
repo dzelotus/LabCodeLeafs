@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
@@ -25,11 +26,13 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data, isSigned }
 		'Гранат',
 	];
 
+	const canScanFlowers = ['Тюльпана', 'Розы'];
+
 	const renderItem = ({ item }) => {
 		const imageUrl = item.thumbnail_url ? item.thumbnail_url : item.image_url;
 		const imageUrlReady = imageUrl
-			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
-			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/');
+			.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
+			.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/');
 
 		/* const compressedUrl = item.compressed_url ? item.compressed_url : item.image_url; */
 		/* 	const compressedUrlReady = compressedUrl
@@ -66,7 +69,11 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data, isSigned }
 			</View>
 			<TouchableOpacity
 				style={styles.scanButtonStyle}
-				onPress={() => navigation.navigate('CameraFlow')}
+				onPress={() => {
+					isSigned
+						? navigation.navigate('CameraFlow')
+						: navigation.navigate('NotAuthScreen');
+				}}
 			>
 				<View style={styles.rowDirection}>
 					<Icon name="camera" size={25} color="#379683" />
@@ -134,10 +141,33 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data, isSigned }
 						>
 							Нейросеть может автоматически распознать:
 						</Text>
+						<Text style={styles.rowName}>1. Листья:</Text>
 						<FlatList
 							data={canScan}
 							renderItem={(item) => {
-								console.log(item);
+								return (
+									<View
+										key={item.index}
+										style={{ paddingHorizontal: 10, marginBottom: 5 }}
+									>
+										<Text
+											style={{
+												fontSize: 16,
+												textAlign: 'left',
+												paddingLeft: 30,
+											}}
+										>
+											{item.item}
+										</Text>
+									</View>
+								);
+							}}
+							keyExtractor={(item) => item}
+						/>
+						<Text style={styles.rowName}>2. Цветы:</Text>
+						<FlatList
+							data={canScanFlowers}
+							renderItem={(item) => {
 								return (
 									<View
 										key={item.index}
@@ -252,6 +282,11 @@ const styles = StyleSheet.create({
 		shadowRadius: 3.84,
 		elevation: 5,
 		paddingBottom: 50,
+	},
+	rowName: {
+		fontSize: 18,
+		paddingLeft: 20,
+		marginBottom: 10,
 	},
 });
 

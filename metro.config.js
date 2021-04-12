@@ -13,5 +13,6 @@ module.exports = {
 				inlineRequires: false,
 			},
 		}),
+		minifierPath: 'metro-minify-terser',
 	},
 };
