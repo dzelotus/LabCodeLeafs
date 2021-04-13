@@ -279,9 +279,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ auth }) => {
-	const { fistLaunchToken, isSigned, loadStart, toSignupScreen, toAuthFlow } = auth;
+	const { fistLaunchToken, isSigned, toSignupScreen, toAuthFlow } = auth;
 
-	return { fistLaunchToken, isSigned, loadStart, toSignupScreen, toAuthFlow };
+	return { fistLaunchToken, isSigned, toSignupScreen, toAuthFlow };
 };
 
 export default connect(mapStateToProps, { resolveAuth })(WeatherCard);

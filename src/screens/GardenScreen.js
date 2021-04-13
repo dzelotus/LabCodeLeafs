@@ -96,12 +96,13 @@ const GardenScreen = (props) => {
 	};
 
 	useEffect(() => {
-		const getFocus = navigation.addListener('focus', () => {
+		checkVerify();
+		/* const getFocus = navigation.addListener('focus', () => {
 			getGardens();
-			checkVerify();
+			
 		});
 
-		return getFocus;
+		return getFocus; */
 	}, []);
 
 	const Indicator = () => (

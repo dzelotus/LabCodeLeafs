@@ -118,8 +118,7 @@ const MainScreen = ({ navigation }) => {
 				});
 				setWeatherLoading(false);
 			})
-			.catch((error) => {
-				console.log('!!!', error.response);
+			.catch(() => {
 				setWeatherLoading(false);
 			});
 	};

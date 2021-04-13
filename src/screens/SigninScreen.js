@@ -58,6 +58,7 @@ function SigninScreen(props) {
 	};
 
 	useEffect(() => {
+		console.log('ЛОГИН СРАБОТКА');
 		props.getCsrf();
 		RNBootSplash.hide();
 		props.checkBioScanner();
@@ -103,7 +104,7 @@ function SigninScreen(props) {
 	};
 
 	const activityIndicator = () => {
-		if (props.loading) {
+		if (!_csrf) {
 			return (
 				<View>
 					<ActivityIndicator size="large" color="#379683" />
@@ -398,7 +399,6 @@ const mapStateToProps = ({ auth }) => {
 		error,
 		_csrf,
 		isSigned,
-		loadStart,
 		hasBioScanner,
 		isBioAuthActive,
 	} = auth;
@@ -411,7 +411,6 @@ const mapStateToProps = ({ auth }) => {
 		error,
 		_csrf,
 		isSigned,
-		loadStart,
 		hasBioScanner,
 		isBioAuthActive,
 	};

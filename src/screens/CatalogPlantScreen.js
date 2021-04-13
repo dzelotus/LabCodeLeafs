@@ -43,13 +43,12 @@ const CatalogPlantScreen = (props) => {
 
 		db.transaction((txn) => {
 			txn.executeSql(
-				/* `SELECT * FROM plant_disease_link WHERE plant_id = ${itemId}`, */
 				`SELECT content, name, disease.id FROM plant_disease_link LEFT JOIN disease ON plant_disease_link.disease_id  = disease.id WHERE plant_id = ${itemId}`,
 				[],
 				(tx, results) => {
 					const res = results.rows;
 					const disArr = [];
-					console.log('DATABASE', res);
+
 					for (let i = 0; i < res.length; i += 1) {
 						disArr.push(res.item(i));
 					}

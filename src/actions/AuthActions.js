@@ -11,7 +11,9 @@ import {
 	SIGNIN_FAIL,
 	SIGNIN_SUCCESS,
 	IS_BIO_AUTH_ACTIVE,
-	IS_INTERNET_AVAILABLE,
+	HAS_INTERNET_CONNECTION,
+	START_WITHOUT_INTERNET,
+	RESOLVE_LOADING,
 } from './types';
 import nodeApi from '../api/nodeApi';
 
@@ -21,11 +23,10 @@ export const inputChange = ({ prop, value }) => ({
 });
 
 export const getCsrf = () => (dispatch) => {
-	dispatch({ type: GET_CSRF, loading: true });
 	nodeApi
 		.get('/login')
 		.then((response) => {
-			dispatch({ type: GET_CSRF, payload: response.data.csrfToken, loading: false });
+			dispatch({ type: GET_CSRF, payload: response.data.csrfToken });
 		})
 		.catch((e) => console.log('ERR', e.response));
 };
@@ -147,10 +148,6 @@ const signinSuccess = (dispatch, response) => {
 	});
 	dispatch({
 		type: RESOLVE_AUTH,
-		payload: { prop: 'loadStart', value: true },
-	});
-	dispatch({
-		type: RESOLVE_AUTH,
 		payload: { prop: 'toAuthFlow', value: false },
 	});
 	dispatch({
@@ -170,6 +167,11 @@ export const clearErrorMessage = () => ({
 export const resolveAuth = ({ prop, value }) => ({
 	type: RESOLVE_AUTH,
 	payload: { prop, value },
+});
+
+export const resolveLoading = (value) => ({
+	type: RESOLVE_LOADING,
+	payload: value,
 });
 
 // логика для входа по отпечатку пальца
@@ -207,10 +209,30 @@ export const checkBioScanner = () => (dispatch) => {
 };
 
 export const checkInternetConnection = () => (dispatch) => {
-	NetInfo.fetch().then((state) => {
-		dispatch({
-			type: IS_INTERNET_AVAILABLE,
-			isInternetAvailable: state.isConnected,
+	console.log('СРАБОТКА');
+	NetInfo.fetch()
+		.then((state) => {
+			dispatch({
+				type: START_WITHOUT_INTERNET,
+				startWithoutInternet: state.isConnected,
+			});
+			dispatch({
+				type: HAS_INTERNET_CONNECTION,
+				hasInternetConnection: state.isConnected,
+			});
+		})
+		.catch((err) => {
+			console.log('CHECK INTERNET CONNECTION ERROR', err);
+			dispatch({
+				type: HAS_INTERNET_CONNECTION,
+				hasInternetConnection: false,
+			});
 		});
+};
+
+export const resolveInternet = (payload) => (dispatch) => {
+	dispatch({
+		type: START_WITHOUT_INTERNET,
+		startWithoutInternet: payload,
 	});
 };

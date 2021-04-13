@@ -6,8 +6,8 @@ const db = SQLite.openDatabase(
 		location: 'default',
 		createFromLocation: '~www/leafsDb.db',
 	},
-	(suc) => {
-		console.log('DB OPENED', suc);
+	() => {
+		console.log('DB OPENED');
 	},
 	() => {
 		console.log('ERROR');

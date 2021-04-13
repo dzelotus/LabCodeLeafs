@@ -7,6 +7,15 @@ const ResolveAuthScreen = () => {
 		console.log('CookieManager.get =>', cookies);
 	});
 
-	return <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }} />;
+	return (
+		<View
+			style={{
+				justifyContent: 'center',
+				alignItems: 'center',
+				flex: 1,
+				backgroundColor: 'white',
+			}}
+		/>
+	);
 };
 export default ResolveAuthScreen;

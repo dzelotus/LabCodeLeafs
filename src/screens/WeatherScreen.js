@@ -30,8 +30,7 @@ const WeatherScreen = (props) => {
 				setWeather(dailyWeather);
 				setLoading(false);
 			})
-			.catch((error) => {
-				console.log('!!!', error.response);
+			.catch(() => {
 				setLoading(false);
 			});
 	};

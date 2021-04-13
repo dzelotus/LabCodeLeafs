@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 /* eslint-disable no-unused-expressions */
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, Image, Platform } from 'react-native';
+import { StyleSheet, Text, View, Image, Platform, Button } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -9,11 +9,12 @@ import RNBootSplash from 'react-native-bootsplash';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ViewPager from '@react-native-community/viewpager';
 import { connect } from 'react-redux';
-import { resolveAuth } from '../actions/AuthActions';
+import { resolveAuth, resolveInternet } from '../actions/AuthActions';
 
 const FirstLaunchScreen = (props) => {
 	const viewPager = useRef(<ViewPager />);
 	const [page, setPage] = useState();
+	const { hasInternetConnection, resolveInternet, resolveAuth } = props;
 
 	useEffect(() => {
 		RNBootSplash.hide();
@@ -164,67 +165,119 @@ const FirstLaunchScreen = (props) => {
 					</Text>
 				</View>
 				<View key="5" style={styles.textContainer}>
-					<Image
-						source={require('../../assets/firstLaunchScreenImages/bitmap.png')}
-						style={{ width: 350, height: 60, marginBottom: 15 }}
-						resizeMode="contain"
-					/>
-					<Text style={{ fontSize: 18, textAlign: 'center', marginBottom: 20 }}>
-						Для доступа ко всем функциям приложения требуется регистрация
-					</Text>
-					<View style={{ width: '100%' }}>
-						<TouchableOpacity
-							onPress={() => {
-								AsyncStorage.setItem('alreadyLaunched', 'true');
-								props.resolveAuth({ prop: 'fistLaunchToken', value: true });
-								props.resolveAuth({ prop: 'toSignupScreen', value: true });
-								props.resolveAuth({ prop: 'toAuthFlow', value: true });
-							}}
-							style={styles.buttonStyle}
-						>
-							<View>
-								<Text
-									style={{ fontSize: 18, color: '#EB9156', fontWeight: 'bold' }}
+					{hasInternetConnection ? (
+						<>
+							<Image
+								source={require('../../assets/firstLaunchScreenImages/bitmap.png')}
+								style={{ width: 350, height: 60, marginBottom: 15 }}
+								resizeMode="contain"
+							/>
+							<Text style={{ fontSize: 18, textAlign: 'center', marginBottom: 20 }}>
+								Для доступа ко всем функциям приложения требуется регистрация
+							</Text>
+							<View style={{ width: '100%' }}>
+								<TouchableOpacity
+									onPress={() => {
+										AsyncStorage.setItem('alreadyLaunched', 'true');
+										resolveAuth({
+											prop: 'firstLaunchToken',
+											value: true,
+										});
+										resolveAuth({ prop: 'toSignupScreen', value: true });
+										resolveAuth({ prop: 'toAuthFlow', value: true });
+									}}
+									style={styles.buttonStyle}
 								>
-									Регистрация
-								</Text>
+									<View>
+										<Text
+											style={{
+												fontSize: 18,
+												color: '#EB9156',
+												fontWeight: 'bold',
+											}}
+										>
+											Регистрация
+										</Text>
+									</View>
+								</TouchableOpacity>
 							</View>
-						</TouchableOpacity>
-					</View>
-					<View style={{ width: '100%' }}>
-						<TouchableOpacity
-							onPress={() => {
-								AsyncStorage.setItem('alreadyLaunched', 'true');
-								props.resolveAuth({ prop: 'fistLaunchToken', value: true });
-								props.resolveAuth({ prop: 'toAuthFlow', value: true });
-							}}
-							style={styles.buttonStyle}
-						>
-							<View>
-								<Text
-									style={{ fontSize: 18, color: '#EB9156', fontWeight: 'bold' }}
+							<View style={{ width: '100%' }}>
+								<TouchableOpacity
+									onPress={() => {
+										AsyncStorage.setItem('alreadyLaunched', 'true');
+										resolveAuth({
+											prop: 'firstLaunchToken',
+											value: true,
+										});
+										resolveAuth({ prop: 'toAuthFlow', value: true });
+									}}
+									style={styles.buttonStyle}
 								>
-									Вход
-								</Text>
+									<View>
+										<Text
+											style={{
+												fontSize: 18,
+												color: '#EB9156',
+												fontWeight: 'bold',
+											}}
+										>
+											Вход
+										</Text>
+									</View>
+								</TouchableOpacity>
 							</View>
-						</TouchableOpacity>
-					</View>
 
-					<TouchableOpacity
-						style={{
-							marginTop: 20,
-							borderBottomWidth: 2,
-							borderBottomColor: '#379683',
-						}}
-						onPress={() => {
-							AsyncStorage.setItem('alreadyLaunched', 'true');
-							props.resolveAuth({ prop: 'fistLaunchToken', value: true });
-						}}
-					>
-						<Text style={{ fontSize: 16, color: '#EB9156' }}>
-							Продолжить без регистрации
-						</Text>
-					</TouchableOpacity>
+							<TouchableOpacity
+								style={{
+									marginTop: 20,
+									borderBottomWidth: 2,
+									borderBottomColor: '#379683',
+								}}
+								onPress={() => {
+									AsyncStorage.setItem('alreadyLaunched', 'true');
+									resolveAuth({ prop: 'firstLaunchToken', value: true });
+									resolveAuth({ prop: 'toAuthFlow', value: false });
+								}}
+							>
+								<Text style={{ fontSize: 16, color: '#EB9156' }}>
+									Продолжить без регистрации
+								</Text>
+							</TouchableOpacity>
+						</>
+					) : (
+						<View
+							style={{
+								flex: 1,
+								backgroundColor: 'white',
+								alignItems: 'center',
+							}}
+						>
+							<View
+								style={{
+									flex: 1,
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<Image
+									source={require('../../assets/newBootsplash.png')}
+									style={{ width: 100, height: 100 }}
+								/>
+							</View>
+							<View style={{ position: 'absolute', bottom: 100 }}>
+								<Text>Отсутствует подключение к интернету</Text>
+								<Button
+									title="Продолжить?"
+									onPress={() => {
+										AsyncStorage.setItem('alreadyLaunched', 'true');
+										resolveInternet(true);
+										resolveAuth({ prop: 'firstLaunchToken', value: true });
+										resolveAuth({ prop: 'toAuthFlow', value: false });
+									}}
+								/>
+							</View>
+						</View>
+					)}
 				</View>
 			</ViewPager>
 			<View style={styles.dotContainer}>
@@ -315,9 +368,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ auth }) => {
-	const { fistLaunchToken, isLoading, toSignupScreen } = auth;
+	const { fistLaunchToken, isLoading, toSignupScreen, hasInternetConnection } = auth;
 
-	return { fistLaunchToken, isLoading, toSignupScreen };
+	return { fistLaunchToken, isLoading, toSignupScreen, hasInternetConnection };
 };
 
-export default connect(mapStateToProps, { resolveAuth })(FirstLaunchScreen);
+export default connect(mapStateToProps, { resolveAuth, resolveInternet })(FirstLaunchScreen);

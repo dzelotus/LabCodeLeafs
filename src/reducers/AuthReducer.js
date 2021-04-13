@@ -8,7 +8,9 @@ import {
 	SIGNIN_SUCCESS,
 	HAS_BIO_SCANNER,
 	IS_BIO_AUTH_ACTIVE,
-	IS_INTERNET_AVAILABLE,
+	HAS_INTERNET_CONNECTION,
+	START_WITHOUT_INTERNET,
+	RESOLVE_LOADING,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -16,10 +18,9 @@ const INITIAL_STATE = {
 	email: '',
 	password: '',
 	error: '',
-	loading: false,
-	firstLaunchToken: '',
+	loading: true,
+	firstLaunchToken: null,
 	isSigned: false,
-	loadStart: '',
 	screenName: '',
 	screenComponent: '',
 	screenOptions: {},
@@ -27,6 +28,8 @@ const INITIAL_STATE = {
 	isBioAuthActive: false,
 	toSignupScreen: false,
 	toAuthFlow: false,
+	hasInternetConnection: false,
+	startWithoutInternet: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -40,7 +43,6 @@ export default (state = INITIAL_STATE, action) => {
 		case SIGNIN_SUCCESS:
 			return {
 				...state,
-				...INITIAL_STATE,
 				loading: false,
 			};
 		case SIGNIN_FAIL:
@@ -49,7 +51,8 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, error: '', username: '', password: '', email: '' };
 		case RESOLVE_AUTH:
 			return { ...state, [action.payload.prop]: action.payload.value };
-
+		case RESOLVE_LOADING:
+			return { ...state, loading: action.payload };
 		case HAS_BIO_SCANNER:
 			return {
 				...state,
@@ -57,8 +60,16 @@ export default (state = INITIAL_STATE, action) => {
 			};
 		case IS_BIO_AUTH_ACTIVE:
 			return { ...state, isBioAuthActive: action.isBioAuthActive };
-		case IS_INTERNET_AVAILABLE:
-			return { ...state, isInternetAvailable: action.isInternetAvailable };
+		case HAS_INTERNET_CONNECTION:
+			return {
+				...state,
+				hasInternetConnection: action.hasInternetConnection,
+			};
+		case START_WITHOUT_INTERNET:
+			return {
+				...state,
+				startWithoutInternet: action.startWithoutInternet,
+			};
 		default:
 			return state;
 	}

@@ -162,7 +162,6 @@ const PickerModal = ({ plantsData, value, onValueChange, placeholder }) => {
 	);
 };
 
-console.log('HEIGHT', Dimensions.get('screen').height);
 
 const styles = StyleSheet.create({
 	modalContainer: {

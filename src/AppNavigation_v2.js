@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -27,7 +27,7 @@ import WishlistScreen from './screens/WishlistScreen';
 /* import AddPlantScreen from './screens/AddPlantScreen'; */
 import AddPlantFormHook from './screens/AddPlantScreenFormHook';
 import nodeApi from './api/nodeApi';
-import { resolveAuth } from './actions/AuthActions';
+import { resolveAuth, checkInternetConnection, resolveLoading } from './actions/AuthActions';
 import NewsScreen from './screens/NewsScreen';
 import ArticleScreen from './screens/ArticleScreen';
 import CatalogScreen from './screens/CatalogScreen';
@@ -37,6 +37,7 @@ import CatalogHealScreen from './screens/CatalogHealScreen';
 import WeatherScreen from './screens/WeatherScreen';
 import MoonCalendarScreen from './screens/MoonCalendarScreen';
 import NotAuthUserScreen from './screens/NotAuthScreen';
+import NoInternetConnectionScreen from './screens/NoInternetConnectionScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -189,59 +190,96 @@ const TabNavigator = () => (
 );
 
 const StackNavigator = (route) => {
-	const [load, setLoad] = useState(false);
 	console.log('STACK ROUTE', route);
 
-	// Проверка авторизации пользователя
-	const checkAuth = async () => {
-		// Проверяем наличия токена первого запуска
-		await AsyncStorage.getItem('alreadyLaunched').then((value) => {
-			if (!value) {
-				// Если токена нет, запускаем FirstLaunchScreen
-				route.resolveAuth({ prop: 'fistLaunchToken', value: false });
-				route.resolveAuth({ prop: 'loadStart', value: true });
-				setLoad(true);
-			} else {
-				// Если токен есть, открываем главный экран
-				route.resolveAuth({ prop: 'fistLaunchToken', value: true });
-				nodeApi
-					.get('user_authentication')
-					.then((response) => {
-						console.log('UA', response.data);
-						if (response.data.data) {
-							console.log('SIGNED');
-							route.resolveAuth({ prop: 'isSigned', value: true });
+	const {
+		hasInternetConnection,
+		checkInternetConnection,
+		firstLaunchToken,
+		resolveAuth,
+		resolveLoading,
+		startWithoutInternet,
+	} = route;
 
-							setLoad(true);
-						} else {
-							console.log('NOT SIGNED');
-							route.resolveAuth({ prop: 'isSigned', value: false });
-							setLoad(true);
-						}
-					})
-					.catch((error) => {
-						console.log(error.response);
-					});
-			}
-		});
+	const checkFirstLaunchToken = async () => {
+		await AsyncStorage.getItem('alreadyLaunched')
+			.then((value) => {
+				console.log('TOKEN', value);
+				if (!value) {
+					resolveAuth({ prop: 'firstLaunchToken', value: false });
+				} else {
+					resolveAuth({ prop: 'firstLaunchToken', value: true });
+				}
+			})
+			.catch(() => console.log('ERR'));
+		await checkInternetConnection();
+		if (hasInternetConnection) {
+			appStartWithInternet();
+		} else {
+			appStartWithoutInternet();
+		}
+	};
+
+	const appStartWithInternet = () => {
+		console.log('APP START WITH INTERNET');
+		checkAuth();
+	};
+
+	const appStartWithoutInternet = () => {
+		console.log('APP START WITHOUT INTERNET');
+	};
+
+	// Проверка авторизации пользователя
+	const checkAuth = () => {
+		console.log('CHECK AUTH START');
+		nodeApi
+			.get('user_authentication')
+			.then((response) => {
+				console.log('UA', response.data);
+				if (response.data.data) {
+					console.log('SIGNED');
+					resolveAuth({ prop: 'isSigned', value: true });
+				} else {
+					console.log('NOT SIGNED');
+					resolveAuth({ prop: 'isSigned', value: false });
+					resolveAuth({ prop: 'toAuthFlow', value: true });
+					resolveAuth({ prop: 'toSignupScreen', value: false });
+				}
+				resolveLoading(false);
+			})
+			.catch((error) => {
+				console.log(error.response);
+				console.log('NOT SIGNED');
+				resolveAuth({ prop: 'isSigned', value: false });
+				resolveLoading(false);
+			});
 	};
 
 	useEffect(() => {
-		checkAuth();
-	}, []);
+		console.log('СТАРТУЕМ');
+		checkFirstLaunchToken().then(() => {
+			console.log('STARTED');
+		});
+	}, [hasInternetConnection]);
 
 	return (
 		<Stack.Navigator>
-			{!load ? (
+			{route.loading ? (
 				<Stack.Screen
 					name="WhiteScreen"
 					component={ResolveAuthScreen}
 					options={{ headerShown: false }}
 				/>
-			) : !route.fistLaunchToken ? (
+			) : !firstLaunchToken ? (
 				<Stack.Screen
 					name="FirstLaunch"
 					component={FirstLaunchScreen}
+					options={{ headerShown: false }}
+				/>
+			) : !startWithoutInternet ? (
+				<Stack.Screen
+					name="NoInternetConnection"
+					component={NoInternetConnectionScreen}
 					options={{ headerShown: false }}
 				/>
 			) : route.toAuthFlow ? (
@@ -263,7 +301,6 @@ const StackNavigator = (route) => {
 				component={CameraFlow}
 				options={{ headerShown: false }}
 			/>
-			{/* <Stack.Screen name="LastScanFullscreen" component={LastScanFullscreen} /> */}
 			<Stack.Screen
 				name="Signup"
 				component={SignupScreen}
@@ -289,9 +326,27 @@ const StackNavigator = (route) => {
 };
 
 const mapStateToProps = ({ auth }) => {
-	const { fistLaunchToken, isSigned, loadStart, toSignupScreen, toAuthFlow } = auth;
+	const {
+		firstLaunchToken,
+		isSigned,
+		toSignupScreen,
+		toAuthFlow,
+		hasInternetConnection,
+		startWithoutInternet,
+		loading,
+	} = auth;
 
-	return { fistLaunchToken, isSigned, loadStart, toSignupScreen, toAuthFlow };
+	return {
+		firstLaunchToken,
+		isSigned,
+		toSignupScreen,
+		toAuthFlow,
+		hasInternetConnection,
+		startWithoutInternet,
+		loading,
+	};
 };
 
-export default connect(mapStateToProps, { resolveAuth })(StackNavigator);
+export default connect(mapStateToProps, { resolveAuth, checkInternetConnection, resolveLoading })(
+	StackNavigator,
+);
