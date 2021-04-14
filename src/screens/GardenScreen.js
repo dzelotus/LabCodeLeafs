@@ -97,9 +97,9 @@ const GardenScreen = (props) => {
 
 	useEffect(() => {
 		checkVerify();
+		getGardens();
 		/* const getFocus = navigation.addListener('focus', () => {
 			getGardens();
-			
 		});
 
 		return getFocus; */

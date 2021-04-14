@@ -19,7 +19,7 @@ const INITIAL_STATE = {
 	password: '',
 	error: '',
 	loading: true,
-	firstLaunchToken: null,
+	firstLaunchToken: 'wait',
 	isSigned: false,
 	screenName: '',
 	screenComponent: '',
@@ -28,7 +28,7 @@ const INITIAL_STATE = {
 	isBioAuthActive: false,
 	toSignupScreen: false,
 	toAuthFlow: false,
-	hasInternetConnection: false,
+	hasInternetConnection: 'wait',
 	startWithoutInternet: false,
 };
 
@@ -39,14 +39,13 @@ export default (state = INITIAL_STATE, action) => {
 		case GET_CSRF:
 			return { ...state, _csrf: action.payload, loading: action.loading };
 		case SIGNIN:
-			return { ...state, loading: true };
+			return { ...state };
 		case SIGNIN_SUCCESS:
 			return {
 				...state,
-				loading: false,
 			};
 		case SIGNIN_FAIL:
-			return { ...state, error: action.payload, loading: false };
+			return { ...state, error: action.payload };
 		case CLEAR_ERROR_MESSAGE:
 			return { ...state, error: '', username: '', password: '', email: '' };
 		case RESOLVE_AUTH:

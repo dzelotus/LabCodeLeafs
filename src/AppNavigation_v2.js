@@ -7,6 +7,7 @@ import { Pressable } from 'react-native';
 import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+
 import AboutUsScreen from './screens/AboutUsScreen';
 
 import EditProfileScreen from './screens/EditProfileScreen';
@@ -199,10 +200,12 @@ const StackNavigator = (route) => {
 		resolveAuth,
 		resolveLoading,
 		startWithoutInternet,
+		loading,
 	} = route;
 
-	const checkFirstLaunchToken = async () => {
-		await AsyncStorage.getItem('alreadyLaunched')
+	const checkFirstLaunchToken = () => {
+		console.log('FLT FUNCTION');
+		AsyncStorage.getItem('alreadyLaunched')
 			.then((value) => {
 				console.log('TOKEN', value);
 				if (!value) {
@@ -212,24 +215,8 @@ const StackNavigator = (route) => {
 				}
 			})
 			.catch(() => console.log('ERR'));
-		await checkInternetConnection();
-		if (hasInternetConnection) {
-			appStartWithInternet();
-		} else {
-			appStartWithoutInternet();
-		}
 	};
 
-	const appStartWithInternet = () => {
-		console.log('APP START WITH INTERNET');
-		checkAuth();
-	};
-
-	const appStartWithoutInternet = () => {
-		console.log('APP START WITHOUT INTERNET');
-	};
-
-	// Проверка авторизации пользователя
 	const checkAuth = () => {
 		console.log('CHECK AUTH START');
 		nodeApi
@@ -255,16 +242,21 @@ const StackNavigator = (route) => {
 			});
 	};
 
+	// Проверка авторизации пользователя
+
 	useEffect(() => {
-		console.log('СТАРТУЕМ');
-		checkFirstLaunchToken().then(() => {
-			console.log('STARTED');
-		});
+		checkInternetConnection();
+		checkFirstLaunchToken();
+		if (hasInternetConnection === true) {
+			checkAuth();
+		} else if (hasInternetConnection !== 'wait') {
+			resolveLoading(false);
+		}
 	}, [hasInternetConnection]);
 
 	return (
 		<Stack.Navigator>
-			{route.loading ? (
+			{loading ? (
 				<Stack.Screen
 					name="WhiteScreen"
 					component={ResolveAuthScreen}
