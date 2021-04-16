@@ -22,7 +22,7 @@ const CatalogPlantScreen = (props) => {
 	}, []);
 
 	const getPlantDiseaseInfo = () => {
-		/* nodeApi
+		nodeApi
 			.get(`/plant-protection/link/plant/${itemId}/disease`)
 			.then((response) => {
 				const dis = response.data.data;
@@ -39,9 +39,9 @@ const CatalogPlantScreen = (props) => {
 
 				setDisease(dis);
 			})
-			.catch((error) => console.log('ERR', error.response)); */
+			.catch((error) => console.log('ERR', error.response));
 
-		db.transaction((txn) => {
+		/* db.transaction((txn) => {
 			txn.executeSql(
 				`SELECT content, name, disease.id FROM plant_disease_link LEFT JOIN disease ON plant_disease_link.disease_id  = disease.id WHERE plant_id = ${itemId}`,
 				[],
@@ -56,7 +56,7 @@ const CatalogPlantScreen = (props) => {
 					setDisease(disArr);
 				},
 			);
-		});
+		}); */
 	};
 
 	const RenderDiseaseList = () => {

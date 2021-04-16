@@ -1,14 +1,14 @@
 /* eslint-disable global-require */
-/* import CookieManager from '@react-native-community/cookies'; */
+import CookieManager from '@react-native-community/cookies';
 import React from 'react';
 import { View, Image, ActivityIndicator } from 'react-native';
-import RNBootSplash from 'react-native-bootsplash';
+
+import { connect } from 'react-redux';
 
 const ResolveAuthScreen = (props) => {
-	/* CookieManager.get('https://leafs-app.lab-code.com/').then((cookies) => {
+	/* 	CookieManager.get('https://leafs-app.lab-code.com/').then((cookies) => {
 		console.log('CookieManager.get =>', cookies);
 	}); */
-	RNBootSplash.hide();
 
 	const { loading } = props;
 
@@ -37,4 +37,12 @@ const ResolveAuthScreen = (props) => {
 	);
 };
 
-export default ResolveAuthScreen;
+const mapStateToProps = ({ auth }) => {
+	const { loading } = auth;
+
+	return {
+		loading,
+	};
+};
+
+export default connect(mapStateToProps, {})(ResolveAuthScreen);

@@ -1,6 +1,6 @@
 import SQLite from 'react-native-sqlite-storage';
 
-const db = SQLite.openDatabase(
+export const db = SQLite.openDatabase(
 	{
 		name: 'leafs',
 		location: 'default',
@@ -13,5 +13,3 @@ const db = SQLite.openDatabase(
 		console.log('ERROR');
 	},
 );
-
-export default db;

@@ -15,7 +15,7 @@ import WeatherCard from '../components/WeatherCard';
 import nodeApi from '../api/nodeApi';
 import weatherApi from '../api/weatherApi';
 import FeedBack from '../components/FeedBack';
-import db from '../database/database';
+import { db } from '../database/database';
 
 const { Conway } = require('@lab-code/moonphase');
 

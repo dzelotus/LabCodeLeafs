@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import SQLite from 'react-native-sqlite-storage';
+import { isEqual, difference } from 'lodash';
 import AboutUsScreen from './screens/AboutUsScreen';
 
 import EditProfileScreen from './screens/EditProfileScreen';
@@ -39,6 +41,7 @@ import WeatherScreen from './screens/WeatherScreen';
 import MoonCalendarScreen from './screens/MoonCalendarScreen';
 import NotAuthUserScreen from './screens/NotAuthScreen';
 import NoInternetConnectionScreen from './screens/NoInternetConnectionScreen';
+import { db } from './database/database';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -222,7 +225,6 @@ const StackNavigator = (route) => {
 		nodeApi
 			.get('user_authentication')
 			.then((response) => {
-				console.log('UA', response.data);
 				if (response.data.data) {
 					console.log('SIGNED');
 					resolveAuth({ prop: 'isSigned', value: true });
@@ -232,22 +234,125 @@ const StackNavigator = (route) => {
 					resolveAuth({ prop: 'toAuthFlow', value: true });
 					resolveAuth({ prop: 'toSignupScreen', value: false });
 				}
-				resolveLoading(false);
 			})
 			.catch((error) => {
 				console.log(error.response);
 				console.log('NOT SIGNED');
 				resolveAuth({ prop: 'isSigned', value: false });
-				resolveLoading(false);
 			});
 	};
 
-	// Проверка авторизации пользователя
+	const workWithDatabase = async () => {
+		try {
+			const dbb = await db.transaction((txn) => {
+				txn.executeSql(
+					'CREATE TABLE IF NOT EXISTS plant (id varchar NOT NULL, name int NOT NULL, content int NOT NULL, ai_name character varying)',
+					[],
+					(tx, results) => {
+						console.log('SUCCESS', results);
+					},
+					(error) => {
+						console.log('BIG FUCKING ERROR', error);
+					},
+				);
+			});
+
+			let dbData;
+			await db.transaction((txn) => {
+				txn.executeSql(
+					'SELECT CAST(id as TEXT) as id, ai_name, content, name FROM plant',
+					[],
+					(tx, results) => {
+						if (results.rows.length > 0) {
+							const res = results.rows;
+							const resArr = [];
+							for (let i = 0; i < res.length; i += 1) {
+								resArr.push(res.item(i));
+							}
+							dbData = resArr;
+						} else {
+							dbData = false;
+						}
+					},
+					() => {
+						console.log('ERROR BASE ERROR FUCKING ERROR');
+					},
+				);
+			});
+			const serverData = await nodeApi
+				.get('/plant-protection/plant')
+				.then((response) => {
+					return response.data.data;
+				})
+				.catch((error) => {
+					console.log('ERROR', error.response);
+				});
+
+			console.log('LOCAL', dbData);
+			console.log('SERVER', serverData);
+
+			const dataDifference = difference(dbData, serverData);
+			console.log('DIFF', dataDifference);
+			/* const compare = serverData.filter(
+				(item1) =>
+					!dbData.some(
+						(item2) =>
+							item2.id === item1.id &&
+							item2.name === item1.name &&
+							item2.ai_name === item1.ai_name &&
+							item2.content === item1.content,
+					),
+			); */
+			console.log('DBDATA', dbData);
+			if (!dbData) {
+				console.log('NO DB DATA');
+				serverData.map((item) => {
+					const { name, content, id } = item;
+					const aiName = item.ai_name;
+					db.transaction((txn) => {
+						txn.executeSql(
+							`INSERT INTO plant (id, name, content, ai_name) VALUES (${id}, '${name}', '${content}', '${aiName}')`,
+							[],
+							(tx, results) => {},
+							(error) => {
+								console.log('BIG FUCKING ERROR', error);
+							},
+						);
+					});
+					return item;
+				});
+			} else {
+				console.log('HAS DB DATA');
+				/* dataDifference.map((item) => {
+					const { name, content, id } = item;
+					const aiName = item.ai_name;
+					db.transaction((txn) => {
+						txn.executeSql(
+							`UPDATE plant SET id = ${id}, name = ${name}, content = ${content}, ai_name=${aiName}`,
+							[],
+							(tx, results) => {},
+							(error) => {
+								console.log('BIG FUCKING ERROR', error);
+							},
+						);
+					});
+					return item;
+				}); */
+			}
+
+			resolveLoading(false);
+		} catch (error) {
+			console.log('ERROR');
+		}
+	};
 
 	useEffect(() => {
+		SQLite.enablePromise(true);
+		/* SQLite.DEBUG(true); */
 		checkInternetConnection();
 		checkFirstLaunchToken();
 		if (hasInternetConnection === true) {
+			workWithDatabase();
 			checkAuth();
 		} else if (hasInternetConnection !== 'wait') {
 			resolveLoading(false);

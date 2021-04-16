@@ -13,7 +13,7 @@ import { SearchBar } from 'react-native-elements';
 import SQLite from 'react-native-sqlite-storage';
 import nodeApi from '../api/nodeApi';
 
-import db from '../database/database';
+import { db } from '../database/database';
 
 const CatalogScreen = (props) => {
 	const [fetchedData, setFetchedData] = useState(null);
@@ -31,16 +31,15 @@ const CatalogScreen = (props) => {
 	}, []);
 
 	const fetchCatalog = (item) => {
-		nodeApi
+		/* nodeApi
 			.get(`/plant-protection/${item.item}`)
 			.then((response) => {
-				/* console.log('SERVER', response.data.data); */
 				setFetchedData(response.data.data);
 				setDisplayedData(response.data.data);
 			})
 			.catch((error) => {
 				console.log('ERROR', error.response);
-			});
+			}); */
 
 		db.transaction((txn) => {
 			txn.executeSql(
@@ -56,12 +55,12 @@ const CatalogScreen = (props) => {
 					console.log('RESULTS', results);
 					console.log('LOCAL DATA', resArr[0]);
 
-					/* setLocalData(resArr); */
-					// setDisplayedData(resArr);
+					setFetchedData(resArr);
+					setDisplayedData(resArr);
 				},
 				() => {
 					console.log('ERROR BASE ERROR FUCKING ERROR');
-					createTable();
+					/* createTable(); */
 				},
 			);
 		});
@@ -73,7 +72,7 @@ const CatalogScreen = (props) => {
 			}); */
 	};
 
-	const createTable = () => {
+	/* 	const createTable = () => {
 		db.transaction((txn) => {
 			txn.executeSql(
 				'CREATE TABLE IF NOT EXISTS plant (id bigint NOT NULL, name character varying(255) NOT NULL, content jsonb NOT NULL, ai_name character varying)',
@@ -86,7 +85,7 @@ const CatalogScreen = (props) => {
 				},
 			);
 		});
-	};
+	}; */
 
 	const dropTable = () => {
 		db.transaction((txn) => {
