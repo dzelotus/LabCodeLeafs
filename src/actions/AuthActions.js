@@ -209,15 +209,17 @@ export const checkBioScanner = () => (dispatch) => {
 };
 
 export const checkInternetConnection = () => (dispatch) => {
+	console.log('START INTERNET CHECKING');
 	NetInfo.fetch()
 		.then((state) => {
+			console.log('INTERNET STATE', state);
 			dispatch({
 				type: START_WITHOUT_INTERNET,
-				startWithoutInternet: state.isInternetReachable,
+				startWithoutInternet: state.isConnected,
 			});
 			dispatch({
 				type: HAS_INTERNET_CONNECTION,
-				hasInternetConnection: state.isInternetReachable,
+				hasInternetConnection: state.isConnected,
 			});
 		})
 		.catch(() => {

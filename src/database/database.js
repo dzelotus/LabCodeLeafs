@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import SQLite from 'react-native-sqlite-storage';
 
 export const db = SQLite.openDatabase(

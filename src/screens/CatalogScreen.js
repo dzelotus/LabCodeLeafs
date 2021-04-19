@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import {
 	View,
@@ -5,19 +6,16 @@ import {
 	Text,
 	FlatList,
 	TouchableOpacity,
-	ActivityIndicator,
-	Button,
+	ActivityIndicator,	
+	Button
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from 'react-native-elements';
 import SQLite from 'react-native-sqlite-storage';
-import nodeApi from '../api/nodeApi';
-
 import { db } from '../database/database';
 
 const CatalogScreen = (props) => {
 	const [fetchedData, setFetchedData] = useState(null);
-	const [localData, setLocalData] = useState(null);
 	const [activeButton, setActiveButton] = useState('plant');
 	const [navScreen, setNavScreen] = useState('CatalogPlant');
 	const [searchingField, setSearchingField] = useState('');
@@ -31,19 +29,14 @@ const CatalogScreen = (props) => {
 	}, []);
 
 	const fetchCatalog = (item) => {
-		/* nodeApi
-			.get(`/plant-protection/${item.item}`)
-			.then((response) => {
-				setFetchedData(response.data.data);
-				setDisplayedData(response.data.data);
-			})
-			.catch((error) => {
-				console.log('ERROR', error.response);
-			}); */
-
+		const tableName = item.item;
+		let select;
+		tableName === 'heal' ?
+			(select = `SELECT content, id, name FROM ${tableName} ORDER BY name`) :
+			(select = `SELECT ai_name, content, id, name FROM ${tableName} ORDER BY name`);
 		db.transaction((txn) => {
 			txn.executeSql(
-				`SELECT ai_name, content, id, name FROM ${item.item} ORDER BY name`,
+				select,
 				[],
 				(tx, results) => {
 					console.log('SUCCESS FUCKING SUCCESS');
@@ -60,37 +53,16 @@ const CatalogScreen = (props) => {
 				},
 				() => {
 					console.log('ERROR BASE ERROR FUCKING ERROR');
-					/* createTable(); */
 				},
 			);
 		});
-		/* .then((res) => console.log('SUCCESS', res))
-			.catch((err) => {
-				console.log('ERROR', err);
-				
-				// insertRows();
-			}); */
 	};
 
-	/* 	const createTable = () => {
-		db.transaction((txn) => {
-			txn.executeSql(
-				'CREATE TABLE IF NOT EXISTS plant (id bigint NOT NULL, name character varying(255) NOT NULL, content jsonb NOT NULL, ai_name character varying)',
-				[],
-				(tx, results) => {
-					console.log('SUCCESS', results);
-				},
-				(error) => {
-					console.log('BIG FUCKING ERROR', error);
-				},
-			);
-		});
-	}; */
-
 	const dropTable = () => {
+		console.log('FOR DROP', listType);
 		db.transaction((txn) => {
 			txn.executeSql(
-				'DROP TABLE IF EXISTS plant',
+				`DROP TABLE ${listType}`,
 				[],
 				(tx, results) => {
 					console.log('TABLE DELETED', results);
@@ -102,10 +74,7 @@ const CatalogScreen = (props) => {
 		});
 	};
 
-	const insertRows = () => {
-		/* fetchedData.forEach((element) => {
-			console.log('ITEM', Object.values(element));
-		}); */
+	/* const insertRows = () => {		
 		fetchedData.map((item) => {
 			const { name, content, id } = item;
 			const aiName = item.ai_name;
@@ -124,7 +93,7 @@ const CatalogScreen = (props) => {
 			});
 			return item;
 		});
-	};
+	}; */
 
 	const handlePressChangingList = (lType) => {
 		setActiveButton(lType);
@@ -204,9 +173,7 @@ const CatalogScreen = (props) => {
 		);
 	}
 	return (
-		<View style={{ flex: 1, backgroundColor: 'white' }}>
-			<Button title="delete table" onPress={() => dropTable()} />
-			<Button title="insert rows" onPress={() => insertRows()} />
+		<View style={{ flex: 1, backgroundColor: 'white' }}>					
 			<MainButtons />
 			<SearchBar
 				placeholder="Поиск по каталогу"

@@ -9,7 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import SQLite from 'react-native-sqlite-storage';
-import { isEqual, difference } from 'lodash';
+import { isEqual, difference, differenceWith } from 'lodash';
 import AboutUsScreen from './screens/AboutUsScreen';
 
 import EditProfileScreen from './screens/EditProfileScreen';
@@ -42,6 +42,7 @@ import MoonCalendarScreen from './screens/MoonCalendarScreen';
 import NotAuthUserScreen from './screens/NotAuthScreen';
 import NoInternetConnectionScreen from './screens/NoInternetConnectionScreen';
 import { db } from './database/database';
+import { populateLocalTables, populateLocalHealTable } from './database/populateLocalTables';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -242,108 +243,10 @@ const StackNavigator = (route) => {
 			});
 	};
 
-	const workWithDatabase = async () => {
-		try {
-			const dbb = await db.transaction((txn) => {
-				txn.executeSql(
-					'CREATE TABLE IF NOT EXISTS plant (id varchar NOT NULL, name int NOT NULL, content int NOT NULL, ai_name character varying)',
-					[],
-					(tx, results) => {
-						console.log('SUCCESS', results);
-					},
-					(error) => {
-						console.log('BIG FUCKING ERROR', error);
-					},
-				);
-			});
-
-			let dbData;
-			await db.transaction((txn) => {
-				txn.executeSql(
-					'SELECT CAST(id as TEXT) as id, ai_name, content, name FROM plant',
-					[],
-					(tx, results) => {
-						if (results.rows.length > 0) {
-							const res = results.rows;
-							const resArr = [];
-							for (let i = 0; i < res.length; i += 1) {
-								resArr.push(res.item(i));
-							}
-							dbData = resArr;
-						} else {
-							dbData = false;
-						}
-					},
-					() => {
-						console.log('ERROR BASE ERROR FUCKING ERROR');
-					},
-				);
-			});
-			const serverData = await nodeApi
-				.get('/plant-protection/plant')
-				.then((response) => {
-					return response.data.data;
-				})
-				.catch((error) => {
-					console.log('ERROR', error.response);
-				});
-
-			console.log('LOCAL', dbData);
-			console.log('SERVER', serverData);
-
-			const dataDifference = difference(dbData, serverData);
-			console.log('DIFF', dataDifference);
-			/* const compare = serverData.filter(
-				(item1) =>
-					!dbData.some(
-						(item2) =>
-							item2.id === item1.id &&
-							item2.name === item1.name &&
-							item2.ai_name === item1.ai_name &&
-							item2.content === item1.content,
-					),
-			); */
-			console.log('DBDATA', dbData);
-			if (!dbData) {
-				console.log('NO DB DATA');
-				serverData.map((item) => {
-					const { name, content, id } = item;
-					const aiName = item.ai_name;
-					db.transaction((txn) => {
-						txn.executeSql(
-							`INSERT INTO plant (id, name, content, ai_name) VALUES (${id}, '${name}', '${content}', '${aiName}')`,
-							[],
-							(tx, results) => {},
-							(error) => {
-								console.log('BIG FUCKING ERROR', error);
-							},
-						);
-					});
-					return item;
-				});
-			} else {
-				console.log('HAS DB DATA');
-				/* dataDifference.map((item) => {
-					const { name, content, id } = item;
-					const aiName = item.ai_name;
-					db.transaction((txn) => {
-						txn.executeSql(
-							`UPDATE plant SET id = ${id}, name = ${name}, content = ${content}, ai_name=${aiName}`,
-							[],
-							(tx, results) => {},
-							(error) => {
-								console.log('BIG FUCKING ERROR', error);
-							},
-						);
-					});
-					return item;
-				}); */
-			}
-
-			resolveLoading(false);
-		} catch (error) {
-			console.log('ERROR');
-		}
+	const loadTables = async () => {
+		await populateLocalTables('plant');
+		await populateLocalTables('disease');
+		await populateLocalHealTable('heal');
 	};
 
 	useEffect(() => {
@@ -352,7 +255,7 @@ const StackNavigator = (route) => {
 		checkInternetConnection();
 		checkFirstLaunchToken();
 		if (hasInternetConnection === true) {
-			workWithDatabase();
+			loadTables().then(() => resolveLoading(false));
 			checkAuth();
 		} else if (hasInternetConnection !== 'wait') {
 			resolveLoading(false);

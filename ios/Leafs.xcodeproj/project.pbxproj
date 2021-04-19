@@ -19,12 +19,12 @@
 		6792D62F437680EC1D73B4B4 /* libPods-Leafs-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 606447FE73BB3A9567D8F236 /* libPods-Leafs-tvOSTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		884C484113CC68B9DF8ECD90 /* libPods-Leafs-LeafsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C499B522D2C59F5A16323861 /* libPods-Leafs-LeafsTests.a */; };
+		A960E511262DA35A0094C248 /* www in Resources */ = {isa = PBXBuildFile; fileRef = A960E510262DA35A0094C248 /* www */; };
 		A9ADD2E925C2E24000ABCD17 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A9ADD2E825C2E24000ABCD17 /* GoogleService-Info.plist */; };
 		A9CBCA6E25D1378A00035823 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A9CBCA6D25D1378A00035823 /* BootSplash.storyboard */; };
 		A9CBCF5425D2B72300035823 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		A9CBD07F25D2C71400035823 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = A9CBD07E25D2C71400035823 /* main.jsbundle */; };
 		A9CBD08925D2C72700035823 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = A9CBD08825D2C72700035823 /* assets */; };
-		A9E7683E25F9E8830020FF87 /* www in Resources */ = {isa = PBXBuildFile; fileRef = A9E7683D25F9E8830020FF87 /* www */; };
 		A9E76A7825FF58A80020FF87 /* watermelon.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E76A7725FF58A80020FF87 /* watermelon.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,12 +65,12 @@
 		8940BCAAF604454EB0BAB32E /* Pods-Leafs-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leafs-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Leafs-tvOSTests/Pods-Leafs-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A4903A9D8E388E26D642DD9E /* libPods-Leafs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Leafs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91DA25425C169FD006A075D /* LeafsDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = LeafsDebug.entitlements; path = Leafs/LeafsDebug.entitlements; sourceTree = "<group>"; };
+		A960E510262DA35A0094C248 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../www; sourceTree = "<group>"; };
 		A9ADD2D725C18A2E00ABCD17 /* LeafsRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = LeafsRelease.entitlements; path = Leafs/LeafsRelease.entitlements; sourceTree = "<group>"; };
 		A9ADD2E825C2E24000ABCD17 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A9CBCA6D25D1378A00035823 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = leafs/BootSplash.storyboard; sourceTree = "<group>"; };
 		A9CBD07E25D2C71400035823 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		A9CBD08825D2C72700035823 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
-		A9E7683D25F9E8830020FF87 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../www; sourceTree = "<group>"; };
 		A9E7684325FA1F3A0020FF87 /* Leafs-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Leafs-Bridging-Header.h"; sourceTree = "<group>"; };
 		A9E76A7725FF58A80020FF87 /* watermelon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = watermelon.swift; sourceTree = "<group>"; };
 		B48AD153C31EBB29EAA51765 /* Pods-Leafs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Leafs.release.xcconfig"; path = "Target Support Files/Pods-Leafs/Pods-Leafs.release.xcconfig"; sourceTree = "<group>"; };
@@ -139,7 +139,6 @@
 		13B07FAE1A68108700A75B9A /* Leafs */ = {
 			isa = PBXGroup;
 			children = (
-				A9E7683D25F9E8830020FF87 /* www */,
 				A9ADD2D725C18A2E00ABCD17 /* LeafsRelease.entitlements */,
 				A91DA25425C169FD006A075D /* LeafsDebug.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -193,6 +192,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				A960E510262DA35A0094C248 /* www */,
 				A9E76A7725FF58A80020FF87 /* watermelon.swift */,
 				A9ADD2E825C2E24000ABCD17 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Leafs */,
@@ -364,7 +364,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9CBCF5425D2B72300035823 /* Images.xcassets in Resources */,
-				A9E7683E25F9E8830020FF87 /* www in Resources */,
+				A960E511262DA35A0094C248 /* www in Resources */,
 				A9CBCA6E25D1378A00035823 /* BootSplash.storyboard in Resources */,
 				A9CBD07F25D2C71400035823 /* main.jsbundle in Resources */,
 				A9CBD08925D2C72700035823 /* assets in Resources */,
@@ -763,14 +763,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Leafs/LeafsDebug.entitlements;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 97M39KRUZ4;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Leafs/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -793,14 +793,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Leafs/LeafsRelease.entitlements;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 97M39KRUZ4;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = YES;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Leafs/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.7;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",

@@ -14,7 +14,7 @@ import HTML from 'react-native-render-html';
 import SQLite from 'react-native-sqlite-storage';
 
 import MoonPhaseCard from '../components/MoonPhaseCard';
-import db from '../database/database';
+import { db } from '../database/database';
 
 const { Conway } = require('@lab-code/moonphase');
 
@@ -57,7 +57,7 @@ const MoonCalendarScreen = (props) => {
 	const fetchData = (moonphase) => {
 		db.transaction((txn) => {
 			txn.executeSql(
-				`SELECT * FROM moon WHERE phase_number = ${moonphase}`,
+				`SELECT * FROM moonPhase WHERE phase_number = ${moonphase}`,
 				[],
 				(tx, results) => {
 					const res = results.rows.item(0);

@@ -131,7 +131,7 @@ const MainScreen = ({ navigation }) => {
 
 		db.transaction((txn) => {
 			txn.executeSql(
-				`SELECT * FROM moon WHERE phase_number = ${moonphase}`,
+				`SELECT * FROM moonPhase WHERE phase_number = ${moonphase}`,
 				[],
 				(tx, results) => {
 					const res = results.rows.item(0);
