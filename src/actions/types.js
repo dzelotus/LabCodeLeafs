@@ -13,3 +13,4 @@ export const IS_BIO_AUTH_ACTIVE = 'is_bio_auth_active';
 export const HAS_INTERNET_CONNECTION = 'has_internet_connection';
 export const START_WITHOUT_INTERNET = 'start_without_internet';
 export const RESOLVE_LOADING = 'resolve_loading';
+export const CHECK_INTERNET_CONNECTION = 'check_internet_connection';

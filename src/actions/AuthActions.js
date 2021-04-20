@@ -14,6 +14,7 @@ import {
 	HAS_INTERNET_CONNECTION,
 	START_WITHOUT_INTERNET,
 	RESOLVE_LOADING,
+	CHECK_INTERNET_CONNECTION,
 } from './types';
 import nodeApi from '../api/nodeApi';
 
@@ -160,6 +161,27 @@ const signinSuccess = (dispatch, response) => {
 	});
 };
 
+export const checkAuth = () => (dispatch) => {
+	nodeApi
+		.get('user_authentication')
+		.then((response) => {
+			if (response.data.data) {
+				console.log('SIGNED');
+				dispatch({ type: RESOLVE_AUTH, payload: { prop: 'isSigned', value: true } });
+			} else {
+				console.log('NOT SIGNED');
+				dispatch({ type: RESOLVE_AUTH, payload: { prop: 'isSigned', value: false } });
+				dispatch({ type: RESOLVE_AUTH, payload: { prop: 'toAuthFlow', value: true } });
+				dispatch({ type: RESOLVE_AUTH, payload: { prop: 'toSignUpScreen', value: false } });
+			}
+		})
+		.catch((error) => {
+			console.log(error.response);
+			console.log('NOT SIGNED');
+			dispatch({ type: RESOLVE_AUTH, payload: { prop: 'isSigned', value: false } });
+		});
+};
+
 export const clearErrorMessage = () => ({
 	type: CLEAR_ERROR_MESSAGE,
 });
@@ -235,4 +257,13 @@ export const resolveInternet = (payload) => (dispatch) => {
 		type: START_WITHOUT_INTERNET,
 		startWithoutInternet: payload,
 	});
+};
+
+export const refreshConnection = () => (dispatch) => {
+	NetInfo.fetch()
+		.then((state) => {
+			console.log('STATE', state);
+			dispatch({ type: CHECK_INTERNET_CONNECTION, checkInternet: state.isConnected });
+		})
+		.catch(() => console.log('HIC ERROR'));
 };

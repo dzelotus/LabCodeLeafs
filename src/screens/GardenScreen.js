@@ -7,11 +7,11 @@ import { connect } from 'react-redux';
 import nodeApi from '../api/nodeApi';
 import GardenWithPlantsCard from '../components/GardenWithPlantsCard';
 import AddGardenModal from '../components/AddGardenModal';
-import { resolveAuth, resolveInternet } from '../actions/AuthActions';
+import { resolveAuth, resolveInternet, refreshConnection } from '../actions/AuthActions';
 import NotAuthUser from '../components/NotAuthUser';
 
 const GardenScreen = (props) => {
-	const { navigation, isSigned, hasInternetConnection, resolveInternet } = props;
+	const { navigation, isSigned, checkInternet, refreshConnection, resolveAuth } = props;
 	console.log('GARDEN PROPS', props);
 
 	const [loading, setLoading] = useState({
@@ -26,6 +26,9 @@ const GardenScreen = (props) => {
 		nodeApi
 			.get('user_authentication')
 			.then((response) => {
+				if (response.data.data) {
+					resolveAuth({ prop: 'isSigned', value: true });
+				}
 				const token = response.data.data.hasValidTokens;
 				const verify = response.data.data.isVerified;
 				setIsVerified(response.data.data.isVerified);
@@ -95,10 +98,11 @@ const GardenScreen = (props) => {
 		getGardens();
 		const getFocus = navigation.addListener('focus', () => {
 			getGardens();
+			refreshConnection();
 		});
 
 		return getFocus;
-	}, []);
+	}, [checkInternet]);
 
 	const Indicator = () => (
 		<View>
@@ -120,7 +124,7 @@ const GardenScreen = (props) => {
 		}
 	};
 
-	if (!isSigned && hasInternetConnection) {
+	if (!isSigned && checkInternet) {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
 				<NotAuthUser />
@@ -128,7 +132,7 @@ const GardenScreen = (props) => {
 		);
 	}
 
-	if (!hasInternetConnection) {
+	if (!checkInternet) {
 		return (
 			<View
 				style={{
@@ -145,6 +149,8 @@ const GardenScreen = (props) => {
 					title="Обновить"
 					onPress={() => {
 						console.log('Хочу интернет');
+						refreshConnection();
+						checkVerify();
 					}}
 				/>
 			</View>
@@ -177,9 +183,13 @@ const GardenScreen = (props) => {
 };
 
 const mapStateToProps = ({ auth }) => {
-	const { isSigned, hasInternetConnection } = auth;
+	const { isSigned, checkInternet, startWithoutInternet } = auth;
 
-	return { isSigned, hasInternetConnection };
+	return { isSigned, checkInternet, startWithoutInternet };
 };
 
-export default connect(mapStateToProps, { resolveAuth, resolveInternet })(GardenScreen);
+export default connect(mapStateToProps, {
+	resolveAuth,
+	resolveInternet,
+	refreshConnection,
+})(GardenScreen);

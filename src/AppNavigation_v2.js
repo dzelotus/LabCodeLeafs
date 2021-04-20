@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,7 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import SQLite from 'react-native-sqlite-storage';
-import { isEqual, difference, differenceWith } from 'lodash';
+
 import AboutUsScreen from './screens/AboutUsScreen';
 
 import EditProfileScreen from './screens/EditProfileScreen';
@@ -29,8 +29,13 @@ import SignupScreen from './screens/SignupScreen';
 import WishlistScreen from './screens/WishlistScreen';
 /* import AddPlantScreen from './screens/AddPlantScreen'; */
 import AddPlantFormHook from './screens/AddPlantScreenFormHook';
-import nodeApi from './api/nodeApi';
-import { resolveAuth, checkInternetConnection, resolveLoading } from './actions/AuthActions';
+import {
+	resolveAuth,
+	checkInternetConnection,
+	resolveLoading,
+	checkAuth,
+	refreshConnection,
+} from './actions/AuthActions';
 import NewsScreen from './screens/NewsScreen';
 import ArticleScreen from './screens/ArticleScreen';
 import CatalogScreen from './screens/CatalogScreen';
@@ -41,7 +46,7 @@ import WeatherScreen from './screens/WeatherScreen';
 import MoonCalendarScreen from './screens/MoonCalendarScreen';
 import NotAuthUserScreen from './screens/NotAuthScreen';
 import NoInternetConnectionScreen from './screens/NoInternetConnectionScreen';
-import { db } from './database/database';
+
 import { populateLocalTables, populateLocalHealTable } from './database/populateLocalTables';
 
 const Stack = createStackNavigator();
@@ -205,6 +210,8 @@ const StackNavigator = (route) => {
 		resolveLoading,
 		startWithoutInternet,
 		loading,
+		checkAuth,
+		refreshConnection,
 	} = route;
 
 	const checkFirstLaunchToken = () => {
@@ -221,28 +228,6 @@ const StackNavigator = (route) => {
 			.catch(() => console.log('ERR'));
 	};
 
-	const checkAuth = () => {
-		console.log('CHECK AUTH START');
-		nodeApi
-			.get('user_authentication')
-			.then((response) => {
-				if (response.data.data) {
-					console.log('SIGNED');
-					resolveAuth({ prop: 'isSigned', value: true });
-				} else {
-					console.log('NOT SIGNED');
-					resolveAuth({ prop: 'isSigned', value: false });
-					resolveAuth({ prop: 'toAuthFlow', value: true });
-					resolveAuth({ prop: 'toSignupScreen', value: false });
-				}
-			})
-			.catch((error) => {
-				console.log(error.response);
-				console.log('NOT SIGNED');
-				resolveAuth({ prop: 'isSigned', value: false });
-			});
-	};
-
 	const loadTables = async () => {
 		await populateLocalTables('plant');
 		await populateLocalTables('disease');
@@ -254,6 +239,7 @@ const StackNavigator = (route) => {
 		/* SQLite.DEBUG(true); */
 		checkInternetConnection();
 		checkFirstLaunchToken();
+		refreshConnection();
 		if (hasInternetConnection === true) {
 			loadTables().then(() => resolveLoading(false));
 			checkAuth();
@@ -347,6 +333,10 @@ const mapStateToProps = ({ auth }) => {
 	};
 };
 
-export default connect(mapStateToProps, { resolveAuth, checkInternetConnection, resolveLoading })(
-	StackNavigator,
-);
+export default connect(mapStateToProps, {
+	resolveAuth,
+	checkInternetConnection,
+	resolveLoading,
+	checkAuth,
+	refreshConnection,
+})(StackNavigator);

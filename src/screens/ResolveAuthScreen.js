@@ -1,5 +1,5 @@
 /* eslint-disable global-require */
-import CookieManager from '@react-native-community/cookies';
+/* import CookieManager from '@react-native-community/cookies'; */
 import React from 'react';
 import { View, Image, ActivityIndicator } from 'react-native';
 

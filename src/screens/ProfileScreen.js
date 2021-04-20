@@ -7,22 +7,25 @@ import {
 	View,
 	TouchableOpacity,
 	ActivityIndicator,
+	Button
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import nodeApi from '../api/nodeApi';
-import { resolveAuth } from '../actions/AuthActions';
+import { resolveAuth, resolveInternet, refreshConnection } from '../actions/AuthActions';
 import NotAuthUser from '../components/NotAuthUser';
 
 
 const ProfileScreen = (props) => {	
 	const [profile, setProfile] = useState(null)
 	const [loading, setLoading] = useState(false)
+	console.log('PROFILE PROPS', props)
 	useEffect(() => {		
 		const unsubscribe = navigation.addListener('focus', () => {			
 			getProfile();
+			refreshConnection();
 			console.log('Refreshed!');
 		  });
 
@@ -46,7 +49,7 @@ const ProfileScreen = (props) => {
 			.catch(() => setLoading(false));
 	}
 
-	const { isSigned, navigation } = props;
+	const { isSigned, navigation, checkInternet, refreshConnection, resolveInternet, resolveAuth } = props;
 
 	const createTwoButtonAlert = () => {
 		Alert.alert(
@@ -100,11 +103,49 @@ const ProfileScreen = (props) => {
 		)
 		
 	}
+	const checkVerify = async () => {
+		nodeApi
+			.get('user_authentication')
+			.then((response) => {
+				if (response.data.data) {
+					resolveAuth({ prop: 'isSigned', value: true });
+				}
+				
+			})
+			.catch((error) => {
+				console.log('USER AUTH ERR', error);
+			});
+	};
 
-	if (!isSigned) {
+	if (!isSigned && checkInternet) {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
 				<NotAuthUser />
+			</View>
+		);
+	}
+
+	if (!checkInternet) {
+		return (
+			<View
+				style={{
+					flex: 1,
+					justifyContent: 'center',
+					alignItems: 'center',
+					backgroundColor: 'white',
+				}}
+			>
+				<Text style={{ fontSize: 18, textAlign: 'center' }}>
+					Для доступа к разделу требуется подключение к интернету
+				</Text>
+				<Button
+					title="Обновить"
+					onPress={() => {
+						console.log('Хочу интернет');
+						refreshConnection();
+						checkVerify();
+					}}
+				/>
 			</View>
 		);
 	}
@@ -117,10 +158,8 @@ const ProfileScreen = (props) => {
 		);
 	}
 	return (
-		<View style={{ flex: 1, backgroundColor: 'white' }}>
-			
-			<Avatar />
-		
+		<View style={{ flex: 1, backgroundColor: 'white' }}>			
+			<Avatar />		
 			<View style={{ flex: 1 }}>
 				<View>
 					<TouchableOpacity
@@ -133,36 +172,6 @@ const ProfileScreen = (props) => {
 							<Text style={styles.buttonText}>Редактировать профиль</Text>
 						</View>
 					</TouchableOpacity>
-					{/* <Ripple */}
-					{/*	rippleDuration={700} */}
-					{/*	onPress={() => { */}
-					{/*		props.navigation.navigate('Help'); */}
-					{/*	}} */}
-					{/* > */}
-					{/*	<View style={styles.menuButton}> */}
-					{/*		<MaterialCommunityIcons */}
-					{/*			name="help-rhombus" */}
-					{/*			size={25} */}
-					{/*			style={{ alignSelf: 'center' }} */}
-					{/*		/> */}
-					{/*		<Text style={styles.buttonText}>Помощь</Text> */}
-					{/*	</View> */}
-					{/* </Ripple> */}
-					{/* <Ripple */}
-					{/*	rippleDuration={700} */}
-					{/*	onPress={() => { */}
-					{/*		props.navigation.navigate('AboutUs'); */}
-					{/*	}} */}
-					{/* > */}
-					{/*	<View style={styles.menuButton}> */}
-					{/*		<MaterialCommunityIcons */}
-					{/*			name="information" */}
-					{/*			size={25} */}
-					{/*			style={{ alignSelf: 'center' }} */}
-					{/*		/> */}
-					{/*		<Text style={styles.buttonText}>О нас</Text> */}
-					{/*	</View> */}
-					{/* </Ripple> */}
 				</View>
 				<View
 					style={{
@@ -265,9 +274,14 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = ({ auth }) => {
-	const { fistLaunchToken, isSigned } = auth;
+	const { isSigned, checkInternet, startWithoutInternet } = auth;
 
-	return { fistLaunchToken, isSigned };
+	return { isSigned, checkInternet, startWithoutInternet };
 };
 
-export default connect(mapStateToProps, { resolveAuth })(ProfileScreen);
+export default connect(mapStateToProps, {
+	resolveAuth,
+	resolveInternet,
+	refreshConnection,
+})(ProfileScreen);
+
