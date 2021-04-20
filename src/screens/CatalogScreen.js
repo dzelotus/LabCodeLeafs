@@ -7,7 +7,7 @@ import {
 	FlatList,
 	TouchableOpacity,
 	ActivityIndicator,	
-	Button
+	
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from 'react-native-elements';
@@ -58,7 +58,7 @@ const CatalogScreen = (props) => {
 		});
 	};
 
-	const dropTable = () => {
+	/* const dropTable = () => {
 		console.log('FOR DROP', listType);
 		db.transaction((txn) => {
 			txn.executeSql(
@@ -72,7 +72,7 @@ const CatalogScreen = (props) => {
 				},
 			);
 		});
-	};
+	}; */
 
 	/* const insertRows = () => {		
 		fetchedData.map((item) => {

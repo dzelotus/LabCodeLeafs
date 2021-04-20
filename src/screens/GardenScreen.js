@@ -2,16 +2,17 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable consistent-return */
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, ScrollView, Alert } from 'react-native';
+import { View, ActivityIndicator, ScrollView, Alert, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
 import nodeApi from '../api/nodeApi';
 import GardenWithPlantsCard from '../components/GardenWithPlantsCard';
 import AddGardenModal from '../components/AddGardenModal';
-import { resolveAuth } from '../actions/AuthActions';
+import { resolveAuth, resolveInternet } from '../actions/AuthActions';
 import NotAuthUser from '../components/NotAuthUser';
 
 const GardenScreen = (props) => {
-	const { navigation, isSigned } = props;
+	const { navigation, isSigned, hasInternetConnection, resolveInternet } = props;
+	console.log('GARDEN PROPS', props);
 
 	const [loading, setLoading] = useState({
 		screenLoading: false,
@@ -25,19 +26,18 @@ const GardenScreen = (props) => {
 		nodeApi
 			.get('user_authentication')
 			.then((response) => {
-				console.log('RESP', response.data.data);
 				const token = response.data.data.hasValidTokens;
 				const verify = response.data.data.isVerified;
 				setIsVerified(response.data.data.isVerified);
 				verifyAlert(token, verify);
 			})
-			.catch((error) => console.log('USER AUTH ERR', error));
+			.catch((error) => {
+				console.log('USER AUTH ERR', error);
+			});
 	};
 
 	const verifyAlert = (token, verify) => {
-		console.log('token', token, 'verify', verify);
 		if (!verify && !token) {
-			console.log('ALERT FOR LINK');
 			Alert.alert(
 				'Внимание',
 				'Для работы с данным разделом, требуется подтверждение электронной почты. Отправить ссылку для подтверждения?',
@@ -49,7 +49,6 @@ const GardenScreen = (props) => {
 				],
 			);
 		} else if (token && !verify) {
-			console.log('ALERT ABOUT LINK');
 			Alert.alert(
 				'Внимание',
 				'Для работы с данным разделом, требуется подтверждение электронной почты. Ссылка уже была отправлена на Вашу электронную почту',
@@ -58,12 +57,10 @@ const GardenScreen = (props) => {
 	};
 
 	const getNewVerifyLink = () => {
-		console.log('GET VERIFY LINK');
 		setLoading({ screenLoading: true });
 		nodeApi
 			.post('/verify', {})
 			.then((response) => {
-				console.log('VERIFY RESPONSE', response.data);
 				setLoading({ screenLoading: false });
 				Alert.alert('', response.data.message);
 			})
@@ -75,7 +72,6 @@ const GardenScreen = (props) => {
 	};
 
 	const getGardens = () => {
-		console.log('GET GARDENS START');
 		if (gardenData) {
 			setLoading({ itemLoading: true });
 		} else {
@@ -85,7 +81,6 @@ const GardenScreen = (props) => {
 		nodeApi
 			.get('/garden')
 			.then((response) => {
-				console.log('GET GARDENS RESPONSE', response);
 				setGardenData(response.data.data);
 				setLoading({ screenLoading: false, itemLoading: false, buttonLoading: false });
 			})
@@ -98,11 +93,11 @@ const GardenScreen = (props) => {
 	useEffect(() => {
 		checkVerify();
 		getGardens();
-		/* const getFocus = navigation.addListener('focus', () => {
+		const getFocus = navigation.addListener('focus', () => {
 			getGardens();
 		});
 
-		return getFocus; */
+		return getFocus;
 	}, []);
 
 	const Indicator = () => (
@@ -113,7 +108,6 @@ const GardenScreen = (props) => {
 	const gardenRender = () => {
 		if (gardenData) {
 			return gardenData.map((item) => {
-				console.log('GD ITE', item);
 				return (
 					<GardenWithPlantsCard
 						data={item}
@@ -126,10 +120,33 @@ const GardenScreen = (props) => {
 		}
 	};
 
-	if (!isSigned) {
+	if (!isSigned && hasInternetConnection) {
 		return (
 			<View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'white' }}>
 				<NotAuthUser />
+			</View>
+		);
+	}
+
+	if (!hasInternetConnection) {
+		return (
+			<View
+				style={{
+					flex: 1,
+					justifyContent: 'center',
+					alignItems: 'center',
+					backgroundColor: 'white',
+				}}
+			>
+				<Text style={{ fontSize: 18, textAlign: 'center' }}>
+					Для доступа к разделу требуется подключение к интернету
+				</Text>
+				<Button
+					title="Обновить"
+					onPress={() => {
+						console.log('Хочу интернет');
+					}}
+				/>
 			</View>
 		);
 	}
@@ -160,9 +177,9 @@ const GardenScreen = (props) => {
 };
 
 const mapStateToProps = ({ auth }) => {
-	const { isSigned } = auth;
+	const { isSigned, hasInternetConnection } = auth;
 
-	return { isSigned };
+	return { isSigned, hasInternetConnection };
 };
 
-export default connect(mapStateToProps, { resolveAuth })(GardenScreen);
+export default connect(mapStateToProps, { resolveAuth, resolveInternet })(GardenScreen);

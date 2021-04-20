@@ -20,7 +20,6 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 			.get(`/garden-planting/${gardenId}`)
 			.then((response) => {
 				const gardenData = groupObjectArrayByKey(response.data.data, 'garden_plant_name');
-				console.log('GD', gardenData);
 				setGardenPlants(gardenData);
 				setLoading(false);
 			})
@@ -38,7 +37,6 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 		return unsubscribe;
 	}, [nav]);
 
-	console.log('GP', gardenPlants);
 	const deleteAlert = (gardenId) => {
 		Alert.alert(
 			'Предупреждение',
@@ -77,8 +75,6 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 			return groups;
 		}, {});
 	};
-
-	console.log(gardenPlants);
 
 	const plantsNames = () => {
 		if (gardenPlants) {
