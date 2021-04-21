@@ -10,7 +10,7 @@ export const populateLocalTables = async (table) => {
 				`CREATE TABLE IF NOT EXISTS ${table} (id bigin NOT NULL PRIMARY KEY, name int NOT NULL, content int NOT NULL, ai_name character varying)`,
 				[],
 				(tx, results) => {
-					console.log('SUCCESS', results);
+					console.log('SUCCESS');
 				},
 				(error) => {
 					console.log('BIG FUCKING ERROR', error);
@@ -48,9 +48,6 @@ export const populateLocalTables = async (table) => {
 			.catch((error) => {
 				console.log('ERROR', error.response);
 			});
-
-		console.log('LOCAL', dbData[0]);
-		console.log('SERVER', serverData[0]);
 
 		const serverDifference = differenceWith(serverData, dbData, isEqual);
 		const localDbDifference = differenceWith(dbData, serverData, isEqual);
@@ -120,7 +117,7 @@ export const populateLocalHealTable = async (table) => {
 				`CREATE TABLE IF NOT EXISTS ${table} (id bigint NOT NULL PRIMARY KEY, name int NOT NULL, content int NOT NULL)`,
 				[],
 				(tx, results) => {
-					console.log('SUCCESS', results);
+					console.log('SUCCESS');
 				},
 				(error) => {
 					console.log('BIG FUCKING ERROR', error);
@@ -153,15 +150,11 @@ export const populateLocalHealTable = async (table) => {
 		const serverData = await nodeApi
 			.get(`/plant-protection/${table}`)
 			.then((response) => {
-				console.log('HEAL RESP', response.data.data[0]);
 				return response.data.data;
 			})
 			.catch((error) => {
 				console.log('ERROR', error.response);
 			});
-
-		console.log('LOCAL', dbData[0]);
-		console.log('SERVER', serverData[0]);
 
 		const serverDifference = differenceWith(serverData, dbData, isEqual);
 		const localDbDifference = differenceWith(dbData, serverData, isEqual);

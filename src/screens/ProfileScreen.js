@@ -14,7 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
 import nodeApi from '../api/nodeApi';
-import { resolveAuth, resolveInternet, refreshConnection } from '../actions/AuthActions';
+import { resolveAuth, refreshConnection } from '../actions/AuthActions';
 import NotAuthUser from '../components/NotAuthUser';
 
 
@@ -49,7 +49,7 @@ const ProfileScreen = (props) => {
 			.catch(() => setLoading(false));
 	}
 
-	const { isSigned, navigation, checkInternet, refreshConnection, resolveInternet, resolveAuth } = props;
+	const { isSigned, navigation, checkInternet, refreshConnection, resolveAuth } = props;
 
 	const createTwoButtonAlert = () => {
 		Alert.alert(
@@ -280,8 +280,7 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps, {
-	resolveAuth,
-	resolveInternet,
+	resolveAuth,	
 	refreshConnection,
 })(ProfileScreen);
 
