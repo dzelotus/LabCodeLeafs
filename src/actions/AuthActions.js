@@ -260,6 +260,7 @@ export const resolveInternet = (payload) => (dispatch) => {
 };
 
 export const refreshConnection = () => (dispatch) => {
+	console.log('REFRESH');
 	NetInfo.fetch()
 		.then((state) => {
 			console.log('STATE', state);

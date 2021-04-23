@@ -1,7 +1,7 @@
 /* eslint-disable no-sequences */
 /* eslint-disable consistent-return */
 // *** NPM ***
-import { ScrollView, View, Platform, Alert } from 'react-native';
+import { ScrollView, View, Platform, Alert, Text, Button } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 import Geolocation from '@react-native-community/geolocation';
@@ -9,6 +9,8 @@ import RNBootSplash from 'react-native-bootsplash';
 import { PERMISSIONS, request, check } from 'react-native-permissions';
 
 // *** OTHER ***
+import { connect } from 'react-redux';
+import { resolveAuth, refreshConnection } from '../actions/AuthActions';
 import LastScansCard from '../components/LastScansCard';
 import NewsCard from '../components/NewsCard';
 import WeatherCard from '../components/WeatherCard';
@@ -19,7 +21,7 @@ import { db } from '../database/database';
 
 const { Conway } = require('@lab-code/moonphase');
 
-const MainScreen = ({ navigation }) => {
+const MainScreen = (props) => {
 	const [scans, setScans] = useState();
 	const [weather, setWeather] = useState();
 	const [moon, setMoon] = useState();
@@ -27,6 +29,9 @@ const MainScreen = ({ navigation }) => {
 	const [weatherLoading, setWeatherLoading] = useState(null);
 
 	const isHermes = () => !!global.HermesInternal;
+
+	const { navigation, refreshConnection, checkInternet } = props;
+	console.log('int', checkInternet);
 
 	const getLastScans = () => {
 		nodeApi
@@ -148,11 +153,38 @@ const MainScreen = ({ navigation }) => {
 			isHermes();
 			askPerms();
 			getMoonPhase();
+			refreshConnection();
 		});
 
 		return getFocus;
 	}, []);
 
+	if (!checkInternet) {
+		return (
+			<View style={{ backgroundColor: 'white', flex: 1 }}>
+				<WeatherCard
+					weatherInfo={weather}
+					moonInfo={moon}
+					getLocation={() => askPerms()}
+					weatherLoading={weatherLoading}
+				/>
+				<View style={{ marginVertical: 40 }}>
+					<Text style={{ fontSize: 18, textAlign: 'center' }}>
+						Отсутствует подключение к интернету, функциональность приложения ограничена
+					</Text>
+					<Button
+						title="Обновить"
+						onPress={() => {
+							refreshConnection();
+							getArticles();
+							askPerms();
+							getLastScans();
+						}}
+					/>
+				</View>
+			</View>
+		);
+	}
 	return (
 		<View style={{ backgroundColor: 'white', flex: 1 }}>
 			<ScrollView
@@ -182,5 +214,24 @@ const MainScreen = ({ navigation }) => {
 		</View>
 	);
 };
+const mapStateToProps = ({ auth }) => {
+	const {
+		fistLaunchToken,
+		isSigned,
+		toSignupScreen,
+		toAuthFlow,
+		hasInternetConnection,
+		checkInternet,
+	} = auth;
 
-export default MainScreen;
+	return {
+		fistLaunchToken,
+		isSigned,
+		toSignupScreen,
+		toAuthFlow,
+		hasInternetConnection,
+		checkInternet,
+	};
+};
+
+export default connect(mapStateToProps, { resolveAuth, refreshConnection })(MainScreen);

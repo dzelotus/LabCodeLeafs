@@ -9,7 +9,7 @@ import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
-import { resolveAuth } from '../actions/AuthActions';
+import { resolveAuth, refreshConnection } from '../actions/AuthActions';
 import imageSwitch from '../assets/weatherIcon';
 import moonImageSwitch from '../assets/moonIcon';
 
@@ -20,6 +20,7 @@ const WeatherCard = ({
 	weatherLoading,
 	resolveAuth,
 	isSigned,
+	checkInternet,
 }) => {
 	const navigation = useNavigation();
 
@@ -52,8 +53,10 @@ const WeatherCard = ({
 			<View>
 				{/* WEATHER */}
 				{weatherLoading ? (
-					<Indicator />
-				) : weatherInfo ? (
+					<View style={{ height: 75 }}>
+						<Indicator />
+					</View>
+				) : weatherInfo && checkInternet ? (
 					<View>
 						<View
 							style={{
@@ -142,7 +145,7 @@ const WeatherCard = ({
 							</View>
 						</TouchableOpacity>
 					</View>
-				) : (
+				) : checkInternet ? (
 					<TouchableOpacity
 						style={{
 							height: 75,
@@ -158,14 +161,13 @@ const WeatherCard = ({
 							местоположения
 						</Text>
 					</TouchableOpacity>
-				)}
+				) : null}
 				{/* MOONPHASE */}
 				{moonInfo ? (
 					<TouchableOpacity
 						style={{
 							alignContent: 'flex-end',
 							justifyContent: 'center',
-							flex: 1,
 							marginHorizontal: 10,
 							paddingVertical: 10,
 						}}
@@ -226,7 +228,7 @@ const WeatherCard = ({
 const styles = StyleSheet.create({
 	containerStyle: {
 		marginHorizontal: 5,
-		marginBottom: 15,
+		marginVertical: 15,
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -279,9 +281,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ auth }) => {
-	const { fistLaunchToken, isSigned, toSignupScreen, toAuthFlow } = auth;
+	const { fistLaunchToken, isSigned, toSignupScreen, toAuthFlow, checkInternet } = auth;
 
-	return { fistLaunchToken, isSigned, toSignupScreen, toAuthFlow };
+	return { fistLaunchToken, isSigned, toSignupScreen, toAuthFlow, checkInternet };
 };
 
-export default connect(mapStateToProps, { resolveAuth })(WeatherCard);
+export default connect(mapStateToProps, { resolveAuth, refreshConnection })(WeatherCard);
