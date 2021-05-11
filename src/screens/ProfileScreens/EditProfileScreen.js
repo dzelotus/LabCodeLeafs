@@ -1,4 +1,7 @@
 /* eslint-disable prettier/prettier */
+
+/* Экран редактирования Профиля */
+
 import React, { useEffect, useState } from 'react';
 import {
 	View,
@@ -14,8 +17,7 @@ import { useForm, Controller } from 'react-hook-form';
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
-
-import nodeApi from '../api/nodeApi';
+import nodeApi from '../../api/nodeApi';
 
 const EditProfileScreen = (props) => {
 	const [loading, setLoading] = useState(false);

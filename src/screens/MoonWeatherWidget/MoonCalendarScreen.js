@@ -1,3 +1,5 @@
+/* Экран Лунного календаря, доступин из виджета на главном экране */
+
 import {
 	Text,
 	View,
@@ -12,9 +14,8 @@ import moment from 'moment';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import HTML from 'react-native-render-html';
 import SQLite from 'react-native-sqlite-storage';
-
-import MoonPhaseCard from '../components/MoonPhaseCard';
-import { db } from '../database/database';
+import MoonPhaseCard from '../../components/MoonPhaseCard';
+import { db } from '../../database/database';
 
 const { Conway } = require('@lab-code/moonphase');
 

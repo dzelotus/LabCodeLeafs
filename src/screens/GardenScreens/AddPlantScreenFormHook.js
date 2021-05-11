@@ -1,3 +1,7 @@
+/* 
+Экран добавления растения в "огород". Используется на вкладке "Дневник садовода"
+*/
+
 /* eslint-disable radix */
 /* eslint-disable operator-linebreak */
 /* eslint-disable indent */
@@ -18,8 +22,8 @@ import { useForm, Controller } from 'react-hook-form';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import PickerModal from '../components/PickerModal';
-import nodeApi from '../api/nodeApi';
+import PickerModal from '../../components/PickerModal';
+import nodeApi from '../../api/nodeApi';
 
 const AddPlantScreenFormHook = (props) => {
 	const [loading, setLoading] = useState({ screenLoading: true, buttonLoading: false });

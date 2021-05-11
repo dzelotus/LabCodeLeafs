@@ -1,5 +1,8 @@
 /* eslint-disable global-require */
 /* eslint-disable no-unused-expressions */
+
+/* Экран первого запуска. Доступен только при первом запуске приложения */
+
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, Image, Platform, Button } from 'react-native';
 

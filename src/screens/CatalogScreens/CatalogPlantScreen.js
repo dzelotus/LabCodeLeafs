@@ -1,55 +1,58 @@
+/* 
+Экран отображения статьи про растение в справочнике
+*/
+
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, ScrollView, TouchableOpacity, View } from 'react-native';
 import HTML from 'react-native-render-html';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import nodeApi from '../api/nodeApi';
-import db from '../database/database';
+import nodeApi from '../../api/nodeApi';
+/* import db from '../database/database'; */
 
 const CatalogPlantScreen = (props) => {
 	const { route } = props;
-	// nav from plant get disease_content, nav from catalog get content
-	console.log('ROUTE', route);
 	const itemContent = route.params.item.content;
-
 	const itemId = route.params.item.id;
 
-	const [disease, setDisease] = useState([]);
+	const [disease, setDisease] = useState(null);
 	const [showDisease, setShowDisease] = useState(false);
 
 	useEffect(() => {
-		getDiseaseHealInfo();
+		getPlantDiseaseInfo();
 		props.navigation.setOptions({
 			headerTitle: route.params.item.name,
 			headerTruncatedBackTitle: 'Назад',
 		});
 	}, []);
 
-	const getDiseaseHealInfo = () => {
+	const getPlantDiseaseInfo = () => {
 		nodeApi
-			.get(`/plant-protection/link/disease/${itemId}/heal`)
+			.get(`/plant-protection/link/plant/${itemId}/disease`)
 			.then((response) => {
-				console.log(response);
 				const dis = response.data.data;
+				console.log('DIS', dis);
 				let i;
 				for (i = 0; i < dis.length; i += 1) {
-					dis[i].content = dis[i].heal_content;
-					dis[i].name = dis[i].heal_name;
-					delete dis[i].heal_content;
-					delete dis[i].heal_name;
+					dis[i].content = dis[i].disease_content;
+					dis[i].name = dis[i].disease_name;
+					dis[i].id = dis[i].disease_id;
+					delete dis[i].disease_content;
+					delete dis[i].disease_name;
+					delete dis[i].disease_id;
 				}
-				console.log('dis', dis);
+
 				setDisease(dis);
 			})
 			.catch((error) => console.log('ERR', error.response));
 
 		/* db.transaction((txn) => {
 			txn.executeSql(
-				`SELECT content, name, heal.id FROM disease_heal_link LEFT JOIN heal ON disease_heal_link.heal_id  = heal.id WHERE disease_id = ${itemId}`,
+				`SELECT content, name, disease.id FROM plant_disease_link LEFT JOIN disease ON plant_disease_link.disease_id  = disease.id WHERE plant_id = ${itemId}`,
 				[],
 				(tx, results) => {
 					const res = results.rows;
 					const disArr = [];
-					console.log('DATABASE', res);
+
 					for (let i = 0; i < res.length; i += 1) {
 						disArr.push(res.item(i));
 					}
@@ -68,7 +71,9 @@ const CatalogPlantScreen = (props) => {
 						style={{ flexDirection: 'row', paddingVertical: 10 }}
 						onPress={() => setShowDisease(!showDisease)}
 					>
-						<Text style={{ fontSize: 18, fontWeight: 'bold' }}>Методы борьбы</Text>
+						<Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+							Распространенные вредители:
+						</Text>
 						<FontAwesome
 							name={showDisease ? 'chevron-up' : 'chevron-down'}
 							size={20}
@@ -83,13 +88,15 @@ const CatalogPlantScreen = (props) => {
 		return null;
 	};
 
+	console.log('DISEASE', disease);
+
 	const getDiseaseItem = () => {
 		return disease.map((item) => {
-			console.log(item);
-			const healName = item.name;
+			/* console.log('DISEASE ITEM', item); */
+			const diseaseName = item.name;
 			return (
 				<TouchableOpacity
-					onPress={() => props.navigation.navigate('CatalogHeal', { item })}
+					onPress={() => props.navigation.navigate('CatalogDisease', { item })}
 					key={item.id}
 					style={{
 						flexDirection: 'row',
@@ -102,7 +109,7 @@ const CatalogPlantScreen = (props) => {
 						flex: 1,
 					}}
 				>
-					<Text style={{ fontSize: 16, flex: 1, paddingLeft: 10 }}>{healName}</Text>
+					<Text style={{ fontSize: 16, flex: 1, paddingLeft: 10 }}>{diseaseName}</Text>
 					<FontAwesome
 						name="chevron-right"
 						size={20}

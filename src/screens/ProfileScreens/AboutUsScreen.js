@@ -1,3 +1,7 @@
+// Экран "О нас"
+// Находился на вкладке "Профиль"
+// В данный момент не используется
+
 import { Text, View } from 'react-native';
 
 import React from 'react';

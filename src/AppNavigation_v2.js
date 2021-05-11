@@ -1,34 +1,14 @@
 /* eslint-disable no-nested-ternary */
+/* ***NPM*** */
 import React, { useEffect } from 'react';
-
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Pressable } from 'react-native';
 import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-
 import SQLite from 'react-native-sqlite-storage';
-
-import AboutUsScreen from './screens/AboutUsScreen';
-
-import EditProfileScreen from './screens/EditProfileScreen';
-import GardenScreen from './screens/GardenScreen';
-import FirstLaunchScreen from './screens/FirstLaunchScreen';
-import HelpScreen from './screens/HelpScreen';
-
-import LastScanFullscreenPhotoScreen from './screens/LastScanFullscreenPhotoScreen';
-import LastScanScreen from './screens/LastScanScreen';
-import MainScreen from './screens/MainScreen';
-import ProfileScreen from './screens/ProfileScreen';
-import ResolveAuthScreen from './screens/ResolveAuthScreen';
-import ScanLeafScreen from './screens/ScanLeafScreen';
-import ScanPhotoScreen from './screens/ScanPhotoScreen';
-import SigninScreen from './screens/SigninScreen';
-import SignupScreen from './screens/SignupScreen';
-import WishlistScreen from './screens/WishlistScreen';
-/* import AddPlantScreen from './screens/AddPlantScreen'; */
-import AddPlantFormHook from './screens/AddPlantScreenFormHook';
+/* ***OTHERS*** */
 import {
 	resolveAuth,
 	checkInternetConnection,
@@ -36,15 +16,45 @@ import {
 	checkAuth,
 	refreshConnection,
 } from './actions/AuthActions';
-import NewsScreen from './screens/NewsScreen';
-import ArticleScreen from './screens/ArticleScreen';
-import CatalogScreen from './screens/CatalogScreen';
-import CatalogPlantScreen from './screens/CatalogPlantScreen';
-import CatalogDiseaseScreen from './screens/CatalogDiseaseScreen';
-import CatalogHealScreen from './screens/CatalogHealScreen';
-import WeatherScreen from './screens/WeatherScreen';
-import MoonCalendarScreen from './screens/MoonCalendarScreen';
+
+/* ***SCREENS*** */
+// Экран первого запуска
+import FirstLaunchScreen from './screens/FirstLaunchScreen';
+// Главный экран
+import MainScreen from './screens/MainScreen';
+// Экраный авторизации, регистрации
+import SigninScreen from './screens/AuthScreens/SigninScreen';
+import SignupScreen from './screens/AuthScreens/SignupScreen';
+import ResolveAuthScreen from './screens/AuthScreens/ResolveAuthScreen';
+// Экраны сканирования
+import ScanLeafScreen from './screens/ScanScreens/ScanLeafScreen';
+import ScanPhotoScreen from './screens/ScanScreens/ScanPhotoScreen';
+import LastScanFullscreenPhotoScreen from './screens/ScanScreens/LastScanFullscreenPhotoScreen';
+import LastScanScreen from './screens/ScanScreens/LastScanScreen';
+// Экраны новостей
+import NewsScreen from './screens/NewsScreens/NewsScreen';
+import ArticleScreen from './screens/NewsScreens/ArticleScreen';
+
+// Экран погоды
+import WeatherScreen from './screens/MoonWeatherWidget/WeatherScreen';
+// Экран лунного календаря
+import MoonCalendarScreen from './screens/MoonWeatherWidget/MoonCalendarScreen';
+// Экраны справочника
+import CatalogScreen from './screens/CatalogScreens/CatalogScreen';
+import CatalogPlantScreen from './screens/CatalogScreens/CatalogPlantScreen';
+import CatalogDiseaseScreen from './screens/CatalogScreens/CatalogDiseaseScreen';
+import CatalogHealScreen from './screens/CatalogScreens/CatalogHealScreen';
+// Экраны дневника садовода
+import GardenScreen from './screens/GardenScreens/GardenScreen';
+import AddPlantFormHook from './screens/GardenScreens/AddPlantScreenFormHook';
+// Экраны профиля
+import ProfileScreen from './screens/ProfileScreens/ProfileScreen';
+import EditProfileScreen from './screens/ProfileScreens/EditProfileScreen';
+import AboutUsScreen from './screens/ProfileScreens/AboutUsScreen';
+import HelpScreen from './screens/ProfileScreens/HelpScreen';
+// Экран не аутентифицированного пользователя
 import NotAuthUserScreen from './screens/NotAuthScreen';
+// Экран отсутствия соединения с интернет
 import NoInternetConnectionScreen from './screens/NoInternetConnectionScreen';
 
 import { populateLocalTables, populateLocalHealTable } from './database/populateLocalTables';
@@ -52,15 +62,7 @@ import { populateLocalTables, populateLocalHealTable } from './database/populate
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const CatalogFlow = () => (
-	<Stack.Navigator screenOptions={{ title: 'Справочник', headerTintColor: '#379683' }}>
-		<Stack.Screen name="Catalog" component={CatalogScreen} />
-		<Stack.Screen name="CatalogPlant" component={CatalogPlantScreen} />
-		<Stack.Screen name="CatalogDisease" component={CatalogDiseaseScreen} />
-		<Stack.Screen name="CatalogHeal" component={CatalogHealScreen} />
-	</Stack.Navigator>
-);
-
+/* Навигатор для главного экрана (вкладка "Мои растения") */
 const MainFlow = () => (
 	<Stack.Navigator
 		initialRouteName="Main"
@@ -72,7 +74,6 @@ const MainFlow = () => (
 	>
 		<Stack.Screen name="Main" component={MainScreen} />
 		<Stack.Screen name="News" component={NewsFlow} />
-		<Stack.Screen name="Wishlist" component={WishlistScreen} />
 		<Stack.Screen
 			name="LastScan"
 			component={LastScanScreen}
@@ -83,6 +84,17 @@ const MainFlow = () => (
 	</Stack.Navigator>
 );
 
+/* Навигатор для вкладки Справочник */
+const CatalogFlow = () => (
+	<Stack.Navigator screenOptions={{ title: 'Справочник', headerTintColor: '#379683' }}>
+		<Stack.Screen name="Catalog" component={CatalogScreen} />
+		<Stack.Screen name="CatalogPlant" component={CatalogPlantScreen} />
+		<Stack.Screen name="CatalogDisease" component={CatalogDiseaseScreen} />
+		<Stack.Screen name="CatalogHeal" component={CatalogHealScreen} />
+	</Stack.Navigator>
+);
+
+/* Навигатор для вкладки Профиль */
 const ProfileFlow = () => (
 	<Stack.Navigator screenOptions={{ title: 'Профиль', headerTintColor: '#379683' }}>
 		<Stack.Screen name="Profile" component={ProfileScreen} />
@@ -96,6 +108,7 @@ const ProfileFlow = () => (
 	</Stack.Navigator>
 );
 
+/* Навигатор сканирования фотографий  */
 const CameraFlow = () => (
 	<Stack.Navigator initialRouteName="ScanLeaf" screenOptions={{ headerShown: false }}>
 		<Stack.Screen name="ScanLeaf" component={ScanLeafScreen} />
@@ -103,6 +116,7 @@ const CameraFlow = () => (
 	</Stack.Navigator>
 );
 
+/* Навигатор виджета новостей и новостной ленты */
 const NewsFlow = () => (
 	<Stack.Navigator
 		initialRouteName="News"
@@ -113,6 +127,7 @@ const NewsFlow = () => (
 	</Stack.Navigator>
 );
 
+/* Навигатор регистрации и авторизации */
 const AuthFlow = (props) => {
 	const { route } = props;
 	console.log('ROUTE', route);
@@ -127,6 +142,7 @@ const AuthFlow = (props) => {
 	);
 };
 
+/* Навигатор Дневника садовода */
 const GardenFlow = () => (
 	<Stack.Navigator initialRouteName="Garden">
 		<Stack.Screen
@@ -142,6 +158,7 @@ const GardenFlow = () => (
 	</Stack.Navigator>
 );
 
+/* BottomTab навигатор. Объединяет другие StackNavigator для отображения. */
 const TabNavigator = () => (
 	<Tab.Navigator
 		tabBarOptions={{

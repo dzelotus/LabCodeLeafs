@@ -1,10 +1,11 @@
+/* Экран погоды доступен из виджета на главном экране */
+
 import { Text, View, ScrollView, ActivityIndicator, Image, Platform } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-import imageSwitch from '../assets/weatherIcon';
-import weatherApi from '../api/weatherApi';
+import imageSwitch from '../../assets/weatherIcon';
+import weatherApi from '../../api/weatherApi';
 
 const WeatherScreen = (props) => {
 	const { route } = props;

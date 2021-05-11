@@ -1,6 +1,9 @@
 /* eslint-disable global-require */
 /* eslint-disable no-useless-escape */
 /* eslint-disable react/jsx-no-bind */
+
+/* Экран регистрации в приложении */
+
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -28,7 +31,7 @@ import {
 	activateBioAuth,
 	checkBioScanner,
 	resolveAuth,
-} from '../actions/AuthActions';
+} from '../../actions/AuthActions';
 
 function SignupScreen(props) {
 	const regexUsername = useRef();
@@ -139,7 +142,7 @@ function SignupScreen(props) {
 			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>
 				<ScrollView keyboardShouldPersistTaps="always">
 					<Image
-						source={require('../../assets/firstLaunchScreenImages/bitmap.png')}
+						source={require('../../../assets/firstLaunchScreenImages/bitmap.png')}
 						style={{ width: 350, height: 60, marginTop: 15, alignSelf: 'center' }}
 						resizeMode="contain"
 					/>

@@ -1,4 +1,7 @@
 /* eslint-disable global-require */
+
+/* Экран отсутствия интернет соединения */
+
 import React from 'react';
 import { View, Text, Button, Image } from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';

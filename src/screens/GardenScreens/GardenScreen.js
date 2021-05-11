@@ -1,14 +1,17 @@
 /* eslint-disable no-else-return */
 /* eslint-disable operator-linebreak */
 /* eslint-disable consistent-return */
+
+/* Экран Дневника садовода */
+
 import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator, ScrollView, Alert, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
-import nodeApi from '../api/nodeApi';
-import GardenWithPlantsCard from '../components/GardenWithPlantsCard';
-import AddGardenModal from '../components/AddGardenModal';
-import { resolveAuth, resolveInternet, refreshConnection } from '../actions/AuthActions';
-import NotAuthUser from '../components/NotAuthUser';
+import nodeApi from '../../api/nodeApi';
+import GardenWithPlantsCard from '../../components/GardenWithPlantsCard';
+import AddGardenModal from '../../components/AddGardenModal';
+import { resolveAuth, resolveInternet, refreshConnection } from '../../actions/AuthActions';
+import NotAuthUser from '../../components/NotAuthUser';
 
 const GardenScreen = (props) => {
 	const { navigation, isSigned, checkInternet, refreshConnection, resolveAuth } = props;

@@ -1,5 +1,8 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable operator-linebreak */
+
+/* Экран сканирования фотграфии. Здесь открывается камера на весь экран. */
+
 import {
 	PermissionsAndroid,
 	StatusBar,
@@ -15,12 +18,12 @@ import { Camera } from 'expo-camera';
 import CameraRoll from '@react-native-community/cameraroll';
 import { withNavigationFocus } from '@react-navigation/compat';
 import { connect } from 'react-redux';
-import CameraButtons from '../components/CameraButtons';
-import PhotoCameraScroll from '../components/PhotoCameraScroll';
-import imagePicker from '../hooks/imagePicker';
-import makePhoto from '../hooks/makePhoto';
-import GoBackButton from '../components/GoBackButton';
-import HowMakePhotoButton from '../components/HowMakePhotoButton'
+import CameraButtons from '../../components/CameraButtons';
+import PhotoCameraScroll from '../../components/PhotoCameraScroll';
+import imagePicker from '../../hooks/imagePicker';
+import makePhoto from '../../hooks/makePhoto';
+import GoBackButton from '../../components/GoBackButton';
+import HowMakePhotoButton from '../../components/HowMakePhotoButton'
 
 /* import makePhoto from '../hooks/makePhoto'; */
 

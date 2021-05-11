@@ -11,7 +11,7 @@ import {
 	HAS_INTERNET_CONNECTION,
 	START_WITHOUT_INTERNET,
 	RESOLVE_LOADING,
-	CHECK_INTERNET_CONNECTION
+	CHECK_INTERNET_CONNECTION,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -31,7 +31,7 @@ const INITIAL_STATE = {
 	toAuthFlow: false,
 	hasInternetConnection: 'wait',
 	startWithoutInternet: false,
-	checkInternet: null
+	checkInternet: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -71,11 +71,11 @@ export default (state = INITIAL_STATE, action) => {
 				...state,
 				startWithoutInternet: action.startWithoutInternet,
 			};
-			case CHECK_INTERNET_CONNECTION:
-				return {
-					...state,
-					checkInternet: action.checkInternet
-				}
+		case CHECK_INTERNET_CONNECTION:
+			return {
+				...state,
+				checkInternet: action.checkInternet,
+			};
 		default:
 			return state;
 	}

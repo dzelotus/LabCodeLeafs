@@ -1,3 +1,5 @@
+/* Экран не зарегистрированного пользователя, появляется в случае отсутствия авторизации в приложении */
+
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';

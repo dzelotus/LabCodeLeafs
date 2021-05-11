@@ -1,3 +1,5 @@
+/* Экран просмотра уже отсканированной фотографии "на весь экран" */
+
 import React, { useEffect, useState } from 'react';
 import {
 	Image,
@@ -11,7 +13,7 @@ import {
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-import nodeApi from '../api/nodeApi';
+import nodeApi from '../../api/nodeApi';
 
 const LastScanFullscreenPhotoScreen = (props) => {
 	const [stateData, setStateData] = useState(null);

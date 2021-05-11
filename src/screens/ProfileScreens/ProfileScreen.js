@@ -1,4 +1,7 @@
 /* eslint-disable prettier/prettier */
+
+/* Экран профиля */
+
 import {
 	Alert,
 	Image,
@@ -13,9 +16,9 @@ import React, { useEffect, useState } from 'react';
 
 import { connect } from 'react-redux';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
-import nodeApi from '../api/nodeApi';
-import { resolveAuth, refreshConnection } from '../actions/AuthActions';
-import NotAuthUser from '../components/NotAuthUser';
+import nodeApi from '../../api/nodeApi';
+import { resolveAuth, refreshConnection } from '../../actions/AuthActions';
+import NotAuthUser from '../../components/NotAuthUser';
 
 
 const ProfileScreen = (props) => {	

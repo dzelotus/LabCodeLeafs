@@ -1,3 +1,5 @@
+/* Компонент React Navigation 5 для доступа к навигации без navigation prop */
+
 import * as React from 'react';
 
 export const navigationRef = React.createRef();

@@ -1,5 +1,8 @@
 /* eslint-disable global-require */
 /* eslint-disable no-nested-ternary */
+
+/* Виджет погоды и лунного календаря */
+
 import 'moment/locale/ru';
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';

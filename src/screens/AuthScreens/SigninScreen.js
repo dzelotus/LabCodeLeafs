@@ -3,6 +3,9 @@
 /* eslint-disable no-else-return */
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-no-bind */
+
+/*  Экран входа в приложение */
+
 import {
 	ActivityIndicator,
 	Alert,
@@ -29,9 +32,9 @@ import {
 	signin,
 	checkBioScanner,
 	resolveAuth,
-} from '../actions/AuthActions';
+} from '../../actions/AuthActions';
 
-import nodeApi from '../api/nodeApi';
+import nodeApi from '../../api/nodeApi';
 
 function SigninScreen(props) {
 	const [isModalVisible, setModalVisible] = useState(false);
@@ -229,7 +232,7 @@ function SigninScreen(props) {
 		>
 			<ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="always">
 				<Image
-					source={require('../../assets/firstLaunchScreenImages/bitmap.png')}
+					source={require('../../../assets/firstLaunchScreenImages/bitmap.png')}
 					style={{ width: 350, height: 60, marginTop: 15, alignSelf: 'center' }}
 					resizeMode="contain"
 				/>

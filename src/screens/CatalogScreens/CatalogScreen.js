@@ -1,3 +1,7 @@
+/* 
+Главный экран Справочника (растения/заболевания/лечение)
+*/
+
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import {
@@ -12,7 +16,7 @@ import {
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from 'react-native-elements';
 import SQLite from 'react-native-sqlite-storage';
-import { db } from '../database/database';
+import { db } from '../../database/database';
 
 const CatalogScreen = (props) => {
 	const [fetchedData, setFetchedData] = useState(null);

@@ -1,3 +1,5 @@
+/* Экран отображения последних выполненных сканирований */
+
 import React, { useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';

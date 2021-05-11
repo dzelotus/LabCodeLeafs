@@ -1,3 +1,5 @@
+/* Экран отображения новостной ленты, доступен из виджета на главном экране */
+
 import React, { useEffect, useState } from 'react';
 import {
 	Text,
@@ -9,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HTML from 'react-native-render-html';
-import nodeApi from '../api/nodeApi';
+import nodeApi from '../../api/nodeApi';
 
 const NewsScreen = (props) => {
 	const [newsData, setNewsData] = useState('');

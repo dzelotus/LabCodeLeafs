@@ -9,7 +9,7 @@ export const populateLocalTables = async (table) => {
 			txn.executeSql(
 				`CREATE TABLE IF NOT EXISTS ${table} (id bigin NOT NULL PRIMARY KEY, name int NOT NULL, content int NOT NULL, ai_name character varying)`,
 				[],
-				(tx, results) => {
+				() => {
 					console.log('SUCCESS');
 				},
 				(error) => {
@@ -116,7 +116,7 @@ export const populateLocalHealTable = async (table) => {
 			txn.executeSql(
 				`CREATE TABLE IF NOT EXISTS ${table} (id bigint NOT NULL PRIMARY KEY, name int NOT NULL, content int NOT NULL)`,
 				[],
-				(tx, results) => {
+				() => {
 					console.log('SUCCESS');
 				},
 				(error) => {

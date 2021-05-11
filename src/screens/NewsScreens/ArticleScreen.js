@@ -1,10 +1,13 @@
+/* 
+Экран отображения новостной статьи
+*/
+
 import React, { useEffect } from 'react';
 import { StyleSheet, ScrollView, useWindowDimensions, Dimensions } from 'react-native';
 import HTML from 'react-native-render-html';
 
 const ArticleScreen = (props) => {
 	const { route } = props;
-	console.log('PROPS', props);
 	const article = route.params.data.article_text;
 
 	useEffect(() => {

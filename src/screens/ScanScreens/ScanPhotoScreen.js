@@ -1,3 +1,7 @@
+/* Экран после фотографирования или выбора фото из галереи. Фото открывается на весь экран. 
+Имеется возможность отправить на обработку
+ */
+
 import React, { useState } from 'react';
 import {
 	View,
@@ -14,9 +18,9 @@ import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 
-import GoBackButton from '../components/GoBackButton';
-import { getCsrf } from '../actions/AuthActions';
-import nodeApi from '../api/nodeApi';
+import GoBackButton from '../../components/GoBackButton';
+import { getCsrf } from '../../actions/AuthActions';
+import nodeApi from '../../api/nodeApi';
 
 const ScanPhotoScreen = (route) => {
 	const fileURL = route.route.params.img.uri;

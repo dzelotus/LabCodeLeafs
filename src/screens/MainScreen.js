@@ -1,5 +1,8 @@
 /* eslint-disable no-sequences */
 /* eslint-disable consistent-return */
+
+/* Главный экран приложения "Мои растения" */
+
 // *** NPM ***
 import { ScrollView, View, Platform, Alert, Text, Button } from 'react-native';
 import React, { useEffect, useState } from 'react';
