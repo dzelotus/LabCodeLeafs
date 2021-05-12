@@ -3,7 +3,6 @@
 import {
 	Text,
 	View,
-	ActivityIndicator,
 	TouchableOpacity,
 	ScrollView,
 	StyleSheet,
@@ -16,6 +15,7 @@ import HTML from 'react-native-render-html';
 import SQLite from 'react-native-sqlite-storage';
 import MoonPhaseCard from '../../components/MoonPhaseCard';
 import { db } from '../../database/database';
+import Indicator from '../../components/Indicator';
 
 const { Conway } = require('@lab-code/moonphase');
 
@@ -129,19 +129,15 @@ const MoonCalendarScreen = (props) => {
 		);
 	};
 
-	const Indicator = () => (
-		<View
-			style={{
-				backgroundColor: 'white',
-				flex: 1,
-			}}
-		>
-			<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
-		</View>
-	);
-
 	if (!moon) {
-		return <Indicator />;
+		return (
+			<Indicator
+				style={{
+					backgroundColor: 'white',
+					flex: 1,
+				}}
+			/>
+		);
 	}
 	return (
 		<ScrollView

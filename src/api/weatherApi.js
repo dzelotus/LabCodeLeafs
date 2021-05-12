@@ -1,3 +1,5 @@
+/* доступ к api погоды  */
+
 import axios from 'axios';
 
 const instance = axios.create({

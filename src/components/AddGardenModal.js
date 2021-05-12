@@ -1,3 +1,5 @@
+/* Модальное окно для создания "огорода" на вкладке Дневник Садовода */
+
 import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Modal from 'react-native-modal';
@@ -79,33 +81,16 @@ const AddGardenForm = (props) => {
 		return (
 			<TouchableOpacity style={styles.addButton} onPress={handleSubmit(onSubmit)}>
 				<Icon name="plus" size={22} color="#379683" />
-				<Text style={{ fontSize: 15, marginLeft: 10, color: '#EB9156' }}>Добавить</Text>
+				<Text style={styles.addButtonTitle}>Добавить</Text>
 			</TouchableOpacity>
 		);
 	};
 
 	/* MODAL CONTENT WITH INPUTS, CLOSE AND ADD BUTTONS */
-
 	return (
 		<>
-			<View
-				style={{
-					borderColor: '#ffffff',
-					borderWidth: 3,
-					marginHorizontal: 50,
-					borderRadius: 3,
-					marginBottom: 10,
-					width: 45,
-					alignSelf: 'center',
-				}}
-			/>
+			<View style={styles.closeDash} />
 			<View style={styles.modalContainer}>
-				<View
-					style={{
-						height: 25,
-						justifyContent: 'center',
-					}}
-				/>
 				<ScrollView keyboardShouldPersistTaps="always">
 					<Text style={styles.title}>Добавить огород</Text>
 					<View style={styles.controllerContainer}>
@@ -118,7 +103,7 @@ const AddGardenForm = (props) => {
 								},
 							}}
 							render={({ onChange, onBlur, value }) => (
-								<View style={{ flex: 1 }}>
+								<View style={styles.inputFlex}>
 									<View style={styles.containerHeader}>
 										<Text>Название огорода</Text>
 									</View>
@@ -128,7 +113,7 @@ const AddGardenForm = (props) => {
 											onBlur={onBlur}
 											textValue={value}
 											defaultValue={value.toString()}
-											style={{ flex: 1 }}
+											style={styles.inputFlex}
 										/>
 										{errors.gardenName_input?.message && (
 											<Text style={{ color: 'red' }}>
@@ -147,7 +132,7 @@ const AddGardenForm = (props) => {
 						<Controller
 							control={control}
 							render={({ onChange, onBlur, value }) => (
-								<View style={{ flex: 1 }}>
+								<View style={styles.inputFlex}>
 									<View style={styles.containerHeader}>
 										<Text>Описание огорода</Text>
 									</View>
@@ -157,7 +142,7 @@ const AddGardenForm = (props) => {
 											onBlur={onBlur}
 											textValue={value}
 											defaultValue={value.toString()}
-											style={{ flex: 1 }}
+											style={styles.inputFlex}
 										/>
 										{errors.gardenDescription_input?.message && (
 											<Text style={{ color: 'red' }}>
@@ -171,11 +156,7 @@ const AddGardenForm = (props) => {
 							defaultValue=""
 						/>
 					</View>
-					{!loading ? (
-						<AddGardenButton />
-					) : (
-						<Indicator style={{ marginBottom: 10, marginTop: 20 }} />
-					)}
+					{!loading ? <AddGardenButton /> : <Indicator style={styles.indicator} />}
 				</ScrollView>
 			</View>
 		</>
@@ -257,11 +238,6 @@ const styles = StyleSheet.create({
 		elevation: 5,
 		paddingBottom: 50,
 	},
-	closeButton: {
-		alignSelf: 'flex-end',
-		right: 5,
-		top: 5,
-	},
 	controllerContainer: {
 		marginHorizontal: 15,
 		marginVertical: 10,
@@ -315,13 +291,27 @@ const styles = StyleSheet.create({
 		height: 40,
 		justifyContent: 'center',
 	},
+	addButtonTitle: { fontSize: 15, marginLeft: 10, color: '#EB9156' },
 	title: {
 		textAlign: 'center',
-		paddingTop: 10,
+		paddingTop: 25,
 		paddingBottom: 15,
 		fontSize: 20,
 		color: '#EB9156',
 	},
+	closeDash: {
+		borderColor: '#ffffff',
+		borderWidth: 3,
+		marginHorizontal: 50,
+		borderRadius: 3,
+		marginBottom: 10,
+		width: 45,
+		alignSelf: 'center',
+	},
+	inputFlex: {
+		flex: 1,
+	},
+	indicator: { marginBottom: 10, marginTop: 20 },
 });
 
 export default AddGardenModal;

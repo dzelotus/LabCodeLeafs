@@ -3,6 +3,7 @@
 
 /* Экран сканирования фотграфии. Здесь открывается камера на весь экран. */
 
+/* NPM */
 import {
 	PermissionsAndroid,
 	StatusBar,
@@ -18,6 +19,8 @@ import { Camera } from 'expo-camera';
 import CameraRoll from '@react-native-community/cameraroll';
 import { withNavigationFocus } from '@react-navigation/compat';
 import { connect } from 'react-redux';
+
+/* OTHER */
 import CameraButtons from '../../components/CameraButtons';
 import PhotoCameraScroll from '../../components/PhotoCameraScroll';
 import imagePicker from '../../hooks/imagePicker';
@@ -25,7 +28,6 @@ import makePhoto from '../../hooks/makePhoto';
 import GoBackButton from '../../components/GoBackButton';
 import HowMakePhotoButton from '../../components/HowMakePhotoButton'
 
-/* import makePhoto from '../hooks/makePhoto'; */
 
 const ScanLeafScreen = (route) => {
 	const [type, setType] = useState(Camera.Constants.Type.back);

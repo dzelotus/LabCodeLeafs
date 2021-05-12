@@ -104,17 +104,7 @@ const FeedbackGeneralNew = (props) => {
 
 	return (
 		<>
-			<View
-				style={{
-					borderColor: '#ffffff',
-					borderWidth: 3,
-					marginHorizontal: 50,
-					borderRadius: 3,
-					marginBottom: 10,
-					width: 45,
-					alignSelf: 'center',
-				}}
-			/>
+			<View style={styles.closeDash} />
 			<View style={styles.modalContainer}>
 				<ScrollView keyboardShouldPersistTaps="always">
 					{/* TITLE */}
@@ -134,11 +124,13 @@ const FeedbackGeneralNew = (props) => {
 									<View style={styles.containerHeader}>
 										<Text>Ваше имя</Text>
 									</View>
-									<TextInput
-										onChangeText={(newValue) => onChange(newValue)}
-										value={value}
-										style={{ flex: 1, paddingHorizontal: 10 }}
-									/>
+									<View style={styles.textInputContainer}>
+										<TextInput
+											onChangeText={(newValue) => onChange(newValue)}
+											value={value}
+											style={styles.inputFlex}
+										/>
+									</View>
 								</View>
 							)}
 							name="name"
@@ -159,7 +151,7 @@ const FeedbackGeneralNew = (props) => {
 						<Controller
 							control={control}
 							render={({ onChange, value }) => (
-								<View style={{ flex: 1 }}>
+								<View style={styles.inputFlex}>
 									<View style={styles.containerHeader}>
 										<Text>Электронная почта</Text>
 									</View>
@@ -167,7 +159,7 @@ const FeedbackGeneralNew = (props) => {
 										<TextInput
 											onChangeText={(newValue) => onChange(newValue)}
 											value={value}
-											style={{ flex: 1 }}
+											style={styles.inputFlex}
 										/>
 									</View>
 								</View>
@@ -192,7 +184,7 @@ const FeedbackGeneralNew = (props) => {
 						<Controller
 							control={control}
 							render={({ onChange, value }) => (
-								<View style={{ flex: 1 }}>
+								<View style={styles.inputFlex}>
 									<View style={styles.containerHeader}>
 										<Text>Ваш отзыв</Text>
 									</View>
@@ -202,7 +194,7 @@ const FeedbackGeneralNew = (props) => {
 											value={value}
 											multiline
 											numberOfLines={10}
-											style={{ flex: 1 }}
+											style={styles.inputFlex}
 										/>
 									</View>
 								</View>
@@ -403,6 +395,18 @@ const styles = StyleSheet.create({
 		color: 'red',
 		paddingBottom: 5,
 		paddingLeft: 15,
+	},
+	closeDash: {
+		borderColor: '#ffffff',
+		borderWidth: 3,
+		marginHorizontal: 50,
+		borderRadius: 3,
+		marginBottom: 10,
+		width: 45,
+		alignSelf: 'center',
+	},
+	inputFlex: {
+		flex: 1,
 	},
 });
 

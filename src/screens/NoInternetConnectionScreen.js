@@ -2,10 +2,13 @@
 
 /* Экран отсутствия интернет соединения */
 
+/* NPM */
 import React from 'react';
 import { View, Text, Button, Image } from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
 import { connect } from 'react-redux';
+
+/* OTHER */
 import { resolveInternet } from '../actions/AuthActions';
 
 const NoInternetConnectionScreen = (props) => {

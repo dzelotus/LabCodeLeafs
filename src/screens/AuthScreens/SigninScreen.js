@@ -6,8 +6,8 @@
 
 /*  Экран входа в приложение */
 
+/* NPM */
 import {
-	ActivityIndicator,
 	Alert,
 	Modal,
 	ScrollView,
@@ -25,6 +25,8 @@ import FingerprintScanner from 'react-native-fingerprint-scanner';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNBootSplash from 'react-native-bootsplash';
+
+/* OTHER */
 import {
 	clearErrorMessage,
 	getCsrf,
@@ -33,7 +35,7 @@ import {
 	checkBioScanner,
 	resolveAuth,
 } from '../../actions/AuthActions';
-
+import Indicator from '../../components/Indicator';
 import nodeApi from '../../api/nodeApi';
 
 function SigninScreen(props) {
@@ -108,11 +110,7 @@ function SigninScreen(props) {
 
 	const activityIndicator = () => {
 		if (!_csrf) {
-			return (
-				<View>
-					<ActivityIndicator size="large" color="#379683" />
-				</View>
-			);
+			return <Indicator />;
 		} else if (hasBioScanner && isBioAuthActive) {
 			return (
 				<View style={{ flexDirection: 'row' }}>
@@ -146,16 +144,12 @@ function SigninScreen(props) {
 
 	const activityIndicatorModal = () => {
 		if (indicator) {
-			return (
-				<View>
-					<ActivityIndicator size="large" color="#379683" />
-				</View>
-			);
+			return <Indicator />;
 		}
 		return (
 			<Button
 				title="Отправить запрос"
-				raised="true"
+				raised
 				buttonStyle={{
 					borderColor: '#379683',
 					height: 48,

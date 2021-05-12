@@ -1,10 +1,15 @@
 /* eslint-disable consistent-return */
+
+/* NPM */
 import React, { useEffect, useState } from 'react';
-import { Text, TouchableOpacity, View, StyleSheet, ActivityIndicator, Alert } from 'react-native';
+import { Text, TouchableOpacity, View, StyleSheet, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+/* OTHER */
 import PlantInGarden from './PlantInGarden';
 import nodeApi from '../api/nodeApi';
 import EditGardenModal from './EditGardenModal';
+import Indicator from './Indicator';
 
 const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 	const [open, setOpen] = useState(false);
@@ -94,16 +99,8 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 	const gardenOpen = () => {
 		if (open) {
 			return (
-				<View style={{ flex: 1, marginHorizontal: 10, paddingVertical: 5 }}>
-					<View
-						style={{
-							flexDirection: 'row',
-							justifyContent: 'flex-end',
-
-							borderBottomWidth: 2,
-							borderBottomColor: '#379683',
-						}}
-					>
+				<View style={styles.openedGardenContainer}>
+					<View style={styles.gardenBtns}>
 						<EditGardenModal gardenId={gardenId} getGardens={() => getGardens()} />
 						<TouchableOpacity
 							onPress={() => {
@@ -114,20 +111,10 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 						</TouchableOpacity>
 					</View>
 					<View>
-						<View
-							style={{
-								flexDirection: 'row',
-								justifyContent: 'space-between',
-								borderBottomWidth: 2,
-								borderBottomColor: '#dedede',
-								paddingVertical: 10,
-							}}
-						>
-							<Text style={{ flex: 1, fontSize: 16 }}>Название растения</Text>
-							<Text style={{ flex: 1, textAlign: 'center', fontSize: 16 }}>
-								Количество записей
-							</Text>
-							<View style={{ flex: 0.2 }} />
+						<View style={styles.columnTitles}>
+							<Text style={styles.column1}>Название растения</Text>
+							<Text style={styles.column2}>Количество записей</Text>
+							<View style={styles.column3} />
 						</View>
 						{loading && gardenPlants === null ? <Indicator /> : plantsNames()}
 					</View>
@@ -138,9 +125,7 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 						>
 							<View style={styles.rowDirection}>
 								<Icon name="plus" size={22} color="#379683" />
-								<Text style={{ fontSize: 15, marginLeft: 10, color: '#EB9156' }}>
-									Добавить растение
-								</Text>
+								<Text style={styles.addPlantBtnTitle}>Добавить растение</Text>
 							</View>
 						</TouchableOpacity>
 					</View>
@@ -149,13 +134,6 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 		}
 	};
 
-	const Indicator = () => {
-		return (
-			<View>
-				<ActivityIndicator size="large" color="#379683" />
-			</View>
-		);
-	};
 	if (deleted) {
 		return null;
 	}
@@ -163,19 +141,14 @@ const GardenWithPlantsCard = ({ data, getGardens, nav }) => {
 		<View>
 			<View style={open ? styles.gardenContainerPressed : styles.gardenContainerNormal}>
 				<TouchableOpacity
-					style={{
-						flexDirection: 'row',
-						flex: 1,
-						justifyContent: 'space-between',
-						padding: 20,
-					}}
+					style={styles.openGardenBtn}
 					onPress={() => {
 						setOpen(!open);
 						getGardenPlants();
 					}}
 				>
-					<Text style={{ fontSize: 16 }}>{data.name}</Text>
-					<Text style={{ fontSize: 16 }}>{data.description}</Text>
+					<Text style={styles.gardenTitle}>{data.name}</Text>
+					<Text style={styles.gardenTitle}>{data.description}</Text>
 					<Icon name={open ? 'chevron-up' : 'chevron-down'} size={20} />
 				</TouchableOpacity>
 			</View>
@@ -262,9 +235,34 @@ const styles = StyleSheet.create({
 		height: 40,
 		justifyContent: 'center',
 	},
+	addPlantBtnTitle: { fontSize: 15, marginLeft: 10, color: '#EB9156' },
 	rowDirection: {
 		flexDirection: 'row',
 	},
+	openGardenBtn: {
+		flexDirection: 'row',
+		flex: 1,
+		justifyContent: 'space-between',
+		padding: 20,
+	},
+	gardenTitle: { fontSize: 16 },
+	openedGardenContainer: { flex: 1, marginHorizontal: 10, paddingVertical: 5 },
+	gardenBtns: {
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		borderBottomWidth: 2,
+		borderBottomColor: '#379683',
+	},
+	columnTitles: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		borderBottomWidth: 2,
+		borderBottomColor: '#dedede',
+		paddingVertical: 10,
+	},
+	column1: { flex: 1, fontSize: 16 },
+	column2: { flex: 1, textAlign: 'center', fontSize: 16 },
+	column3: { flex: 0.2 },
 });
 
 export default GardenWithPlantsCard;

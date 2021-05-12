@@ -7,23 +7,19 @@
 /* eslint-disable indent */
 /* eslint-disable arrow-body-style */
 /* eslint-disable react/no-array-index-key */
+/* NPM */
 import React, { useEffect, useState, useRef } from 'react';
-import {
-	View,
-	Text,
-	ActivityIndicator,
-	TouchableOpacity,
-	TextInput,
-	StyleSheet,
-	findNodeHandle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, findNodeHandle } from 'react-native';
 import moment from 'moment';
 import { useForm, Controller } from 'react-hook-form';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+/* OTHER */
 import PickerModal from '../../components/PickerModal';
 import nodeApi from '../../api/nodeApi';
+import Indicator from '../../components/Indicator';
 
 const AddPlantScreenFormHook = (props) => {
 	const [loading, setLoading] = useState({ screenLoading: true, buttonLoading: false });
@@ -98,15 +94,16 @@ const AddPlantScreenFormHook = (props) => {
 		});
 	}, []);
 
-	const Indicator = () => (
-		<View style={{ alignSelf: 'center', flex: 1 }}>
-			<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
-		</View>
-	);
-
 	const ButtonWithActivityIndicator = () => {
 		if (loading.buttonLoading) {
-			return <Indicator />;
+			return (
+				<Indicator
+					style={{
+						backgroundColor: 'white',
+						flex: 1,
+					}}
+				/>
+			);
 		}
 		return (
 			<View>
@@ -164,7 +161,14 @@ const AddPlantScreenFormHook = (props) => {
 	};
 
 	if (!plants && !unit) {
-		return <Indicator />;
+		return (
+			<Indicator
+				style={{
+					backgroundColor: 'white',
+					flex: 1,
+				}}
+			/>
+		);
 	}
 	return (
 		<KeyboardAwareScrollView

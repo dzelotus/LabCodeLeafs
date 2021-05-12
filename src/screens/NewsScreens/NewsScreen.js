@@ -1,17 +1,11 @@
 /* Экран отображения новостной ленты, доступен из виджета на главном экране */
 
 import React, { useEffect, useState } from 'react';
-import {
-	Text,
-	View,
-	FlatList,
-	TouchableOpacity,
-	StyleSheet,
-	ActivityIndicator,
-} from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HTML from 'react-native-render-html';
 import nodeApi from '../../api/nodeApi';
+import Indicator from '../../components/Indicator';
 
 const NewsScreen = (props) => {
 	const [newsData, setNewsData] = useState('');
@@ -41,14 +35,15 @@ const NewsScreen = (props) => {
 			});
 	};
 
-	const Indicator = () => (
-		<View style={{ alignSelf: 'center', flex: 1 }}>
-			<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
-		</View>
-	);
-
 	if (loading) {
-		return <Indicator />;
+		return (
+			<Indicator
+				style={{
+					backgroundColor: 'white',
+					flex: 1,
+				}}
+			/>
+		);
 	}
 	return (
 		<View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -58,7 +53,6 @@ const NewsScreen = (props) => {
 					const { title } = item.item;
 					const previewData = item.item.article_preview;
 					const date = item.item.insert_date;
-					console.log('ITTTTT', previewData);
 
 					return (
 						<View style={styles.articleContainer}>

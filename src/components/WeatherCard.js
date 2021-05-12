@@ -3,28 +3,33 @@
 
 /* Виджет погоды и лунного календаря */
 
+// ***NPM***
 import 'moment/locale/ru';
-import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 import moment from 'moment';
-
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { connect } from 'react-redux';
+
+// ***OTHER***
 import { resolveAuth, refreshConnection } from '../actions/AuthActions';
 import imageSwitch from '../assets/weatherIcon';
 import moonImageSwitch from '../assets/moonIcon';
+import Indicator from './Indicator';
 
-const WeatherCard = ({
-	moonInfo,
-	weatherInfo,
-	getLocation,
-	weatherLoading,
-	resolveAuth,
-	isSigned,
-	checkInternet,
-}) => {
+const WeatherCard = (props) => {
+	const {
+		moonInfo,
+		weatherInfo,
+		getLocation,
+		weatherLoading,
+		resolveAuth,
+		isSigned,
+		checkInternet,
+	} = props;
+
 	const navigation = useNavigation();
 
 	moment.updateLocale('ru', {
@@ -45,19 +50,18 @@ const WeatherCard = ({
 	});
 	const now = moment().locale('ru').format('D MMMM');
 
-	const Indicator = () => (
-		<View style={{ alignSelf: 'center', flex: 1 }}>
-			<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
-		</View>
-	);
-
 	return (
 		<View style={styles.containerStyle}>
 			<View>
 				{/* WEATHER */}
 				{weatherLoading ? (
 					<View style={{ height: 75 }}>
-						<Indicator />
+						<Indicator
+							style={{
+								backgroundColor: 'white',
+								flex: 1,
+							}}
+						/>
 					</View>
 				) : weatherInfo && checkInternet ? (
 					<View>
@@ -211,7 +215,6 @@ const WeatherCard = ({
 							justifyContent: 'center',
 						}}
 						onPress={() => {
-							/* Linking.openURL('App-Prefs:LOCATION_SERVICES'); */
 							resolveAuth({ prop: 'toAuthFlow', value: true });
 							resolveAuth({ prop: 'toSignupScreen', value: false });
 						}}
@@ -221,7 +224,12 @@ const WeatherCard = ({
 						</Text>
 					</TouchableOpacity>
 				) : (
-					<Indicator />
+					<Indicator
+						style={{
+							backgroundColor: 'white',
+							flex: 1,
+						}}
+					/>
 				)}
 			</View>
 		</View>

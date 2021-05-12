@@ -1,11 +1,12 @@
 /* Экран погоды доступен из виджета на главном экране */
 
-import { Text, View, ScrollView, ActivityIndicator, Image, Platform } from 'react-native';
+import { Text, View, ScrollView, Image, Platform } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import imageSwitch from '../../assets/weatherIcon';
 import weatherApi from '../../api/weatherApi';
+import Indicator from '../../components/Indicator';
 
 const WeatherScreen = (props) => {
 	const { route } = props;
@@ -157,12 +158,6 @@ const WeatherScreen = (props) => {
 		return null;
 	};
 
-	const Indicator = () => (
-		<View style={{ flex: 1, backgroundColor: 'white' }}>
-			<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
-		</View>
-	);
-
 	useEffect(() => {
 		checkWeather(lon, lat);
 
@@ -172,7 +167,14 @@ const WeatherScreen = (props) => {
 	}, []);
 
 	if (loading) {
-		return <Indicator />;
+		return (
+			<Indicator
+				style={{
+					backgroundColor: 'white',
+					flex: 1,
+				}}
+			/>
+		);
 	}
 	const marg = Platform.OS === 'ios' ? 30 : 0;
 	return (

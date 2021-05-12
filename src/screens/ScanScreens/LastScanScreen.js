@@ -1,11 +1,11 @@
 /* Экран отображения последних выполненных сканирований */
 
+/* NPM */
 import React, { useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 const LastScanScreen = (props) => {
-	console.log('PROPS', props);
 	const { navigation, route } = props;
 	const { data } = route.params;
 

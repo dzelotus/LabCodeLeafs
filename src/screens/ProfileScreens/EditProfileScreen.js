@@ -2,13 +2,13 @@
 
 /* Экран редактирования Профиля */
 
+/* NPM */
 import React, { useEffect, useState } from 'react';
 import {
 	View,
 	TouchableOpacity,
 	Text,
 	TextInput,	
-	ActivityIndicator,
 	ScrollView,
 	StyleSheet,
 } from 'react-native';
@@ -17,7 +17,10 @@ import { useForm, Controller } from 'react-hook-form';
 import FastImage from 'react-native-fast-image'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
+
+/* OTHER */
 import nodeApi from '../../api/nodeApi';
+import Indicator from '../../components/Indicator';
 
 const EditProfileScreen = (props) => {
 	const [loading, setLoading] = useState(false);
@@ -39,9 +42,11 @@ const EditProfileScreen = (props) => {
 	const activeButton = () => {
 		if (loading === true) {
 			return (
-				<View style={styles.buttonStyle}>
-					<ActivityIndicator size="large" color="#379683" />
-				</View>
+				<Indicator style={{
+					backgroundColor: 'white',
+					flex: 1,
+				}}
+				/>
 			);
 		}
 
@@ -181,9 +186,11 @@ const EditProfileScreen = (props) => {
 
 	if (!profile) {
 		return (
-			<View style={{ flex: 1, backgroundColor: 'white' }}>
-				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
-			</View>
+			<Indicator style={{
+				backgroundColor: 'white',
+				flex: 1,
+			}}
+			/>
 		);
 	}
 	return (

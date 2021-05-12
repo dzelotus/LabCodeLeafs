@@ -1,4 +1,7 @@
 /* eslint-disable global-require */
+
+/* иконки для погоды */
+
 const imageSwitch = (icon) => {
 	switch (icon) {
 		case '01n':

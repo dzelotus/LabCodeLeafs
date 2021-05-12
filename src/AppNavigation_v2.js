@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */
+
 /* ***NPM*** */
 import React, { useEffect } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -8,6 +9,7 @@ import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import SQLite from 'react-native-sqlite-storage';
+
 /* ***OTHERS*** */
 import {
 	resolveAuth,
@@ -57,6 +59,7 @@ import NotAuthUserScreen from './screens/NotAuthScreen';
 // Экран отсутствия соединения с интернет
 import NoInternetConnectionScreen from './screens/NoInternetConnectionScreen';
 
+/* функции заполнения локальной базы при загрузке приложения */
 import { populateLocalTables, populateLocalHealTable } from './database/populateLocalTables';
 
 const Stack = createStackNavigator();

@@ -1,8 +1,11 @@
 /* Экран не зарегистрированного пользователя, появляется в случае отсутствия авторизации в приложении */
 
+/* NPM */
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+
+/* OTHER */
 import { resolveAuth } from '../actions/AuthActions';
 
 const NotAuthUserScreen = (props) => {

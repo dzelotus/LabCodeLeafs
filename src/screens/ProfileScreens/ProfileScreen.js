@@ -2,29 +2,31 @@
 
 /* Экран профиля */
 
+/* NPM */
 import {
 	Alert,
 	Image,
 	StyleSheet,
 	Text,
 	View,
-	TouchableOpacity,
-	ActivityIndicator,
+	TouchableOpacity,	
 	Button
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-
 import { connect } from 'react-redux';
 import FontistoIcon from 'react-native-vector-icons/Fontisto';
+
+/* OTHER */
 import nodeApi from '../../api/nodeApi';
 import { resolveAuth, refreshConnection } from '../../actions/AuthActions';
 import NotAuthUser from '../../components/NotAuthUser';
+import Indicator from '../../components/Indicator';
 
 
 const ProfileScreen = (props) => {	
 	const [profile, setProfile] = useState(null)
 	const [loading, setLoading] = useState(false)
-	console.log('PROFILE PROPS', props)
+
 	useEffect(() => {		
 		const unsubscribe = navigation.addListener('focus', () => {			
 			getProfile();
@@ -155,9 +157,11 @@ const ProfileScreen = (props) => {
 
 	if (loading || !profile) {
 		return (
-			<View style={{ flex: 1, backgroundColor: 'white' }}>
-				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
-			</View>
+			<Indicator style={{
+				backgroundColor: 'white',
+				flex: 1,
+			}}
+			/>
 		);
 	}
 	return (

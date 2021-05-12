@@ -4,12 +4,12 @@
 
 /* Экран регистрации в приложении */
 
+/* NPM */
 import React, { useRef, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
 	View,
 	KeyboardAvoidingView,
-	ActivityIndicator,
 	ScrollView,
 	StyleSheet,
 	Modal,
@@ -23,6 +23,7 @@ import FingerprintScanner from 'react-native-fingerprint-scanner';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNBootSplash from 'react-native-bootsplash';
 
+/* OTHER */
 import {
 	inputChange,
 	signup,
@@ -32,6 +33,7 @@ import {
 	checkBioScanner,
 	resolveAuth,
 } from '../../actions/AuthActions';
+import Indicator from '../../components/Indicator';
 
 function SignupScreen(props) {
 	const regexUsername = useRef();
@@ -82,7 +84,7 @@ function SignupScreen(props) {
 
 	const activityIndicator = () => {
 		if (props.loading) {
-			return <ActivityIndicator size="large" color="#379683" />;
+			return <Indicator />;
 		}
 		return (
 			<Button

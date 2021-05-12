@@ -2,25 +2,19 @@
 Имеется возможность отправить на обработку
  */
 
+/* NPM */
 import React, { useState } from 'react';
-import {
-	View,
-	StyleSheet,
-	StatusBar,
-	ImageBackground,
-	ActivityIndicator,
-	Text,
-	Alert,
-	Platform,
-} from 'react-native';
+import { View, StyleSheet, StatusBar, ImageBackground, Text, Alert, Platform } from 'react-native';
 import { withNavigationFocus } from '@react-navigation/compat';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import Modal from 'react-native-modal';
 
+/* OTHER */
 import GoBackButton from '../../components/GoBackButton';
 import { getCsrf } from '../../actions/AuthActions';
 import nodeApi from '../../api/nodeApi';
+import Indicator from '../../components/Indicator';
 
 const ScanPhotoScreen = (route) => {
 	const fileURL = route.route.params.img.uri;
@@ -33,11 +27,6 @@ const ScanPhotoScreen = (route) => {
 		nodeApi
 			.get('/scans/new', {})
 			.then((response) => {
-				/* route.getCsrf({
-					prop: '_csrf',
-					value: response.data.csrfToken,
-				}); */
-
 				postPhoto({ _csrf: response.data.csrfToken });
 			})
 
@@ -128,14 +117,12 @@ const ScanPhotoScreen = (route) => {
 								borderRadius: 25,
 							}}
 						>
-							<ActivityIndicator
-								size="large"
+							<Indicator
 								style={{
 									flex: 1,
 									alignSelf: 'center',
 									justifyContent: 'center',
 								}}
-								color="#379683"
 							/>
 
 							<View

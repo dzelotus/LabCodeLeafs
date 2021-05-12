@@ -1,3 +1,6 @@
+/* Универсальная экранная кнопка "Назад" */
+
+/* NPM */
 import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { withNavigation } from '@react-navigation/compat';
@@ -8,7 +11,7 @@ const GoBackButton = ({ navigation, nav }) => {
 
 	return (
 		<TouchableOpacity onPress={() => navigation.navigate(nav)} style={styles.backButton}>
-			<Ionicons name="arrow-back" size={40} color="#379683" style={{ zIndex: 500 }} />
+			<Ionicons name="arrow-back" size={40} color="#379683" style={styles.iconZIndex} />
 		</TouchableOpacity>
 	);
 };
@@ -25,6 +28,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		backgroundColor: 'white',
 	},
+	iconZIndex: { zIndex: 500 },
 });
 
 export default withNavigation(GoBackButton);

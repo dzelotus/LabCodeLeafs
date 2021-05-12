@@ -34,11 +34,6 @@ const LastScansCard = ({ iconName, navigation, nav, headerText, data, isSigned }
 			.replace('/var/leafs_files/upload/', 'https://api.leafs.pro/upload/')
 			.replace('/usr/src/leafs_files/upload/', 'https://api.leafs.pro/upload/');
 
-		/* const compressedUrl = item.compressed_url ? item.compressed_url : item.image_url; */
-		/* 	const compressedUrlReady = compressedUrl
-			.replace('/var/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/')
-			.replace('/usr/src/leafs_files/upload/', 'https://leafs-app.lab-code.com/upload/'); */
-
 		return (
 			<TouchableOpacity
 				onPress={() =>

@@ -28,7 +28,7 @@ const ArticleScreen = (props) => {
 	return (
 		<ScrollView style={styles.container}>
 			<HTML
-				containerStyle={{ marginVertical: 15 }}
+				containerStyle={styles.htmlRender}
 				source={{ html: article }}
 				tagsStyles={{
 					div: { flex: 1, fontSize: 16 },
@@ -52,6 +52,9 @@ const styles = StyleSheet.create({
 		paddingBottom: 15,
 		backgroundColor: 'white',
 		width: wid,
+	},
+	htmlRender: {
+		marginVertical: 15,
 	},
 });
 

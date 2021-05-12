@@ -4,14 +4,18 @@
 
 /* Экран Дневника садовода */
 
+/* NPM */
 import React, { useEffect, useState } from 'react';
-import { View, ActivityIndicator, ScrollView, Alert, Text, Button } from 'react-native';
+import { View, ScrollView, Alert, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
+
+/* OTHER */
 import nodeApi from '../../api/nodeApi';
 import GardenWithPlantsCard from '../../components/GardenWithPlantsCard';
 import AddGardenModal from '../../components/AddGardenModal';
 import { resolveAuth, resolveInternet, refreshConnection } from '../../actions/AuthActions';
 import NotAuthUser from '../../components/NotAuthUser';
+import Indicator from '../../components/Indicator';
 
 const GardenScreen = (props) => {
 	const { navigation, isSigned, checkInternet, refreshConnection, resolveAuth } = props;
@@ -107,11 +111,6 @@ const GardenScreen = (props) => {
 		return getFocus;
 	}, [checkInternet]);
 
-	const Indicator = () => (
-		<View>
-			<ActivityIndicator size="large" color="#379683" />
-		</View>
-	);
 	const gardenRender = () => {
 		if (gardenData) {
 			return gardenData.map((item) => {

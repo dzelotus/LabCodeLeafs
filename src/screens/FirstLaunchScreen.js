@@ -3,15 +3,17 @@
 
 /* Экран первого запуска. Доступен только при первом запуске приложения */
 
+/* NPM */
 import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View, Image, Platform, Button } from 'react-native';
-
 import AsyncStorage from '@react-native-community/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import RNBootSplash from 'react-native-bootsplash';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ViewPager from '@react-native-community/viewpager';
 import { connect } from 'react-redux';
+
+/* OTHER */
 import { resolveAuth, resolveInternet } from '../actions/AuthActions';
 
 const FirstLaunchScreen = (props) => {

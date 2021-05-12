@@ -1,22 +1,25 @@
+/* eslint-disable prettier/prettier */
+
 /* 
 Главный экран Справочника (растения/заболевания/лечение)
 */
 
-/* eslint-disable prettier/prettier */
+/* NPM */
 import React, { useState, useEffect } from 'react';
 import {
 	View,
 	StyleSheet,
 	Text,
 	FlatList,
-	TouchableOpacity,
-	ActivityIndicator,	
-	
+	TouchableOpacity,	
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from 'react-native-elements';
 import SQLite from 'react-native-sqlite-storage';
+
+/* OTHER */
 import { db } from '../../database/database';
+import Indicator from '../../components/Indicator';
 
 const CatalogScreen = (props) => {
 	const [fetchedData, setFetchedData] = useState(null);
@@ -172,7 +175,7 @@ const CatalogScreen = (props) => {
 		return (
 			<View style={{ flex: 1, backgroundColor: 'white' }}>
 				<MainButtons />
-				<ActivityIndicator size="large" color="#379683" style={{ flex: 1 }} />
+				<Indicator style={{flex: 1, backgroundColor: 'white'}} />
 			</View>
 		);
 	}

@@ -1,4 +1,7 @@
 /* eslint-disable global-require */
+
+/* иконки для лунного календаря */
+
 const moonImageSwitch = (icon) => {
 	switch (icon) {
 		case '0':

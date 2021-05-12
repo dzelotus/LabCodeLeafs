@@ -2,10 +2,13 @@
 Экран отображения статьи про заболевания растений в справочнике
 */
 
+/* NPM */
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, ScrollView, TouchableOpacity, View } from 'react-native';
 import HTML from 'react-native-render-html';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+/* OTHER */
 import nodeApi from '../../api/nodeApi';
 /* import db from '../database/database'; */
 

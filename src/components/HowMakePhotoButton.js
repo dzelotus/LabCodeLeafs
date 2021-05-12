@@ -1,3 +1,6 @@
+/* Модальное окно с подсказкой по правильному фотографированию листа */
+
+/* NPM */
 import React, { useState } from 'react';
 import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
 import { withNavigation } from '@react-navigation/compat';
@@ -10,9 +13,7 @@ const HowMakePhotoButton = () => {
 	return (
 		<View>
 			<TouchableOpacity onPress={() => setShowModal(true)} style={styles.showModalButton}>
-				<Text style={{ fontSize: 18, color: '#379683', marginHorizontal: 5 }}>
-					Как правильно сделать фото?
-				</Text>
+				<Text style={styles.btnTitle}>Как правильно сделать фото?</Text>
 			</TouchableOpacity>
 			<Modal
 				isVisible={showModal}
@@ -21,30 +22,11 @@ const HowMakePhotoButton = () => {
 				onSwipeComplete={() => setShowModal(false)}
 				onSwipeCancel={() => null}
 				swipeDirection="down"
-				style={{
-					justifyContent: 'flex-end',
-					margin: 0,
-				}}
+				style={styles.modalStyle}
 			>
-				<View
-					style={{
-						borderColor: '#ffffff',
-						borderWidth: 3,
-						marginHorizontal: 50,
-						borderRadius: 3,
-						marginBottom: 10,
-						width: 45,
-						alignSelf: 'center',
-					}}
-				/>
+				<View style={styles.closeDash} />
 				<View style={styles.modalContainer}>
-					<View
-						style={{
-							height: 25,
-							justifyContent: 'center',
-						}}
-					/>
-					<ScrollView style={{ marginTop: 10 }}>
+					<ScrollView>
 						<Text style={styles.titleStyle}>Как правильно сделать фото?</Text>
 						<View style={styles.textContainer}>
 							<Text style={styles.textStyle}>
@@ -77,6 +59,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		backgroundColor: 'white',
 	},
+	btnTitle: { fontSize: 18, color: '#379683', marginHorizontal: 5 },
+	modalStyle: {
+		justifyContent: 'flex-end',
+		margin: 0,
+	},
 	modalContainer: {
 		backgroundColor: 'white',
 		borderTopRightRadius: 25,
@@ -95,6 +82,16 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 18,
 		fontWeight: 'bold',
+		paddingTop: 20,
+	},
+	closeDash: {
+		borderColor: '#ffffff',
+		borderWidth: 3,
+		marginHorizontal: 50,
+		borderRadius: 3,
+		marginBottom: 10,
+		width: 45,
+		alignSelf: 'center',
 	},
 });
 
