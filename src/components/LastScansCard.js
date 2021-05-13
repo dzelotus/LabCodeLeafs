@@ -238,21 +238,6 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		color: '#379683',
 	},
-	cardItem: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		paddingRight: 10,
-	},
-	lastCardItem: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		paddingBottom: 10,
-		marginRight: 10,
-	},
-	textItem: {
-		flex: 1,
-		fontSize: 15,
-	},
 	image: {
 		width: 100,
 		height: 100,

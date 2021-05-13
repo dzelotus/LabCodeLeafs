@@ -31,6 +31,7 @@ const ProfileScreen = (props) => {
 		const unsubscribe = navigation.addListener('focus', () => {			
 			getProfile();
 			refreshConnection();
+			checkVerify();
 			console.log('Refreshed!');
 		  });
 
@@ -114,6 +115,8 @@ const ProfileScreen = (props) => {
 			.then((response) => {
 				if (response.data.data) {
 					resolveAuth({ prop: 'isSigned', value: true });
+				} else {
+					resolveAuth({prop: 'isSigned', value: false})
 				}
 				
 			})

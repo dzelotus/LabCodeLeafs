@@ -35,6 +35,8 @@ const GardenScreen = (props) => {
 			.then((response) => {
 				if (response.data.data) {
 					resolveAuth({ prop: 'isSigned', value: true });
+				} else {
+					resolveAuth({ prop: 'isSigned', value: false });
 				}
 				const token = response.data.data.hasValidTokens;
 				const verify = response.data.data.isVerified;
@@ -101,11 +103,10 @@ const GardenScreen = (props) => {
 	};
 
 	useEffect(() => {
-		checkVerify();
-		getGardens();
 		const getFocus = navigation.addListener('focus', () => {
 			getGardens();
 			refreshConnection();
+			checkVerify();
 		});
 
 		return getFocus;
