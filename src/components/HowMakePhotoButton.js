@@ -26,7 +26,7 @@ const HowMakePhotoButton = () => {
 				<View style={styles.modalContainer}>
 					<TouchableOpacity
 						onPress={() => setShowModal(false)}
-						style={{ alignSelf: 'flex-end', paddingRight: 20 }}
+						style={styles.closeButton}
 					>
 						<Icon name="close" size={40} color="black" />
 					</TouchableOpacity>
@@ -37,36 +37,18 @@ const HowMakePhotoButton = () => {
 								1. Поместите лист или цветок в центр рамки. Постарайтесь сделать
 								так, чтобы лист или цветок были четко видны на фото
 							</Text>
-							<View
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									paddingHorizontal: 15,
-								}}
-							>
+							<View style={styles.caseContainer}>
 								<View>
 									<Image
-										source={require('../../assets/unnamed.png')}
-										style={{
-											height: 170,
-											width: 170,
-											borderWidth: 1,
-											borderColor: 'red',
-											zIndex: 100,
-										}}
+										source={require('../../assets/howMakePhotoImages/1not.jpg')}
+										style={styles.imageStyle}
 									/>
 									<Icon name="close" size={50} color="red" />
 								</View>
 								<View>
 									<Image
-										source={require('../../assets/unnamed.png')}
-										style={{
-											height: 170,
-											width: 170,
-											borderWidth: 1,
-											borderColor: 'red',
-											zIndex: 100,
-										}}
+										source={require('../../assets/howMakePhotoImages/1ok.jpg')}
+										style={styles.imageStyle}
 									/>
 									<Icon name="check" size={50} color="green" />
 								</View>
@@ -74,36 +56,18 @@ const HowMakePhotoButton = () => {
 							<Text style={styles.textStyle}>
 								2. Постарайтесь сфотографировать один лист или цветок
 							</Text>
-							<View
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									paddingHorizontal: 15,
-								}}
-							>
+							<View style={styles.caseContainer}>
 								<View>
 									<Image
-										source={require('../../assets/unnamed.png')}
-										style={{
-											height: 170,
-											width: 170,
-											borderWidth: 1,
-											borderColor: 'red',
-											zIndex: 100,
-										}}
+										source={require('../../assets/howMakePhotoImages/2not.jpg')}
+										style={styles.imageStyle}
 									/>
 									<Icon name="close" size={50} color="red" />
 								</View>
 								<View>
 									<Image
-										source={require('../../assets/unnamed.png')}
-										style={{
-											height: 170,
-											width: 170,
-											borderWidth: 1,
-											borderColor: 'red',
-											zIndex: 100,
-										}}
+										source={require('../../assets/howMakePhotoImages/2ok.jpg')}
+										style={styles.imageStyle}
 									/>
 									<Icon name="check" size={50} color="green" />
 								</View>
@@ -111,36 +75,18 @@ const HowMakePhotoButton = () => {
 							<Text style={styles.textStyle}>
 								3. Фотографируйте лист или цветок, а не растение целиком
 							</Text>
-							<View
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									paddingHorizontal: 15,
-								}}
-							>
+							<View style={styles.caseContainer}>
 								<View>
 									<Image
-										source={require('../../assets/unnamed.png')}
-										style={{
-											height: 170,
-											width: 170,
-											borderWidth: 1,
-											borderColor: 'red',
-											zIndex: 100,
-										}}
+										source={require('../../assets/howMakePhotoImages/3not.jpg')}
+										style={styles.imageStyle}
 									/>
 									<Icon name="close" size={50} color="red" />
 								</View>
 								<View>
 									<Image
-										source={require('../../assets/unnamed.png')}
-										style={{
-											height: 170,
-											width: 170,
-											borderWidth: 1,
-											borderColor: 'red',
-											zIndex: 100,
-										}}
+										source={require('../../assets/howMakePhotoImages/3ok.jpg')}
+										style={styles.imageStyle}
 									/>
 									<Icon name="check" size={50} color="green" />
 								</View>
@@ -149,36 +95,18 @@ const HowMakePhotoButton = () => {
 								4. Проследите, чтобы на фото был лист или цветок только одного
 								растения
 							</Text>
-							<View
-								style={{
-									flexDirection: 'row',
-									justifyContent: 'space-between',
-									paddingHorizontal: 15,
-								}}
-							>
+							<View style={styles.caseContainer}>
 								<View>
 									<Image
-										source={require('../../assets/unnamed.png')}
-										style={{
-											height: 170,
-											width: 170,
-											borderWidth: 1,
-											borderColor: 'red',
-											zIndex: 100,
-										}}
+										source={require('../../assets/howMakePhotoImages/4not.jpg')}
+										style={styles.imageStyle}
 									/>
 									<Icon name="close" size={50} color="red" />
 								</View>
 								<View>
 									<Image
-										source={require('../../assets/unnamed.png')}
-										style={{
-											height: 170,
-											width: 170,
-											borderWidth: 1,
-											borderColor: 'red',
-											zIndex: 100,
-										}}
+										source={require('../../assets/howMakePhotoImages/4ok.jpg')}
+										style={styles.imageStyle}
 									/>
 									<Icon name="check" size={50} color="green" />
 								</View>
@@ -226,6 +154,17 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: 'bold',
 		paddingTop: 20,
+	},
+	imageStyle: {
+		height: 170,
+		width: 170,
+		zIndex: 100,
+	},
+	closeButton: { alignSelf: 'flex-end', paddingRight: 20 },
+	caseContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingHorizontal: 15,
 	},
 });
 
