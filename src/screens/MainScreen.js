@@ -34,7 +34,6 @@ const MainScreen = (props) => {
 	const isHermes = () => !!global.HermesInternal;
 
 	const { navigation, refreshConnection, checkInternet } = props;
-	console.log('int', checkInternet);
 
 	const getLastScans = () => {
 		nodeApi

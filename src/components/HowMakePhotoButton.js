@@ -1,11 +1,12 @@
+/* eslint-disable global-require */
 /* Модальное окно с подсказкой по правильному фотографированию листа */
 
 /* NPM */
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, View, Text } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, Text, Image, ScrollView } from 'react-native';
 import { withNavigation } from '@react-navigation/compat';
 import Modal from 'react-native-modal';
-import { ScrollView } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const HowMakePhotoButton = () => {
 	const [showModal, setShowModal] = useState(false);
@@ -18,28 +19,170 @@ const HowMakePhotoButton = () => {
 			<Modal
 				isVisible={showModal}
 				hasBackdrop
-				onBackdropPress={() => setShowModal(false)}
-				onSwipeComplete={() => setShowModal(false)}
-				onSwipeCancel={() => null}
-				swipeDirection="down"
 				style={styles.modalStyle}
+				propagateSwipe
+				useNativeDriver={false}
 			>
-				<View style={styles.closeDash} />
 				<View style={styles.modalContainer}>
+					<TouchableOpacity
+						onPress={() => setShowModal(false)}
+						style={{ alignSelf: 'flex-end', paddingRight: 20 }}
+					>
+						<Icon name="close" size={40} color="black" />
+					</TouchableOpacity>
 					<ScrollView>
 						<Text style={styles.titleStyle}>Как правильно сделать фото?</Text>
 						<View style={styles.textContainer}>
 							<Text style={styles.textStyle}>
-								1. Поместите лист растения в центр рамки
+								1. Поместите лист или цветок в центр рамки. Постарайтесь сделать
+								так, чтобы лист или цветок были четко видны на фото
 							</Text>
+							<View
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									paddingHorizontal: 15,
+								}}
+							>
+								<View>
+									<Image
+										source={require('../../assets/unnamed.png')}
+										style={{
+											height: 170,
+											width: 170,
+											borderWidth: 1,
+											borderColor: 'red',
+											zIndex: 100,
+										}}
+									/>
+									<Icon name="close" size={50} color="red" />
+								</View>
+								<View>
+									<Image
+										source={require('../../assets/unnamed.png')}
+										style={{
+											height: 170,
+											width: 170,
+											borderWidth: 1,
+											borderColor: 'red',
+											zIndex: 100,
+										}}
+									/>
+									<Icon name="check" size={50} color="green" />
+								</View>
+							</View>
 							<Text style={styles.textStyle}>
-								2. Если не получается поместить в рамку только один лист,
-								постарайтесь сделать так, чтобы хотя бы один лист был четко виден в
-								центре рамки
+								2. Постарайтесь сфотографировать один лист или цветок
 							</Text>
+							<View
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									paddingHorizontal: 15,
+								}}
+							>
+								<View>
+									<Image
+										source={require('../../assets/unnamed.png')}
+										style={{
+											height: 170,
+											width: 170,
+											borderWidth: 1,
+											borderColor: 'red',
+											zIndex: 100,
+										}}
+									/>
+									<Icon name="close" size={50} color="red" />
+								</View>
+								<View>
+									<Image
+										source={require('../../assets/unnamed.png')}
+										style={{
+											height: 170,
+											width: 170,
+											borderWidth: 1,
+											borderColor: 'red',
+											zIndex: 100,
+										}}
+									/>
+									<Icon name="check" size={50} color="green" />
+								</View>
+							</View>
 							<Text style={styles.textStyle}>
-								3. На фото должен быть лист только одного растения
+								3. Фотографируйте лист или цветок, а не растение целиком
 							</Text>
+							<View
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									paddingHorizontal: 15,
+								}}
+							>
+								<View>
+									<Image
+										source={require('../../assets/unnamed.png')}
+										style={{
+											height: 170,
+											width: 170,
+											borderWidth: 1,
+											borderColor: 'red',
+											zIndex: 100,
+										}}
+									/>
+									<Icon name="close" size={50} color="red" />
+								</View>
+								<View>
+									<Image
+										source={require('../../assets/unnamed.png')}
+										style={{
+											height: 170,
+											width: 170,
+											borderWidth: 1,
+											borderColor: 'red',
+											zIndex: 100,
+										}}
+									/>
+									<Icon name="check" size={50} color="green" />
+								</View>
+							</View>
+							<Text style={styles.textStyle}>
+								4. Проследите, чтобы на фото был лист или цветок только одного
+								растения
+							</Text>
+							<View
+								style={{
+									flexDirection: 'row',
+									justifyContent: 'space-between',
+									paddingHorizontal: 15,
+								}}
+							>
+								<View>
+									<Image
+										source={require('../../assets/unnamed.png')}
+										style={{
+											height: 170,
+											width: 170,
+											borderWidth: 1,
+											borderColor: 'red',
+											zIndex: 100,
+										}}
+									/>
+									<Icon name="close" size={50} color="red" />
+								</View>
+								<View>
+									<Image
+										source={require('../../assets/unnamed.png')}
+										style={{
+											height: 170,
+											width: 170,
+											borderWidth: 1,
+											borderColor: 'red',
+											zIndex: 100,
+										}}
+									/>
+									<Icon name="check" size={50} color="green" />
+								</View>
+							</View>
 						</View>
 					</ScrollView>
 				</View>
@@ -63,12 +206,11 @@ const styles = StyleSheet.create({
 	modalStyle: {
 		justifyContent: 'flex-end',
 		margin: 0,
+		paddingTop: 40,
 	},
 	modalContainer: {
 		backgroundColor: 'white',
-		borderTopRightRadius: 25,
-		borderTopLeftRadius: 25,
-		paddingBottom: 100,
+		paddingVertical: 40,
 	},
 	textContainer: {
 		marginHorizontal: 10,
@@ -76,22 +218,14 @@ const styles = StyleSheet.create({
 	},
 	textStyle: {
 		marginBottom: 10,
-		fontSize: 16,
+		fontSize: 18,
+		textAlign: 'center',
 	},
 	titleStyle: {
 		textAlign: 'center',
 		fontSize: 18,
 		fontWeight: 'bold',
 		paddingTop: 20,
-	},
-	closeDash: {
-		borderColor: '#ffffff',
-		borderWidth: 3,
-		marginHorizontal: 50,
-		borderRadius: 3,
-		marginBottom: 10,
-		width: 45,
-		alignSelf: 'center',
 	},
 });
 
